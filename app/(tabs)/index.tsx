@@ -1,9 +1,21 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Text, TouchableOpacity, Image, StyleSheet, Platform } from 'react-native';
+import * as DocumentPicker from 'expo-document-picker';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+
+import { readRemoteFile } from 'react-native-csv';
+
+enum OperationType {
+  Deposit = 'Deposit',
+  Dividend = 'Dividend',
+  SpinOff = 'Spin off',
+  StocksEtfPurchase = 'Stocks/ETF purchase',
+  FreeFundsInterests = 'Free funds interests',
+  FreeFundsInterestsTax = 'Free funds interests tax'
+}
 
 export default function HomeScreen() {
   return (
@@ -15,37 +27,56 @@ export default function HomeScreen() {
           style={styles.reactLogo}
         />
       }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
+      <TouchableOpacity onPress={async () => {
+          let result = await DocumentPicker.getDocumentAsync({
+    type: 'text/csv',
+  });
+// Total dividends received
+// Total amount of stocks bought
+// Total amount of stocks sold
+// Total amount of stocks received from spin-offs
+// Total amount of free funds interests received
+// Total amount of free funds interests tax paid
+
+readRemoteFile(
+  result.assets[0].uri,
+  {
+    complete: (results) => {
+      console.log('Results:', results)
+      let dividends = 0;
+      let stocks = 0;
+      let spinOffs = 0;
+      let freeFundsInterest = 0;
+      let freeFundsInterestTax = 0;
+      for(let i = 0; i < results.data.length; i++){
+        const [id, type, time, symbol, comment, amount] = results.data[i];
+        if(type === OperationType.Dividend) {
+          dividends += parseFloat(amount);
+        }
+        if(type === OperationType.StocksEtfPurchase) {
+          stocks += parseFloat(amount);
+        }
+        if(type === OperationType.SpinOff) {
+          spinOffs += parseFloat(amount);
+        }
+        if(type === OperationType.FreeFundsInterests) {
+          freeFundsInterest += parseFloat(amount);
+        }  
+        if(type === OperationType.FreeFundsInterestsTax) {
+          freeFundsInterestTax += parseFloat(amount);
+        }                 
+      }
+      console.log('Dividends:', dividends);
+      console.log('Stocks:', stocks);
+      console.log('SpinOffs:', spinOffs);
+      console.log('FreeFundsInterest:', freeFundsInterest);
+      console.log('FreeFundsInterestTax:', freeFundsInterestTax);
+    }
+  }
+);  
+      }}>
+        <Text>click</Text>
+        </TouchableOpacity>
     </ParallaxScrollView>
   );
 }
