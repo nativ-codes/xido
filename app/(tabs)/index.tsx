@@ -12,6 +12,7 @@ enum OperationType {
   Deposit = 'Deposit',
   Dividend = 'Dividend',
   SpinOff = 'Spin off',
+  WithholdingTax = 'Withholding tax',
   StocksEtfPurchase = 'Stocks/ETF purchase',
   FreeFundsInterests = 'Free funds interests',
   FreeFundsInterestsTax = 'Free funds interests tax'
@@ -38,39 +39,97 @@ export default function HomeScreen() {
 // Total amount of free funds interests received
 // Total amount of free funds interests tax paid
 
+const calculateSummary = ({summary, type, amount}) => {
+  const newSummary = {...summary};
+
+  switch(type) {
+    case OperationType.Dividend:
+      newSummary.dividends += parseFloat(amount);
+      break;
+    case OperationType.WithholdingTax:
+      newSummary.withholdingTax += parseFloat(amount);
+      break;      
+    case OperationType.StocksEtfPurchase:
+      newSummary.stocks += parseFloat(amount);
+      break;
+    case OperationType.SpinOff:
+      newSummary.spinOffs += parseFloat(amount);
+      break;
+    case OperationType.FreeFundsInterests:
+      newSummary.freeFundsInterest += parseFloat(amount);
+      break;
+    case OperationType.FreeFundsInterestsTax:
+      newSummary.freeFundsInterestTax += parseFloat(amount);
+      break;
+  }
+
+  return newSummary;
+}
+
+const defaultState = {
+  companies: {},
+  summary: {
+    dividends: 0,
+    withholdingTax: 0,
+    stocks: 0,
+    spinOffs: 0,
+    freeFundsInterest: 0,
+    freeFundsInterestTax: 0,  
+  }
+}
+
+const parseCompanies = (companies) => {
+  return companies.reduce((parsedCompanies, transaction) => {
+    const [id, type, time, symbol, comment, amount] = transaction;
+    const newCompanies = Boolean(symbol) ? {
+      ...parsedCompanies.companies,
+      [symbol]: {
+        summary: calculateSummary({summary: parsedCompanies.companies[symbol]?.summary || defaultState.summary, type, amount}),
+        transactions: [...(parsedCompanies.companies[symbol]?.transactions || []), transaction]
+      },
+    } : parsedCompanies.companies;
+
+    return {
+      summary: calculateSummary({summary: parsedCompanies.summary, type, amount}),
+      companies: newCompanies,
+    };
+  }, defaultState);
+}
+
 readRemoteFile(
   result.assets[0].uri,
   {
     complete: (results) => {
-      console.log('Results:', results)
-      let dividends = 0;
-      let stocks = 0;
-      let spinOffs = 0;
-      let freeFundsInterest = 0;
-      let freeFundsInterestTax = 0;
-      for(let i = 0; i < results.data.length; i++){
-        const [id, type, time, symbol, comment, amount] = results.data[i];
-        if(type === OperationType.Dividend) {
-          dividends += parseFloat(amount);
-        }
-        if(type === OperationType.StocksEtfPurchase) {
-          stocks += parseFloat(amount);
-        }
-        if(type === OperationType.SpinOff) {
-          spinOffs += parseFloat(amount);
-        }
-        if(type === OperationType.FreeFundsInterests) {
-          freeFundsInterest += parseFloat(amount);
-        }  
-        if(type === OperationType.FreeFundsInterestsTax) {
-          freeFundsInterestTax += parseFloat(amount);
-        }                 
-      }
-      console.log('Dividends:', dividends);
-      console.log('Stocks:', stocks);
-      console.log('SpinOffs:', spinOffs);
-      console.log('FreeFundsInterest:', freeFundsInterest);
-      console.log('FreeFundsInterestTax:', freeFundsInterestTax);
+      // console.log('Results:', results)
+      console.log('Results:', JSON.stringify(parseCompanies(results.data)))
+      // let dividends = 0;
+      // let stocks = 0;
+      // let spinOffs = 0;
+      // let freeFundsInterest = 0;
+      // let freeFundsInterestTax = 0;
+      // for(let i = 0; i < results.data.length; i++){
+      //   const [id, type, time, symbol, comment, amount] = results.data[i];
+      //   if(type === OperationType.Dividend) {
+      //     dividends += parseFloat(amount);
+      //   }
+      //   if(type === OperationType.StocksEtfPurchase) {
+      //     stocks += parseFloat(amount);
+      //   }
+      //   if(type === OperationType.SpinOff) {
+      //     spinOffs += parseFloat(amount);
+      //   }
+      //   if(type === OperationType.FreeFundsInterests) {
+      //     freeFundsInterest += parseFloat(amount);
+      //   }  
+      //   if(type === OperationType.FreeFundsInterestsTax) {
+      //     freeFundsInterestTax += parseFloat(amount);
+      //   }                 
+      // }
+      // console.log('Dividends:', dividends);
+      // console.log('Stocks:', stocks);
+      // console.log('SpinOffs:', spinOffs);
+      // console.log('FreeFundsInterest:', freeFundsInterest);
+      // console.log('FreeFundsInterestTax:', freeFundsInterestTax);
     }
   }
 );  
