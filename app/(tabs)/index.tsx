@@ -1,24 +1,43 @@
 import { Text, TouchableOpacity, Image, StyleSheet, Platform } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 
-import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 
 import { readRemoteFile } from 'react-native-csv';
+import { getCompanies, getCompaniesInBatches } from '@/services/companies';
+import {chunkList, uploadCsv, parseCompanies, parseTransactions, validateColumnTitles} from '@/common/utils';
+import { useMMKVString } from 'react-native-mmkv';
+import {store} from '@/config/store';
 
-enum OperationType {
-  Deposit = 'Deposit',
-  Dividend = 'Dividend',
-  SpinOff = 'Spin off',
-  WithholdingTax = 'Withholding tax',
-  StocksEtfPurchase = 'Stocks/ETF purchase',
-  FreeFundsInterests = 'Free funds interests',
-  FreeFundsInterestsTax = 'Free funds interests tax'
-}
+
+// Total dividends received
+// Total amount of stocks bought
+// Total amount of stocks sold
+// Total amount of stocks received from spin-offs
+// Total amount of free funds interests received
+// Total amount of free funds interests tax paid
 
 export default function HomeScreen() {
+  const [username, setUsername] = useMMKVString('transactions')
+  // console.log('>>', username)
+
+  const handleOnUploadCsv = () => {
+    uploadCsv(parseResponse)
+  }
+
+  const parseResponse = response => {
+    if(response.data.length) {
+      if(validateColumnTitles(response.data[0])) {
+      console.log('transactions', JSON.stringify(parseTransactions(response.data)));
+      // store.set('transactions', JSON.stringify(response));
+      } else {
+        console.log('Invalid column titles. Please make sure the file has the correct format.');
+      }
+    } else {
+      console.log('Unable to parse the file. Please make sure the file has the correct format.');
+    }
+  }
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -28,80 +47,38 @@ export default function HomeScreen() {
           style={styles.reactLogo}
         />
       }>
-      <TouchableOpacity onPress={async () => {
-          let result = await DocumentPicker.getDocumentAsync({
-    type: 'text/csv',
-  });
-// Total dividends received
-// Total amount of stocks bought
-// Total amount of stocks sold
-// Total amount of stocks received from spin-offs
-// Total amount of free funds interests received
-// Total amount of free funds interests tax paid
-
-const calculateSummary = ({summary, type, amount}) => {
-  const newSummary = {...summary};
-
-  switch(type) {
-    case OperationType.Dividend:
-      newSummary.dividends += parseFloat(amount);
-      break;
-    case OperationType.WithholdingTax:
-      newSummary.withholdingTax += parseFloat(amount);
-      break;      
-    case OperationType.StocksEtfPurchase:
-      newSummary.stocks += parseFloat(amount);
-      break;
-    case OperationType.SpinOff:
-      newSummary.spinOffs += parseFloat(amount);
-      break;
-    case OperationType.FreeFundsInterests:
-      newSummary.freeFundsInterest += parseFloat(amount);
-      break;
-    case OperationType.FreeFundsInterestsTax:
-      newSummary.freeFundsInterestTax += parseFloat(amount);
-      break;
-  }
-
-  return newSummary;
+      <TouchableOpacity onPress={handleOnUploadCsv}>
+        <Text>click</Text>
+        </TouchableOpacity>
+    </ParallaxScrollView>
+  );
 }
-
-const defaultState = {
-  companies: {},
-  summary: {
-    dividends: 0,
-    withholdingTax: 0,
-    stocks: 0,
-    spinOffs: 0,
-    freeFundsInterest: 0,
-    freeFundsInterestTax: 0,  
-  }
-}
-
-const parseCompanies = (companies) => {
-  return companies.reduce((parsedCompanies, transaction) => {
-    const [id, type, time, symbol, comment, amount] = transaction;
-    const newCompanies = Boolean(symbol) ? {
-      ...parsedCompanies.companies,
-      [symbol]: {
-        summary: calculateSummary({summary: parsedCompanies.companies[symbol]?.summary || defaultState.summary, type, amount}),
-        transactions: [...(parsedCompanies.companies[symbol]?.transactions || []), transaction]
-      },
-    } : parsedCompanies.companies;
-
-    return {
-      summary: calculateSummary({summary: parsedCompanies.summary, type, amount}),
-      companies: newCompanies,
-    };
-  }, defaultState);
-}
-
-readRemoteFile(
-  result.assets[0].uri,
-  {
-    complete: (results) => {
       // console.log('Results:', results)
-      console.log('Results:', JSON.stringify(parseCompanies(results.data)))
+      // console.log('Results:', JSON.stringify(parseCompanies(results.data)))
+      // const parsedCompanies = parseCompanies(results.data);
+      // const symbols = extractTickers(parsedCompanies.companies);
+      // console.log('symbols:', symbols);
+      // const parsedResponse = await getCompaniesInBatches(parsedCompanies.companies);
+      // const parsedResponse = await getCompanies(symbols);
+      // try {
+        // console.log('>', stringifiedResponse)
+        // const parsedResponse = JSON.parse(stringifiedResponse);
+      //   if(parsedResponse.success && parsedResponse.data?.length) {
+      //     const parsedCompanies = parsedResponse.data.map(({
+      //       symbol,
+      //       bid,
+      //       logoUrl,
+      //     }) => ({
+      //       symbol,
+      //       bid,
+      //       logoUrl,
+      //     }))
+
+      //     console.log('parsedResponse:', JSON.stringify(parsedCompanies));
+      //   }
+      // } catch(error) {
+      //   console.log('error:', error);
+      // }
       // let dividends = 0;
       // let stocks = 0;
       // let spinOffs = 0;
@@ -130,15 +107,7 @@ readRemoteFile(
       // console.log('SpinOffs:', spinOffs);
       // console.log('FreeFundsInterest:', freeFundsInterest);
       // console.log('FreeFundsInterestTax:', freeFundsInterestTax);
-    }
-  }
-);  
-      }}>
-        <Text>click</Text>
-        </TouchableOpacity>
-    </ParallaxScrollView>
-  );
-}
+
 
 const styles = StyleSheet.create({
   titleContainer: {
