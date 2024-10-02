@@ -1,13 +1,17 @@
-import { Text, TouchableOpacity, Image, StyleSheet, Platform } from 'react-native';
+import {ScrollView, Text, TouchableOpacity, Image, StyleSheet, Platform, View } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
-
+import { FlashList } from "@shopify/flash-list";
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 
 import { readRemoteFile } from 'react-native-csv';
 import { getCompanies, getCompaniesInBatches } from '@/services/companies';
-import {chunkList, uploadCsv, parseCompanies, parseTransactions, validateColumnTitles} from '@/common/utils';
+import {chunkList, uploadCsv, parseCompanies, parseTransactions, validateColumnTitles, parseUserData} from '@/common/utils';
 import { useMMKVString } from 'react-native-mmkv';
 import {store} from '@/config/store';
+import {companies} from '@/__mocks__';
+import CompanyCard from '@/common/components/company-card/company-card';
+import colors from '@/common/colors';
+import { useState } from 'react';
 
 
 // Total dividends received
@@ -18,7 +22,8 @@ import {store} from '@/config/store';
 // Total amount of free funds interests tax paid
 
 export default function HomeScreen() {
-  const [username, setUsername] = useMMKVString('transactions')
+  // const [username, setUsername] = useMMKVString('transactions')
+  const [cmp, setCmp] = useState([])
   // console.log('>>', username)
 
   const handleOnUploadCsv = () => {
@@ -28,7 +33,18 @@ export default function HomeScreen() {
   const parseResponse = response => {
     if(response.data.length) {
       if(validateColumnTitles(response.data[0])) {
-      console.log('transactions', JSON.stringify(parseTransactions(response.data)));
+        // console.log(JSON.stringify(response));
+        const parsedTransactions = parseTransactions(response.data);
+        // const tickers = Object.keys(parsedTransactions.companies)
+        // getCompaniesInBatches(tickers);
+        const parsedUserData = parseUserData({
+          transactions: parsedTransactions,
+          companies: companies,
+        });
+console.log(Object.values(parsedUserData))
+        setCmp(Object.values(parsedUserData))
+        // console.log('parsedUserData:', JSON.stringify(parsedUserData));
+
       // store.set('transactions', JSON.stringify(response));
       } else {
         console.log('Invalid column titles. Please make sure the file has the correct format.');
@@ -39,18 +55,28 @@ export default function HomeScreen() {
   }
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
+    <View style={{
+      marginTop: 100,
+      backgroundColor: colors.background,
+      // padding: 16,
+      gap: 16,
+      flex: 1
+    }}>
+
       <TouchableOpacity onPress={handleOnUploadCsv}>
         <Text>click</Text>
-        </TouchableOpacity>
-    </ParallaxScrollView>
+      </TouchableOpacity>
+    <FlashList
+    contentContainerStyle={{
+      padding: 16,
+    }}
+      data={cmp}
+      renderItem={({ item }) => <View style={{
+        marginBottom: 16
+      }}><CompanyCard {...item.summary}/></View>}
+      estimatedItemSize={200}
+    />        
+    </View>
   );
 }
       // console.log('Results:', results)

@@ -1,6 +1,7 @@
 import { defaultCompaniesState } from '@/constants/states';
 import { Company, CompanyData } from '@/types/companies';
 import {OperationType, SummaryType, TransactionType} from '@/types/transactions';
+import { parse } from '@babel/core';
 
 /**
  * Parses a message for stocks and returns the amount.
@@ -17,6 +18,39 @@ const parseMessageForStocks = (message: string) => {
     const amount = splitBySpace[splitBySpace.length - 1];
 
     return amount;
+}
+
+type CalculateMarketSummaryPropsType = {
+    summary: SummaryType;
+    company: CompanyData;
+}
+
+/**
+ * Calculates the market summary for a given company.
+ *
+ * @param {Object} params - The parameters for the calculation.
+ * @param {Object} params.summary - The summary object containing stock information.
+ * @param {Object} params.company - The company object containing bid information.
+ * @returns {Object} The updated summary object with calculated market value and profit or loss.
+ */
+const calculateMarketSummary = ({
+    summary,
+    company,
+}: CalculateMarketSummaryPropsType) => {
+    const marketValue = company.bid * summary.stocks;
+    const profitOrLoss = marketValue - summary.boughtValue;
+    const profitOrLossPercentage = (summary.boughtValue / marketValue) * 100;
+
+    return {
+        ...summary,
+        marketValue: marketValue?.toFixed(2),
+        profitOrLoss: profitOrLoss?.toFixed(2),
+        dividendYield: company.dividendYield?.toFixed(2),
+        profitOrLossPercentage: profitOrLossPercentage?.toFixed(2),
+        companyLogo: company.logoUrl || company.companyLogoUrl,
+        companyName: company.shortName || company.longName,
+        symbol: company.symbol
+    }
 }
 
 type CalculateSummaryPropsType = {
@@ -89,16 +123,17 @@ const parseTransactions = (transactions: TransactionType[]) => {
     if(key === 0) return parsedTransactions;
 
     const [id, type, time, symbol, comment, amount] = transaction as TransactionType;
-    const newCompanies = Boolean(symbol) ? {
+    const companySymbol = symbol?.split('.')?.[0];
+    const newCompanies = Boolean(companySymbol) ? {
       ...parsedTransactions.companies,
-      [symbol]: {
+      [companySymbol]: {
         summary: calculateSummary({
-            summary: parsedTransactions.companies[symbol]?.summary || defaultCompaniesState.summary,
+            summary: parsedTransactions.companies[companySymbol]?.summary || defaultCompaniesState.summary,
             type,
             amount,
             comment
         }),
-        transactions: [...(parsedTransactions.companies[symbol]?.transactions || []), transaction]
+        transactions: [...(parsedTransactions.companies[companySymbol]?.transactions || []), transaction]
       },
     } : parsedTransactions.companies;
 
@@ -116,17 +151,46 @@ const parseTransactions = (transactions: TransactionType[]) => {
  * @returns {CompanyData[]} An array of CompanyData objects containing the symbol, bid, and logoUrl fields.
  */
 const parseCompanies = (companies: Company[]): CompanyData[] => 
-    companies.map(({symbol, bid, logoUrl}) => ({
+    companies.map(({symbol, bid, logoUrl, dividendYield}) => ({
         symbol,
         bid,
         logoUrl,
+        dividendYield
     }))
 
-const parseUserData = (transactions, companies) => {
-
+type ParseUserDataPropsType = {
+    transactions: ParsedTransactionsType;
+    companies: CompanyData[];
 }
+
+/**
+ * Parses user data by reducing the companies array and calculating the market summary for each company.
+ *
+ * @param {ParseUserDataPropsType} param0 - The input object containing transactions and companies.
+ * @param {Array} param0.transactions - The transactions data.
+ * @param {Array} param0.companies - The companies data.
+ * @returns {Object} An object where each key is a company symbol and the value is the company's data with an updated summary.
+ */
+const parseUserData = ({
+    transactions,
+    companies
+}: ParseUserDataPropsType) => companies.reduce((acc, company) => {
+    const currentCompany = transactions.companies[company.symbol];
+
+    return {
+        ...acc,
+        [company.symbol]: {
+            ...currentCompany,
+            summary: calculateMarketSummary({
+                summary: currentCompany.summary,
+                company
+            })
+        }
+    }
+}, {})
 
 export {
     parseTransactions,
-    parseCompanies
+    parseCompanies,
+    parseUserData
 };

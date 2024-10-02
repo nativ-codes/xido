@@ -11,6 +11,7 @@ type EnvType = {
 }
 
 const getCompanies = async (symbols: string) => {
+    console.log('symbols', symbols)
     const {
         EXPO_PUBLIC_API_URL,
         EXPO_PUBLIC_HEADER_KEY_KEY,
@@ -34,22 +35,19 @@ const getCompanies = async (symbols: string) => {
   }
 }
 
-
-
-const getCompaniesInBatches = async (companies: Company[]): Promise<CompanyData[]> => {
-    const companyTickers = Object.keys(companies).map(company => company.split('.')?.[0]);
-    const batches = chunkList(companyTickers, maxCompaniesPerBatch);
+const getCompaniesInBatches = async (tickers: Array<string>): Promise<CompanyData[]> => {
+    const batches = chunkList(tickers, maxCompaniesPerBatch);
     const batchesPromises = batches.map(batch => getCompanies(batch.join(',')))
     const batchesResponse = await Promise.all(batchesPromises);
 
     return batchesResponse.reduce((acc, batchResponse) => {
         if(batchResponse.success && batchResponse.data?.length) {
-            return [...acc, ...parseCompaniesData(batchResponse.data)];
+            return [...acc, ...batchResponse.data];
         } else {
             console.error('Error fetching companies:', batchResponse);
             return acc;
         }
-    });
+    }, []);
 }
 
 export {

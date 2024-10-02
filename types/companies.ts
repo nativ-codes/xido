@@ -164,4 +164,8 @@ export type CompanyData = {
     symbol: string;
     bid: number;
     logoUrl?: string | null | undefined;
+    companyLogoUrl?: string | null | undefined;
+    shortName?: string;
+    longName?: string;
+    dividendYield: number;
 }
