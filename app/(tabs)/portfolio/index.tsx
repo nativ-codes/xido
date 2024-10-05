@@ -2,6 +2,7 @@ import {ScrollView, TextInput, TouchableOpacity, Image, StyleSheet, Platform, Vi
 import * as DocumentPicker from 'expo-document-picker';
 import { FlashList } from "@shopify/flash-list";
 import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import {
   SafeAreaView,
@@ -54,9 +55,8 @@ const sortBy = [
   },
 ]
 
-const keyExtractor = (item: SortByPropTypes) => item?.label;
-
-export default function HomeScreen() {
+function Portfolio() {
+  const router = useRouter();
   const {bottom} = useSafeAreaInsets();
   // const [username, setUsername] = useMMKVString('transactions')
   const userData = useRef([]);
@@ -111,13 +111,17 @@ export default function HomeScreen() {
         setFilteredUserData(userData.current)
         // console.log('parsedUserData:', JSON.stringify(parsedUserData));
 
-      // store.set('userData', JSON.stringify(parsedUserData));
+      store.set('userData', JSON.stringify(parsedUserData));
       } else {
         console.log('Invalid column titles. Please make sure the file has the correct format.');
       }
     } else {
       console.log('Unable to parse the file. Please make sure the file has the correct format.');
     }
+  }
+
+  const handleOnCompanyPress = (ticker: string) => () => {
+    router.push(`/company?ticker=${ticker}`)
   }
 
   return (
@@ -177,9 +181,9 @@ export default function HomeScreen() {
       padding: 16,
     }}
       data={filteredUserData}
-      renderItem={({ item }) => <View style={{
+      renderItem={({ item }) => <TouchableOpacity onPress={handleOnCompanyPress(item.summary.symbol)} style={{
         marginBottom: 16
-      }}><CompanyCard {...item.summary}/></View>}
+      }}><CompanyCard {...item.summary}/></TouchableOpacity>}
       estimatedItemSize={200}
     />
     </View>
@@ -195,3 +199,4 @@ export default function HomeScreen() {
   );
 }
 
+export default Portfolio;
