@@ -6,25 +6,34 @@ import colors from '@/common/colors'
 
 type TagPropTypes = {
     value: string,
-    variant: keyof typeof variants
+    variant: TagVariants
 }
 
 function Tag({
     value,
-    variant = 'primary'
+    variant
 }: TagPropTypes) {
+    const backgroundColor = variants[variant || TagVariants.PRIMARY]
+
     return (
         <View style={StyleSheet.compose(styles.wrapper, {
-            backgroundColor: variants[variant]
+            backgroundColor
         })}>
-            <Text isBold variant="h5" color={colors.secondaryText}>{value.toUpperCase()}</Text>
+            <Text isBold variant={Text.variants.H5} color={colors.secondaryText}>{value.toUpperCase()}</Text>
         </View>
     )
+}
+
+enum TagVariants {
+    PRIMARY = 'primary',
+    SECONDARY = 'secondary'
 }
 
 const variants = {
     primary: colors.primarySurface,
     secondary: colors.secondarySurface
 }
+
+Tag.variants = TagVariants;
 
 export default Tag;

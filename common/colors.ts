@@ -1,5 +1,6 @@
 const colors = {
     primary: '#0EA772',
+    primaryLight: '#E7FAF4',
     error: '#EF271B',
     background: '#F7F7F7',
     surface: '#FFFFFF',

@@ -1,64 +1,58 @@
 import React from 'react';
 import {View} from 'react-native';
-import Text from '../text/text';
-import Tag from '../tag/tag';
-import Avatar from '../avatar/avatar';
+import Text from '@/common/components/text/text';
+import Tag from '@/common/components/tag/tag';
+import Avatar from '@/common/components/avatar/avatar';
 import Row from '@/common/layouts/row/row';
 
-import colors from '@/common/colors';
+import { currencies } from '@/constants';
 import styles from './company-card.styles';
+import { CalculateMarketSummaryReturnType } from '@/types/companies';
+import ListItem from '@/common/components/list-item/list-item';
+import { ListItemVariants } from '@/types/components';
 
 function CompanyCard({
     companyLogo,
-    dividendYield = 4.3,
-    marketValue = 1848.96,
-    profitOrLoss = 2000,
-    profitOrLossPercentage = 8.69,
-    symbol = 'AAPL',
-    companyName = 'Apple Inc.',
-    weight = '5.00%',
-}) {
-
+    currency,
+    dividendYield,
+    marketValue,
+    profitOrLoss,
+    profitOrLossPercentage,
+    symbol,
+    companyName,
+    weight,
+}: CalculateMarketSummaryReturnType) {
     return (
-        <View style={{
-            padding: 16,
-            borderRadius: 16,
-            backgroundColor: colors.surface,
-        }}>
+        <View style={styles.wrapper}>
             <Row
-                style={{marginBottom: 16}}
-                left={Boolean(companyLogo) ? <Avatar url={companyLogo} /> : <View style={styles.emptyAvatar}/>}
+                style={styles.header}
+                left={<Avatar url={companyLogo} />}
                 center={
                     <View style={styles.center}>
-                        <Tag value={symbol} variant="primary" />
-                        <View style={{flexGrow: 1, flexShrink: 1}}>
-                        <Text variant="h3" numberOfLines={1}>{companyName}</Text>
-                            </View>
+                        <Tag value={symbol} variant={Tag.variants.PRIMARY} />
+                        <View style={styles.companyName}>
+                            <Text variant={Text.variants.H3} numberOfLines={1}>{companyName}</Text>
+                        </View>
                     </View>
                 }
-                right={<Tag value={weight} variant="secondary" />}
             />
-            <Row
-                style={{
-                    marginVertical: 8
-                }}
-                left={<Text variant="h4" color={colors.secondaryText}>Average dividend yield</Text>}
-                right={<Text isBold variant="h2" color={colors.primaryText}>{dividendYield}</Text>}
-            />     
-            <Row
-                style={{
-                    marginVertical: 8
-                }}
-                left={<Text variant="h4" color={colors.secondaryText}>Market value</Text>}
-                right={<Text isBold variant="h2" color={colors.primaryText}>{marketValue}</Text>}
-            />  
-            <Row
-                style={{
-                    marginVertical: 8
-                }}
-                left={<Text variant="h4" color={colors.secondaryText}>Profit/Loss</Text>}
-                right={<Text isBold variant="h2" color={profitOrLoss > 0 ? colors.primary : colors.error}>{`${profitOrLoss} (${profitOrLossPercentage})`}</Text>}
-            />                                 
+            <View style={styles.weight}>
+                <Text isBold variant={Text.variants.H6}>{`${weight}%`}</Text>
+            </View>
+
+            {Boolean(dividendYield) && <ListItem
+                leftText="Dividend yield"
+                rightText={`${dividendYield}%`}
+            />}            
+            <ListItem
+                leftText="Market value"
+                rightText={`${currencies[currency]}${marketValue}`}
+            />
+            <ListItem
+                leftText="Profit/Loss"
+                rightText={`${currencies[currency]}${profitOrLoss} (${profitOrLossPercentage}%)`}
+                variant={Number(profitOrLoss) > 0 ? ListItemVariants.PROFIT : ListItemVariants.LOSS}
+            />
         </View>
     )
 }

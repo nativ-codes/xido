@@ -1,7 +1,6 @@
 import { defaultCompaniesState } from '@/constants/states';
-import { Company, CompanyData } from '@/types/companies';
+import { CalculateMarketSummaryReturnType, Company, CompanyData } from '@/types/companies';
 import {OperationType, SummaryType, TransactionType} from '@/types/transactions';
-import { parse } from '@babel/core';
 
 /**
  * Parses a message for stocks and returns the amount.
@@ -23,6 +22,7 @@ const parseMessageForStocks = (message: string) => {
 type CalculateMarketSummaryPropsType = {
     summary: SummaryType;
     company: CompanyData;
+    totalPortfolioValue: number;
 }
 
 /**
@@ -36,20 +36,22 @@ type CalculateMarketSummaryPropsType = {
 const calculateMarketSummary = ({
     summary,
     company,
-}: CalculateMarketSummaryPropsType) => {
+    totalPortfolioValue
+}: CalculateMarketSummaryPropsType): CalculateMarketSummaryReturnType => {
     const marketValue = company.bid * summary.stocks;
-    const profitOrLoss = marketValue - summary.boughtValue;
-    const profitOrLossPercentage = (summary.boughtValue / marketValue) * 100;
+    const profitOrLoss = marketValue - Math.abs(summary.boughtValue);
+    const profitOrLossPercentage = (profitOrLoss / Math.abs(summary.boughtValue)) * 100;
 
     return {
-        ...summary,
         marketValue: marketValue?.toFixed(2),
         profitOrLoss: profitOrLoss?.toFixed(2),
         dividendYield: company.dividendYield?.toFixed(2),
         profitOrLossPercentage: profitOrLossPercentage?.toFixed(2),
+        currency: company.currency,
         companyLogo: company.logoUrl || company.companyLogoUrl,
         companyName: company.shortName || company.longName,
-        symbol: company.symbol
+        symbol: company.symbol,
+        weight: ((marketValue / totalPortfolioValue) * 100).toFixed(2)
     }
 }
 
@@ -151,11 +153,12 @@ const parseTransactions = (transactions: TransactionType[]) => {
  * @returns {CompanyData[]} An array of CompanyData objects containing the symbol, bid, and logoUrl fields.
  */
 const parseCompanies = (companies: Company[]): CompanyData[] => 
-    companies.map(({symbol, bid, logoUrl, dividendYield}) => ({
+    companies.map(({symbol, bid, logoUrl, dividendYield, currency}) => ({
         symbol,
         bid,
         logoUrl,
-        dividendYield
+        dividendYield,
+        currency
     }))
 
 type ParseUserDataPropsType = {
@@ -174,20 +177,28 @@ type ParseUserDataPropsType = {
 const parseUserData = ({
     transactions,
     companies
-}: ParseUserDataPropsType) => companies.reduce((acc, company) => {
-    const currentCompany = transactions.companies[company.symbol];
+}: ParseUserDataPropsType) => {
+    const totalPortfolioValue = companies.reduce((acc, company) => {
+        const currentCompany = transactions.companies[company.symbol];
+        return acc + (company.bid * currentCompany.summary.stocks);
+    }, 0);
 
-    return {
-        ...acc,
-        [company.symbol]: {
-            ...currentCompany,
-            summary: calculateMarketSummary({
-                summary: currentCompany.summary,
-                company
-            })
+    return companies.reduce((acc, company) => {
+        const currentCompany = transactions.companies[company.symbol];
+
+        return {
+            ...acc,
+            [company.symbol]: {
+                ...currentCompany,
+                summary: calculateMarketSummary({
+                    totalPortfolioValue,
+                    summary: currentCompany.summary,
+                    company
+                })
+            }
         }
-    }
-}, {})
+    }, {})
+}
 
 export {
     parseTransactions,

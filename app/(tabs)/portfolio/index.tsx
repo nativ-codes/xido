@@ -21,7 +21,9 @@ import colors from '@/common/colors';
 import { useRef, useState } from 'react';
 import Modal from "react-native-modal";
 import Text from '@/common/components/text/text';
-import {Selection} from '@/common/components';
+import {Button} from '@/common/components';
+import SortByBottomSheet from '@/containers/portfolio/sort-by-bottom-sheet/sort-by-bottom-sheet';
+import { SortByPropTypes } from '@/types/components';
 
 // Total dividends received
 // Total amount of stocks bought
@@ -52,12 +54,7 @@ const sortBy = [
   },
 ]
 
-type SortByProps = {
-  label: string;
-  key: string;
-}
-
-const keyExtractor = (item: SortByProps) => item?.label;
+const keyExtractor = (item: SortByPropTypes) => item?.label;
 
 export default function HomeScreen() {
   const {bottom} = useSafeAreaInsets();
@@ -66,7 +63,7 @@ export default function HomeScreen() {
   // const [userData, setUserData] = useState([]);
   const [filteredUserData, setFilteredUserData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [sortByValue, setSortByValue] = useState<SortByProps>();
+  const [sortByValue, setSortByValue] = useState<SortByPropTypes>();
 
   const handleOnUploadCsv = () => {
     uploadCsv(parseResponse)
@@ -124,7 +121,8 @@ export default function HomeScreen() {
   }
 
   return (
-    <>
+      <SafeAreaView style={{flex: 1}}>
+
     <View style={{
       marginTop: 100,
       backgroundColor: colors.background,
@@ -184,53 +182,16 @@ export default function HomeScreen() {
       }}><CompanyCard {...item.summary}/></View>}
       estimatedItemSize={200}
     />
-
     </View>
-      <Modal isVisible={isModalVisible} swipeDirection="down" onBackdropPress={hideModal} style={{
-        margin: 0,
-        justifyContent: 'flex-end'
-      }}>
-          <View style={{
-            backgroundColor: colors.background,
-            padding: 16,
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 16,
-            gap: 16,
-            paddingBottom: bottom
-          }}>
-          <Text variant="h3" isBold>Sort by</Text>
-          <View style={{
-            gap: 8
-          }}>
-            <Selection 
-              options={sortBy}
-              onPress={setSortByValue}
-              selected={sortByValue}
-              Element={Selection.SelectableListItem}
-              keyExtractor={keyExtractor}
-              labelExtractor={keyExtractor}
-            />
-          </View>
-          <View>
-          <TouchableOpacity onPress={handleOnApply} style={{
-            backgroundColor: colors.primary,
-            padding: 16,
-            borderRadius: 32,
-            alignItems: 'center'
-          }}>
-            <Text variant="h4" isBold color={colors.background}>Apply</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleOnReset} style={{
-            padding: 16,
-            borderRadius: 32,
-            alignItems: 'center'
-          }}>
-            <Text variant="h4" isBold color={colors.primary}>Reset</Text>
-          </TouchableOpacity>          
-          </View>
-          </View>
-      </Modal>
-    </>
+    <SortByBottomSheet
+        onReset={handleOnReset}
+        onApply={handleOnApply}
+        setSortByValue={setSortByValue}
+        sortByValue={sortByValue}
+        isModalVisible={isModalVisible}
+        hideModal={hideModal}
+    />
+</SafeAreaView>
   );
 }
 
