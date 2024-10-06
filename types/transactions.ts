@@ -12,7 +12,7 @@ export enum OperationType {
 export type SummaryType = {
     dividends: number;
     withholdingTax: number;
-    stocks: number;
+    shares: number;
     spinOffs: number;
     freeFundsInterest: number;
     freeFundsInterestTax: number;

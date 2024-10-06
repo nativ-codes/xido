@@ -172,13 +172,16 @@ export type CompanyData = {
 }
 
 export type CalculateMarketSummaryReturnType = {
-    marketValue: string;
-    profitOrLoss: string;
-    dividendYield: string;
-    profitOrLossPercentage: string;
+    bid: number;
+    marketValue: number;
+    profitOrLoss: number;
+    dividendYield: number;
+    profitOrLossPercentage: number;
     currency: string;
     companyLogo: string | null | undefined;
     companyName: string | undefined;
     symbol: string;
-    weight: string;
+    weight: number;
+    boughtValue: number;
+    shares: number;
 }

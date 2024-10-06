@@ -1,3 +1,5 @@
+import { currencies } from "@/constants";
+
 /**
  * Splits an array into chunks of a specified size.
  *
@@ -15,6 +17,29 @@ const chunkList = (list: Array<any>, chunkSize: number) => {
   return result;
 };
 
+/**
+ * Formats a numeric value as a currency string.
+ *
+ * @param value - The numeric value to format.
+ * @param currency - The currency type to format the value in.
+ * @returns A string representing the formatted currency value.
+ */
+const formatValue = (value: number, currency: typeof currencies) => {
+  return `${currencies[currency]}${value.toFixed(2)}`;
+}
+
+/**
+ * Formats a numeric value as a percentage string with two decimal places.
+ *
+ * @param value - The numeric value to format.
+ * @returns The formatted percentage string.
+ */
+const formatPercentValue = (value: number) => {
+  return `${value.toFixed(2)}%`;
+}
+
 export {
-    chunkList
+    chunkList,
+    formatValue,
+    formatPercentValue
 };

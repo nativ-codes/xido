@@ -51,7 +51,7 @@ function CompanyCard({
             <ListItem
                 leftText="Profit/Loss"
                 rightText={`${currencies[currency]}${profitOrLoss} (${profitOrLossPercentage}%)`}
-                variant={Number(profitOrLoss) > 0 ? ListItemVariants.PROFIT : ListItemVariants.LOSS}
+                variant={Number(profitOrLoss) > 0 ? ListItem.variants.PROFIT : ListItem.variants.LOSS}
             />
         </View>
     )

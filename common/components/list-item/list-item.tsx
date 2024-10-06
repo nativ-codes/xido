@@ -33,4 +33,6 @@ const colorMapper = {
     [ListItemVariants.DEFAULT]: colors.secondaryText,
 }
 
+ListItem.variants = ListItemVariants;
+
 export default ListItem;

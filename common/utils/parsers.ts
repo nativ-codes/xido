@@ -2,21 +2,67 @@ import { defaultCompaniesState } from '@/constants/states';
 import { CalculateMarketSummaryReturnType, Company, CompanyData } from '@/types/companies';
 import {OperationType, SummaryType, TransactionType} from '@/types/transactions';
 
+import {getIsOlderThanOneYear} from './dates';
+
+const stats = {
+  maxShare: 0,
+  minShare: Number.MAX_SAFE_INTEGER,
+  dividendsLastYear: 0,
+  dividendsAllTime: 0,
+}
+
+const parseTransactionsForCompany = (transactions: TransactionType[]) => 
+  transactions.reduce((acc, transaction) => {
+    const [id, type, time, symbol, comment, amount] = transaction;
+
+    if(type === OperationType.StocksEtfPurchase) {
+      const stock = parseMessageForShares(comment);
+
+      return {
+        ...acc,
+        maxShare: Math.max(acc.maxShare, parseFloat(stock.value)),
+        minShare: Math.min(acc.minShare, parseFloat(stock.value)),
+      }
+    } else if (type === OperationType.Dividend) {
+      if(getIsOlderThanOneYear(time)) {
+      return {
+        ...acc,
+        dividendsAllTime: acc.dividendsAllTime + parseFloat(amount)
+      }
+      } else {
+      return {
+        ...acc,
+        dividendsLastYear: acc.dividendsLastYear + parseFloat(amount),
+        dividendsAllTime: acc.dividendsAllTime + parseFloat(amount)
+      }
+      }
+
+    } else {
+      return acc;
+    }
+}, stats);
+
+
 /**
- * Parses a message for stocks and returns the amount.
+ * Parses a message string to extract stock trading information.
  *
- * @param {string} message - The message to parse.
- * @returns {string} - The amount of stocks in the message.
+ * The expected format of the message is 'OPEN BUY <amount> @ <value>'.
+ * For example: 'OPEN BUY 10 @ 114.51'.
+ *
+ * @param {string} message - The message string to parse.
+ * @returns {{ amount: string, value: string }} An object containing the extracted amount and value.
  */
-const parseMessageForStocks = (message: string) => {
+const parseMessageForShares = (message: string) => {
     // 'OPEN BUY 10 @ 114.51'
     const splitByAt = message.split('@');
     // ['OPEN BUY 10 ', ' 114.51']
     const splitBySpace = splitByAt[0].trim().split(' ');
     // ['OPEN', 'BUY', '10']
     const amount = splitBySpace[splitBySpace.length - 1];
+    // ['OPEN BUY 10 ', ' 114.51']
+    const value = splitByAt[splitByAt.length - 1].trim();
 
-    return amount;
+    return {amount, value};
 }
 
 type CalculateMarketSummaryPropsType = {
@@ -38,20 +84,23 @@ const calculateMarketSummary = ({
     company,
     totalPortfolioValue
 }: CalculateMarketSummaryPropsType): CalculateMarketSummaryReturnType => {
-    const marketValue = company.bid * summary.stocks;
+    const marketValue = company.bid * summary.shares;
     const profitOrLoss = marketValue - Math.abs(summary.boughtValue);
     const profitOrLossPercentage = (profitOrLoss / Math.abs(summary.boughtValue)) * 100;
 
     return {
-        marketValue: marketValue?.toFixed(2),
-        profitOrLoss: profitOrLoss?.toFixed(2),
-        dividendYield: company.dividendYield?.toFixed(2),
-        profitOrLossPercentage: profitOrLossPercentage?.toFixed(2),
+        bid: company.bid,
+        shares: summary.shares,
+        boughtValue: Math.abs(summary.boughtValue),
+        marketValue: marketValue,
+        profitOrLoss: profitOrLoss,
+        dividendYield: company.dividendYield,
+        profitOrLossPercentage: profitOrLossPercentage,
         currency: company.currency,
         companyLogo: company.logoUrl || company.companyLogoUrl,
         companyName: company.shortName || company.longName,
         symbol: company.symbol,
-        weight: ((marketValue / totalPortfolioValue) * 100).toFixed(2)
+        weight: ((marketValue / totalPortfolioValue) * 100)
     }
 }
 
@@ -83,11 +132,11 @@ const calculateSummary = ({summary, type, amount, comment}: CalculateSummaryProp
       break;      
     case OperationType.StocksEtfPurchase:
       newSummary.boughtValue += parseFloat(amount);
-      newSummary.stocks += parseFloat(parseMessageForStocks(comment));
+      newSummary.shares += parseFloat(parseMessageForShares(comment).amount);
       break;
     case OperationType.StocksEtfSale:
       newSummary.boughtValue -= parseFloat(amount);
-      newSummary.stocks -= parseFloat(parseMessageForStocks(comment));
+      newSummary.shares -= parseFloat(parseMessageForShares(comment).amount);
       break;      
     case OperationType.SpinOff:
       newSummary.spinOffs += parseFloat(amount);
@@ -180,7 +229,7 @@ const parseUserData = ({
 }: ParseUserDataPropsType) => {
     const totalPortfolioValue = companies.reduce((acc, company) => {
         const currentCompany = transactions.companies[company.symbol];
-        return acc + (company.bid * currentCompany.summary.stocks);
+        return acc + (company.bid * currentCompany.summary.shares);
     }, 0);
 
     return companies.reduce((acc, company) => {
@@ -201,6 +250,7 @@ const parseUserData = ({
 }
 
 export {
+    parseTransactionsForCompany,
     parseTransactions,
     parseCompanies,
     parseUserData

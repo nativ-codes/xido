@@ -6,7 +6,7 @@ const colors = {
     surface: '#FFFFFF',
     primaryText: '#000000',
     secondaryText: '#424242', 
-    primarySurface: '#EEF4FF',
+    primarySurface: '#246BFD14',
     secondarySurface: '#F0F0F0',
 }
 

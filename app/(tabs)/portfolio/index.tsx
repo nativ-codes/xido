@@ -16,6 +16,7 @@ import { getCompanies, getCompaniesInBatches } from '@/services/companies';
 import {chunkList, uploadCsv, parseCompanies, parseTransactions, validateColumnTitles, parseUserData} from '@/common/utils';
 import { useMMKVString } from 'react-native-mmkv';
 import {store} from '@/config/store';
+import {getUserData} from '@/config/store/slices/user-data';
 import {companies} from '@/__mocks__';
 import CompanyCard from '@/common/components/company-card/company-card';
 import colors from '@/common/colors';
@@ -33,35 +34,13 @@ import { SortByPropTypes } from '@/types/components';
 // Total amount of free funds interests received
 // Total amount of free funds interests tax paid
 
-// const storedUserData = store.getString('userData');
-// const parsedStoredUserData = storedUserData ? JSON.parse(storedUserData) : {};
-// const parsedStoredUserDataList = Object.values(parsedStoredUserData);
-const sortBy = [
-  {
-    label: 'Weight',
-    key: 'weight'
-  },
-  {
-    label: 'Market value',
-    key: 'marketValue'
-  },
-  {
-    label: 'Dividend yield',
-    key: 'dividendYield'
-  },
-  {
-    label: 'Profit/Loss',
-    key: 'profitOrLoss'
-  },
-]
-
 function Portfolio() {
   const router = useRouter();
   const {bottom} = useSafeAreaInsets();
   // const [username, setUsername] = useMMKVString('transactions')
-  const userData = useRef([]);
+  const userData = useRef(Object.values(getUserData()));
   // const [userData, setUserData] = useState([]);
-  const [filteredUserData, setFilteredUserData] = useState([]);
+  const [filteredUserData, setFilteredUserData] = useState(userData.current);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [sortByValue, setSortByValue] = useState<SortByPropTypes>();
 
@@ -73,7 +52,10 @@ function Portfolio() {
   const hideModal = () => setIsModalVisible(false);
 
   const handleOnChangeText = (text: string) => {
-    setFilteredUserData(userData.current.filter(item => item.summary.companyName.toLowerCase().includes(text.toLowerCase())))
+    setFilteredUserData(userData.current.filter(item => 
+      item.summary.companyName.toLowerCase().includes(text.toLowerCase()) ||
+      item.summary.symbol.toLowerCase().includes(text.toLowerCase())
+    ))
   }
 
   const handleOnSortBy = () => {
@@ -120,8 +102,8 @@ function Portfolio() {
     }
   }
 
-  const handleOnCompanyPress = (ticker: string) => () => {
-    router.push(`/company?ticker=${ticker}`)
+  const handleOnCompanyPress = (symbol: string) => () => {
+    router.push(`/company?symbol=${symbol}`)
   }
 
   return (
