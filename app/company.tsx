@@ -13,7 +13,8 @@ import {
     formatValue,
     formatPercentValue, parseTransactionsForCompany,
     parseTransactionsForExpectedDividends,
-    getMonthByIndex
+    getMonthByIndex,
+    parseTransactionsToDisplay
 } from '@/common/utils';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 
@@ -52,7 +53,8 @@ function Company() {
     const marketVsMinSharePercentage = (marketVsMinShare / minShare) * 100;
     const marketVsMaxShare = bid - maxShare;
     const marketVsMaxSharePercentage = (marketVsMaxShare / maxShare) * 100;
-
+    const transactionsToDisplay = parseTransactionsToDisplay(transactions);
+    console.log('transactionsToDisplay', transactionsToDisplay)
     const renderSectionTitle = ({
         title,
         onInfo
@@ -200,6 +202,16 @@ function Company() {
                             key={period}
                             leftText={period}
                             rightText={formatValue(expectedDividends.value * shares, currency)}
+                        />))}
+                        <Divider />
+                        {renderSectionTitle({
+                            title: 'Latest transactions',
+                            onInfo: () => console.log('info')
+                        })}
+                        {transactionsToDisplay.map(({ date, type, amount }) => (<ListItem
+                            key={`${date} ${type} ${amount}`}
+                            leftText={`${date}\t${type}`}
+                            rightText={formatValue(amount, currency)}
                         />))}
                     </View>
                 </View>

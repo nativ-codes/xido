@@ -10,13 +10,23 @@ export enum OperationType {
 }
 
 export type SummaryType = {
-    dividends: number;
-    withholdingTax: number;
-    shares: number;
-    spinOffs: number;
-    freeFundsInterest: number;
-    freeFundsInterestTax: number;
-    boughtValue: number;
+  dividends: number;
+  withholdingTax: number;
+  shares: number;
+  spinOffs: number;
+  freeFundsInterest: number;
+  freeFundsInterestTax: number;
+  boughtValue: number;
 }
 
 export type TransactionType = [string, OperationType, string, string, string, string];
+
+export type TransactionsToDisplayMapperPropTypes = {
+  [key: string]: TransactionsToDisplayPropTypes
+}
+
+export type TransactionsToDisplayPropTypes = {
+  date: string;
+  type: OperationType;
+  amount: number;
+}

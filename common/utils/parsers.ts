@@ -1,6 +1,6 @@
 import { defaultCompaniesState } from '@/constants/states';
 import { CalculateMarketSummaryReturnType, Company, CompanyData } from '@/types/companies';
-import { OperationType, SummaryType, TransactionType } from '@/types/transactions';
+import { OperationType, SummaryType, TransactionsToDisplayMapperPropTypes, TransactionsToDisplayPropTypes, TransactionType } from '@/types/transactions';
 
 import { getIsOlderThanOneYear, getMonthByIndex, parseTransactionDate } from './dates';
 
@@ -223,6 +223,40 @@ const parseTransactions = (transactions: TransactionType[]) => {
 }
 
 /**
+ * Parses an array of transactions and maps them to a display-friendly format.
+ *
+ * @param {TransactionType[]} transactions - The array of transactions to be parsed.
+ * @returns {TransactionsToDisplayPropTypes[]} An array of transactions formatted for display.
+ *
+ * The function processes each transaction and groups them by date if the transaction type is
+ * Dividend, StocksEtfSale, or StocksEtfPurchase. It sums the amounts for transactions that
+ * occur on the same date.
+ */
+const parseTransactionsToDisplay = (transactions: TransactionType[]): TransactionsToDisplayPropTypes[] => {
+  const transactionsMapper = transactions.reduce<TransactionsToDisplayMapperPropTypes>((acc, transaction) => {
+    const [id, type, time, symbol, comment, amount] = transaction;
+
+    if (type === OperationType.Dividend || type === OperationType.StocksEtfSale || type === OperationType.StocksEtfPurchase) {
+      const date = time.split(' ')[0];
+
+      return {
+        ...acc,
+        [date]: {
+          date,
+          type,
+          // Sum the amount for the same date
+          amount: (acc[date]?.amount || 0) + parseFloat(amount)
+        }
+      };
+    } else {
+      return acc;
+    }
+  }, {});
+
+  return Object.values(transactionsMapper);
+}
+
+/**
  * Parses an array of Company objects and extracts specific fields to create an array of CompanyData objects.
  *
  * @param {Company[]} companies - The array of Company objects to be parsed.
@@ -335,6 +369,7 @@ const parseTransactionsForExpectedDividends = (transactions: TransactionType[]) 
 export {
   parseTransactionsForExpectedDividends,
   parseTransactionsForCompany,
+  parseTransactionsToDisplay,
   parseTransactions,
   parseCompanies,
   parseUserData
