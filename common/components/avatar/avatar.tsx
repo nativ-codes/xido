@@ -1,23 +1,30 @@
-import {StyleSheet, Image, View} from 'react-native';
+import { StyleSheet, Image, View } from 'react-native';
 
+import Text from '@/common/components/text/text';
 import styles from './avatar.styles'
+import colors from '@/common/colors';
 
 type AvatarPropTypes = {
     url: string | null | undefined;
     size?: AvatarSize;
+    placeholder?: string;
 }
 
 function Avatar({
     url,
-    size
+    placeholder,
+    size = AvatarSize.SMALL
 }: AvatarPropTypes) {
     const sizeStyle = sizes[size || AvatarSize.SMALL];
+    const textVariant = size === AvatarSize.SMALL ? Text.variants.H4 : Text.variants.H3;
 
     return Boolean(url) ? (
         <Image
-            source={{uri: url}}
+            source={{ uri: url }}
             style={sizeStyle}
-        />) : (<View style={StyleSheet.compose(styles.emptyAvatar, sizeStyle)}/>)
+        />) : (<View style={StyleSheet.compose(styles.emptyAvatar, sizeStyle)}>
+            <Text variant={textVariant} isBold color={colors.secondaryText}>{placeholder}</Text>
+        </View>)
 }
 
 enum AvatarSize {
