@@ -4,7 +4,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -14,8 +14,8 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    Urbanist: require('../assets/fonts/Urbanist-Regular.ttf'),
-    UrbanistBold: require('../assets/fonts/Urbanist-Bold.ttf'),
+    Urbanist: require('@/assets/fonts/Urbanist-Regular.ttf'),
+    UrbanistBold: require('@/assets/fonts/Urbanist-Bold.ttf'),
   });
 
   useEffect(() => {

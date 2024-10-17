@@ -2,7 +2,14 @@ import { months } from '@/constants';
 
 const getMonthByIndex = (month: number): string => months[month - 1];
 
-const parseTransactionDate = (_date: string) => {
+export type ParseTransactionDateReturnType = {
+    day: number;
+    month: number;
+    year: number;
+    time: string;
+}
+
+const parseTransactionDate = (_date: string): ParseTransactionDateReturnType => {
     // 29.12.2023 13:00
     const [date, time] = _date.split(' ');
     // 29.12.2023

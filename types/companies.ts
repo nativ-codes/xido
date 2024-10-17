@@ -1,3 +1,5 @@
+import { TransactionsToDisplayPropTypes } from "./transactions";
+
 export interface Company {
   language: string;
   region: string;
@@ -161,27 +163,38 @@ export interface PageViews {
 }
 
 export type CompanyData = {
-    symbol: string;
-    bid: number;
-    logoUrl?: string | null | undefined;
-    companyLogoUrl?: string | null | undefined;
-    shortName?: string;
-    longName?: string;
-    dividendYield: number;
-    currency: string;
+  symbol: string;
+  bid: number;
+  logoUrl?: string | null | undefined;
+  companyLogoUrl?: string | null | undefined;
+  shortName?: string;
+  longName?: string;
+  dividendYield: number;
+  currency: string;
 }
 
+export type ParseTransactionsForExpectedDividendsReturnType = {
+  months: string[];
+  value: number;
+};
+
 export type CalculateMarketSummaryReturnType = {
-    bid: number;
-    marketValue: number;
-    profitOrLoss: number;
-    dividendYield: number;
-    profitOrLossPercentage: number;
-    currency: string;
-    companyLogo: string | null | undefined;
-    companyName: string | undefined;
-    symbol: string;
-    weight: number;
-    boughtValue: number;
-    shares: number;
+  bid: number;
+  marketValue: number;
+  profitOrLoss: number;
+  dividendYield: number;
+  profitOrLossPercentage: number;
+  currency: string;
+  companyLogo: string | null | undefined;
+  companyName: string | undefined;
+  symbol: string;
+  weight: number;
+  boughtValue: number;
+  shares: number;
+  maxShare: number;
+  minShare: number;
+  dividendsLastYear: number;
+  dividendsAllTime: number;
+  latestTransactions: TransactionsToDisplayPropTypes[];
+  expectedDividends: ParseTransactionsForExpectedDividendsReturnType
 }

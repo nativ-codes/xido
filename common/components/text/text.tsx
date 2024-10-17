@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text as RNText} from 'react-native';
+import { StyleSheet, Text as RNText } from 'react-native';
 
 type TextPropTypes = {
     children: React.ReactNode,
@@ -44,7 +44,8 @@ const variants = {
         fontSize: 18
     },
     h4: {
-        fontSize: 16
+        fontSize: 16,
+        lineHeight: 24
     },
     h5: {
         fontSize: 14
