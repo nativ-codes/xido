@@ -5,23 +5,27 @@ import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import Text from '@/common/components/text/text';
 import colors from '@/common/colors';
 import styles from './button.styles'
-import { IconProps } from '@expo/vector-icons/build/createIconSet';
+import { noop } from '@/common/utils';
 
 type ButtonPropTypes = {
     onPress: () => void | any,
     label: string,
-    variant?: ButtonVariants
+    variant?: ButtonVariants,
+    isDisabled?: boolean
 }
 
 function Button({
     onPress,
     label,
-    variant
+    variant,
+    isDisabled
 }: ButtonPropTypes) {
     const {backgroundColor, color} = variants[variant || ButtonVariants.PRIMARY]
+    const handleOnPress = isDisabled ? noop : onPress;
+    const opacity = isDisabled ? 0.5 : 1;
 
     return (
-        <TouchableOpacity onPress={onPress} style={StyleSheet.compose(styles.wrapper, {backgroundColor})}>
+        <TouchableOpacity activeOpacity={0.7} onPress={handleOnPress} style={StyleSheet.compose(styles.wrapper, {backgroundColor, opacity})}>
             <Text variant={Text.variants.H4} isBold color={color}>{label}</Text>
         </TouchableOpacity>    
     )
@@ -104,4 +108,5 @@ Button.variants = ButtonVariants;
 Icon.sizes = IconSizes;
 Button.Icon = Icon;
 
+export {sizes};
 export default Button;

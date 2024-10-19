@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SelectableListItem from './selectable-list-item/selectable-list-item';
+import SelectableTag from './selectable-tag/selectable-tag';
 
 type SelectionPropTypes = {
     Element: React.ElementType,
@@ -61,5 +62,6 @@ const defaultLabelExtractor = (option: any) => option?.label;
 const defaultKeyExtractor = (option: any) => option?.id;
 
 Selection.SelectableListItem = SelectableListItem;
+Selection.SelectableTag = SelectableTag;
 
 export default Selection;

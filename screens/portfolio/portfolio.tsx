@@ -82,6 +82,7 @@ function Portfolio() {
             if (validateColumnTitles(response.data[0])) {
                 // console.log(JSON.stringify(response));
                 const parsedTransactions = parseTransactions(response.data);
+                console.log(JSON.stringify(parsedTransactions))
                 // const tickers = Object.keys(parsedTransactions.companies)
                 // getCompaniesInBatches(tickers);
                 const parsedUserData = parseUserData({

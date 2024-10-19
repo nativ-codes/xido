@@ -8,3 +8,5 @@ export { default as Tag } from './tag/tag';
 export { default as Divider } from './divider/divider';
 export { default as CompanyStats } from './company-stats/company-stats';
 export { default as BottomSheet } from './bottom-sheet/bottom-sheet';
+export { default as Header } from './header/header';
+export { default as Progress } from './progress/progress';

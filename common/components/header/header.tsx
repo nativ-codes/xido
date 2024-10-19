@@ -1,21 +1,32 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import Button from '@/common/components/button/button';
+import Text from '@/common/components/text/text';
 import colors from '@/common/colors';
+import styles from './header.styles';
 
 type HeaderPropTypes = {
-    onPress?: () => any
+    onPress?: () => any;
+    title?: string;
+    center?: React.ReactNode;
 }
 
 function Header({
+    title,
+    center,
     onPress
 }: HeaderPropTypes) {
 
     return (
-        <View>
+        <View style={styles.header}>
             {Boolean(onPress) && <Button.Icon onPress={onPress} name="chevron-left" size={Button.Icon.sizes.MEDIUM} color={colors.secondaryText} />}
+            {Boolean(title || center) && 
+                <View style={styles.centerWrapper}>
+                    {Boolean(title) && <Text variant={Text.variants.H2} isBold>{title}</Text>}
+                    {Boolean(center) && <View style={styles.centerWrapper}>{center}</View>}
+                </View>}
+            {Boolean(onPress) && <View style={styles.placeholder} />}
         </View>
     )
 }

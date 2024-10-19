@@ -22,7 +22,7 @@ import { useRef, useState } from 'react';
 import Modal from "react-native-modal";
 import Text from '@/common/components/text/text';
 import {Selection} from '@/common/components';
-
+import { router, useLocalSearchParams } from 'expo-router';
 // Total dividends received
 // Total amount of stocks bought
 // Total amount of stocks sold
@@ -35,6 +35,14 @@ import {Selection} from '@/common/components';
 // const parsedStoredUserDataList = Object.values(parsedStoredUserData);
 
 export default function HomeScreen() {
-  return null;
+  return (
+    <View style={{
+      marginTop: 100,
+    }}>
+      <TouchableOpacity onPress={() => {
+        router.navigate('/landing');
+      }}><Text>Home</Text></TouchableOpacity>
+    </View>
+  );
 }
 

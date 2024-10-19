@@ -3,8 +3,7 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     contentContainer: {
-        backgroundColor: colors.background,
-        padding: 16
+        backgroundColor: colors.background
     },
     headerContainer: {
         alignItems: 'center',
@@ -13,5 +12,8 @@ export default StyleSheet.create({
     content: {
         marginTop: 32,
         gap: 16
+    },
+    wrapper: {
+        paddingHorizontal: 16
     }
 })

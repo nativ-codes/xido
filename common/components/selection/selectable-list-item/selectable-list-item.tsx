@@ -14,7 +14,7 @@ function SelectableListItem({label, isSelected, onPress}: SelectableListItemProp
   const borderColor = isSelected ? colors.primary : colors.secondaryText;
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.itemWrapper}>
+    <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={styles.itemWrapper}>
       <View style={StyleSheet.compose({
         borderColor
       }, styles.circle)}>

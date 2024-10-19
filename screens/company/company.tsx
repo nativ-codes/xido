@@ -41,6 +41,7 @@ function Company() {
     expectedDividends,
     latestTransactions,
   } = summary || {};
+  console.log('summary', JSON.stringify(summary));
 
   const avgShare = boughtValue / shares;
   const marketVsAvgShare = bid - avgShare;
@@ -166,25 +167,27 @@ function Company() {
     <ScrollView contentContainerStyle={styles.contentContainer}>
       <SafeAreaView>
         <Header onPress={router.back} />
-        <View style={styles.headerContainer}>
-          <Avatar
-            size={Avatar.sizes.LARGE}
-            placeholder={symbol}
-            url={companyLogo}
-          />
-          <Text variant={Text.variants.H1}>{companyName}</Text>
-          <View>
-            <Tag value={symbol} variant={Tag.variants.PRIMARY} />
+        <View style={styles.wrapper}>
+          <View style={styles.headerContainer}>
+            <Avatar
+              size={Avatar.sizes.LARGE}
+              placeholder={symbol}
+              url={companyLogo}
+            />
+            <Text variant={Text.variants.H1}>{companyName}</Text>
+            <View>
+              <Tag value={symbol} variant={Tag.variants.PRIMARY} />
+            </View>
           </View>
-        </View>
-        <View style={styles.content}>
-          <CompanyStats>
-            {overallSection}
-            {sharesSection}
-            {dividendsSection}
-            {expectedDividendsSection}
-            {latestTransactionsSection}
-          </CompanyStats>
+          <View style={styles.content}>
+            <CompanyStats>
+              {overallSection}
+              {sharesSection}
+              {dividendsSection}
+              {expectedDividendsSection}
+              {latestTransactionsSection}
+            </CompanyStats>
+          </View>
         </View>
       </SafeAreaView>
       <InfoBottomSheet
