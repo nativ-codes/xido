@@ -1,15 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
 
+import { setCompanies, getCompanies, getUserData, getSymbols, setUserData } from '@/config/store/slices/user-data';
 import { Text, Header, Button, Progress } from '@/common/components';
-import colors from '@/common/colors';
+import { getIsEmpty, parseUserData } from '@/common/utils';
+import { companies as mockedCompanies } from '@/__mocks__';
 
 import styles from './all-set.styles';
+import { getCompaniesInBatches } from '@/services/companies';
 
 function AllSet() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                if (getIsEmpty(getUserData())) {
+                    const transactions = getCompanies();
+                    const companies = mockedCompanies || await getCompaniesInBatches(getSymbols());
+                    const parsedUserData = parseUserData({
+                        transactions,
+                        companies
+                    });
+
+                    setUserData(parsedUserData)
+                } else {
+                    setIsLoading(false);
+                }
+            } catch (error) {
+                console.error("AllSet", error);
+            } finally {
+                setIsLoading(false);
+            }
+        })();
+    }, []);
+
     const handleOnUpload = () => {
         router.navigate('/');
     }
@@ -20,9 +47,7 @@ function AllSet() {
             <View style={styles.content}>
                 <Text variant={Text.variants.H1} isBold>You're all set</Text>
                 <View style={styles.section}>
-                    <Text>Your </Text>
-                    <Text>2. Upload the CSV file here.</Text>
-                    <Text>3. Review the transactions and confirm the import.</Text>
+                    <Text>Your profile is now ready.</Text>
                 </View>
 
             </View>

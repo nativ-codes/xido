@@ -1,24 +1,18 @@
 import React, { useMemo, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Divider, Avatar, Text, Tag, ListItem, CompanyStats } from '@/common/components';
-
+import { Header, Divider, Avatar, Text, Tag, ListItem, CompanyStats } from '@/common/components';
 import { getUserData } from '@/config/store/slices/user-data';
-import { ScrollView, View } from 'react-native';
-import {
-  formatValue,
-  formatPercentValue,
-} from '@/common/utils';
-import styles from './company.styles'
+import { formatValue, formatPercentValue } from '@/common/utils';
 import { InfoSections, TransactionsToDisplayPropTypes } from '@/types';
-import InfoBottomSheet from './components/info-bottom-sheet/info-bottom-sheet';
-import Header from '@/common/components/header/header';
 
-const userData = getUserData();
+import InfoBottomSheet from './components/info-bottom-sheet/info-bottom-sheet';
+import styles from './company.styles';
 
 function Company() {
+  const userData = useMemo(getUserData, []);
   const [infoSection, setInfoSection] = useState<InfoSections>();
   const { symbol }: { symbol: string } = useLocalSearchParams();
   const { summary } = userData[symbol] || {};
@@ -41,7 +35,6 @@ function Company() {
     expectedDividends,
     latestTransactions,
   } = summary || {};
-  console.log('summary', JSON.stringify(summary));
 
   const avgShare = boughtValue / shares;
   const marketVsAvgShare = bid - avgShare;
@@ -161,7 +154,6 @@ function Company() {
       />))}
     </>
   ), [])
-
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainer}>

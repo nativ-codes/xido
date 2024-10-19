@@ -16,7 +16,7 @@ function Avatar({
     size = AvatarSize.SMALL
 }: AvatarPropTypes) {
     const sizeStyle = sizes[size || AvatarSize.SMALL];
-    const textVariant = size === AvatarSize.SMALL ? Text.variants.H4 : Text.variants.H3;
+    const textVariant = size === AvatarSize.SMALL ? Text.variants.H6 : Text.variants.H2;
 
     return Boolean(url) ? (
         <Image

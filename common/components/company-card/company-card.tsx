@@ -10,6 +10,7 @@ import styles from './company-card.styles';
 import { CalculateMarketSummaryReturnType } from '@/types/companies';
 import ListItem from '@/common/components/list-item/list-item';
 import { ListItemVariants } from '@/types/components';
+import { formatPercentValue, formatValue } from '@/common/utils';
 
 function CompanyCard({
     companyLogo,
@@ -26,7 +27,7 @@ function CompanyCard({
         <View style={styles.wrapper}>
             <Row
                 style={styles.header}
-                left={<Avatar url={companyLogo} />}
+                left={<Avatar url={companyLogo} placeholder={symbol}/>}
                 center={
                     <View style={styles.center}>
                         <Tag value={symbol} variant={Tag.variants.PRIMARY} />
@@ -37,20 +38,20 @@ function CompanyCard({
                 }
             />
             <View style={styles.weight}>
-                <Text isBold variant={Text.variants.H6}>{`${weight}%`}</Text>
+                <Text isBold variant={Text.variants.H6}>{formatPercentValue(weight)}</Text>
             </View>
 
             {Boolean(dividendYield) && <ListItem
                 leftText="Dividend yield"
-                rightText={`${dividendYield}%`}
+                rightText={formatPercentValue(dividendYield)}
             />}            
             <ListItem
                 leftText="Market value"
-                rightText={`${currencies[currency]}${marketValue}`}
+                rightText={formatValue(marketValue, currency)}
             />
             <ListItem
                 leftText="Profit/Loss"
-                rightText={`${currencies[currency]}${profitOrLoss} (${profitOrLossPercentage}%)`}
+                rightText={`${formatValue(profitOrLoss, currency)} (${formatPercentValue(profitOrLossPercentage)})`}
                 variant={Number(profitOrLoss) > 0 ? ListItem.variants.PROFIT : ListItem.variants.LOSS}
             />
         </View>

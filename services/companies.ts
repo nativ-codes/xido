@@ -1,4 +1,4 @@
-import { chunkList, parseCompaniesData } from "@/common/utils";
+import { chunkList } from "@/common/utils";
 import { maxCompaniesPerBatch } from "@/constants";
 import { Company, CompanyData } from "@/types/companies";
 
@@ -35,7 +35,7 @@ const getCompanies = async (symbols: string) => {
   }
 }
 
-const getCompaniesInBatches = async (tickers: Array<string>): Promise<CompanyData[]> => {
+const getCompaniesInBatches = async (tickers: string[]): Promise<CompanyData[]> => {
     const batches = chunkList(tickers, maxCompaniesPerBatch);
     const batchesPromises = batches.map(batch => getCompanies(batch.join(',')))
     const batchesResponse = await Promise.all(batchesPromises);

@@ -6,7 +6,8 @@ type TextPropTypes = {
     variant?: TextVariants,
     color?: string,
     isBold?: boolean,
-    numberOfLines?: number
+    numberOfLines?: number,
+    textAlign?: 'center' | 'left' | 'right'
 }
 
 function Text({
@@ -14,11 +15,13 @@ function Text({
     variant,
     color,
     isBold,
+    textAlign,
     numberOfLines
 }: TextPropTypes) {
     return (
         <RNText numberOfLines={numberOfLines} style={StyleSheet.compose(variants[variant || TextVariants.H4], {
             color,
+            textAlign,
             fontFamily: isBold ? 'UrbanistBold' : 'Urbanist'
         })}>{children}</RNText>
     )

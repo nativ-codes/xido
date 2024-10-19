@@ -1,3 +1,4 @@
+import { currencies } from "@/constants";
 import { TransactionsToDisplayPropTypes } from "./transactions";
 
 export interface Company {
@@ -184,7 +185,7 @@ export type CalculateMarketSummaryReturnType = {
   profitOrLoss: number;
   dividendYield: number;
   profitOrLossPercentage: number;
-  currency: string;
+  currency: typeof currencies;
   companyLogo: string | null | undefined;
   companyName: string | undefined;
   symbol: string;

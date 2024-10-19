@@ -26,5 +26,13 @@ export default StyleSheet.create({
     }, 
     button: {
         padding: 16
+    },
+    boxContent: {
+        gap: 8,
+        padding: 16,
+        alignItems: 'center'
+    },
+    errorBox: {
+        borderColor: colors.error,
     }
 });

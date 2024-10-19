@@ -92,8 +92,8 @@ function Portfolio() {
                 // console.log(Object.values(parsedUserData))
                 userData.current = Object.values(parsedUserData)
                 setFilteredUserData(userData.current)
-                // console.log('parsedUserData:', JSON.stringify(parsedUserData));
-
+                
+                // console.log('userData:', JSON.stringify(parsedUserData));
                 store.set('userData', JSON.stringify(parsedUserData));
             } else {
                 console.log('Invalid column titles. Please make sure the file has the correct format.');
