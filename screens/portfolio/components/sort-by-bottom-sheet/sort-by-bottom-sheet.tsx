@@ -43,14 +43,14 @@ function SortByBottomSheet({
       </View>
       <View style={styles.buttons}>
         <Button
-          label="Apply"
-          onPress={onApply}
-          variant={Button.variants.PRIMARY}
-        />
-        <Button
           label="Reset"
           onPress={onReset}
           variant={Button.variants.SECONDARY}
+        />
+        <Button
+          label="Apply"
+          onPress={onApply}
+          variant={Button.variants.PRIMARY}
         />
       </View>
     </BottomSheet>

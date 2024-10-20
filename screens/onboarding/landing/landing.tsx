@@ -18,9 +18,8 @@ function Landing() {
             <View style={styles.content}>
                 <Text variant={Text.variants.H1} isBold>Track your DGI portfolio</Text>
                 <View style={styles.section}>
-                    <Text>1. Go to the XTB platform and export your transaction history as a CSV file.</Text>
-                    <Text>2. Upload the CSV file here.</Text>
-                    <Text>3. Review the transactions and confirm the import.</Text>
+                    <Text>The app makes it simple to track your DGI portfolio and monitor your progress. You'll get clear stats and charts that show you exactly how close you are to reaching your goals.</Text>
+                    <Text>Let's get started!</Text>
                 </View>
             </View>
             <View style={styles.button}>

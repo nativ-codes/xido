@@ -10,14 +10,19 @@ import colors from '@/common/colors';
 import { TransactionType } from '@/types';
 import { setCompanies } from '@/config/store/slices/user-data';
 
+import HelpBottomSheet from './components/help-bottom-sheet/help-bottom-sheet';
 import styles from './upload-csv.styles';
 
 function UploadCsv() {
     const [uploadedTransactions, setUploadedTransactions] = useState('');
+    const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
     const [isError, setIsError] = useState(false);
 
     const boxContentColor = isError ? colors.error : colors.primary;
     const isButtonDisabled = !Boolean(uploadedTransactions) || isError;
+
+    const showHelpModal = () => setIsHelpModalVisible(true);
+    const hideHelpModal = () => setIsHelpModalVisible(false);
 
     const handleOnUpload = async () => {
         try {
@@ -38,7 +43,8 @@ function UploadCsv() {
                 setUploadedTransactions('Unable to parse the file. Please make sure the file has the correct format.');
             }
         } catch(error) {
-            console.error("handleOnUpload", error);
+            // doesn't upload the file
+            console.log("handleOnUpload", error);
         }
     }
 
@@ -48,13 +54,15 @@ function UploadCsv() {
 
     return (
         <SafeAreaView style={styles.wrapper}>
-            <Header onPress={router.back} center={<Progress value={50} />}/>
+            <Header
+                onPress={router.back}
+                center={<Progress value={50} />}
+                right={<Button.Icon onPress={showHelpModal} name="help-circle-outline" size={Button.Icon.sizes.MEDIUM} color={colors.secondaryText} />}
+            />
             <View style={styles.content}>
                 <Text variant={Text.variants.H1} isBold>Upload the exported CSV file</Text>
                 <View style={styles.section}>
-                    <Text>1. Go to the XTB platform and export your transaction history as a CSV file.</Text>
-                    <Text>2. Upload the CSV file here.</Text>
-                    <Text>3. Review the transactions and confirm the import.</Text>
+                    <Text>Go to the XTB platform, export your transaction history as a CSV file, and then upload the CSV file here.</Text>
                 </View>
                 <TouchableOpacity onPress={handleOnUpload} activeOpacity={0.7} style={StyleSheet.compose(styles.uploadBox, isError && styles.errorBox)}>
                     {Boolean(uploadedTransactions) ? (
@@ -73,6 +81,10 @@ function UploadCsv() {
             <View style={styles.button}>
                 <Button isDisabled={isButtonDisabled} label="Continue" onPress={handleOnContinue} variant={Button.variants.PRIMARY} />
             </View>
+            <HelpBottomSheet 
+                isVisible={isHelpModalVisible}
+                hideModal={hideHelpModal}
+            />
         </SafeAreaView>
     )
 };

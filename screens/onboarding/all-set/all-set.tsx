@@ -49,7 +49,6 @@ function AllSet() {
                 <View style={styles.section}>
                     <Text>Your profile is now ready.</Text>
                 </View>
-
             </View>
             <View style={styles.button}>
                 <Button label="Finish" onPress={handleOnUpload} variant={Button.variants.PRIMARY} />

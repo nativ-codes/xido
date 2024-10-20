@@ -13,7 +13,7 @@ const uploadCsv = async () =>
                 complete: resolve
             })
         } catch (error) {
-            console.error("uploadCsv", error);
+            console.log("uploadCsv", error);
             reject(error);
         }
     });

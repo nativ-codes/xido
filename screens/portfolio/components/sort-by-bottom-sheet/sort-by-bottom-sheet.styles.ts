@@ -6,7 +6,8 @@ export default StyleSheet.create({
         gap: 8
     },
     buttons: {
-        margin: 16,
+        marginHorizontal: 16,
+        marginTop: 15,
         gap: 8
     }
 });

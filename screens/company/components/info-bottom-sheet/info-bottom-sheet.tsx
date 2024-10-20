@@ -1,13 +1,12 @@
 import { View } from 'react-native';
 
-import Text from '@/common/components/text/text';
 import { InfoSections } from '@/types/components';
-import { BottomSheet } from '@/common/components';
+import { Text, BottomSheet } from '@/common/components';
 import { InfoConstants } from '@/constants';
 
 import styles from './info-bottom-sheet.styles';
 
-type SortByBottomSheetPropTypes = {
+type InfoBottomSheetPropTypes = {
     infoSection: InfoSections | undefined,
     hideModal: () => void | any
 }
@@ -15,7 +14,7 @@ type SortByBottomSheetPropTypes = {
 function InfoBottomSheet({
     infoSection,
     hideModal
-}: SortByBottomSheetPropTypes) {
+}: InfoBottomSheetPropTypes) {
     return (
         <BottomSheet title="Info" isVisible={Boolean(infoSection)} onBackdropPress={hideModal}>
             {Boolean(infoSection) && <View style={styles.content}>

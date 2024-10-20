@@ -143,7 +143,7 @@ function Portfolio() {
                         paddingVertical: 8,
                         backgroundColor: colors.surface,
                         flex: 1,
-                    }} placeholder="Username" onChangeText={handleOnChangeText} />
+                    }} placeholder="Company name or ticker..." onChangeText={handleOnChangeText} />
                     <TouchableOpacity onPress={showModal} style={{
                         width: 40,
                         height: 40,

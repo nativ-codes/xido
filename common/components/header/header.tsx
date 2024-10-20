@@ -10,12 +10,14 @@ type HeaderPropTypes = {
     onPress?: () => any;
     title?: string;
     center?: React.ReactNode;
+    right?: React.ReactNode;
 }
 
 function Header({
     title,
     center,
-    onPress
+    onPress,
+    right
 }: HeaderPropTypes) {
 
     return (
@@ -26,7 +28,7 @@ function Header({
                     {Boolean(title) && <Text variant={Text.variants.H2} isBold>{title}</Text>}
                     {Boolean(center) && <View style={styles.centerWrapper}>{center}</View>}
                 </View>}
-            {Boolean(onPress) && <View style={styles.placeholder} />}
+            {Boolean(right) ? right : Boolean(onPress) && <View style={styles.placeholder} />}
         </View>
     )
 }
