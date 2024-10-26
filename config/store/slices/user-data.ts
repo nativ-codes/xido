@@ -42,14 +42,6 @@ const setCompanies = (companies) => {
     }
 }
 
-const setSymbols = (symbols) => {
-    try {
-        store.set('symbols', JSON.stringify(symbols));
-    } catch (error) {
-        console.error('setSymbols', error);
-    }
-}
-
 const getSymbols = () => {
     try {
         const symbols = store.getString('symbols');
@@ -63,11 +55,42 @@ const getSymbols = () => {
     }
 }
 
+const setSymbols = (symbols) => {
+    try {
+        store.set('symbols', JSON.stringify(symbols));
+    } catch (error) {
+        console.error('setSymbols', error);
+    }
+}
+
+const getCalendar = () => {
+    try {
+        const calendar = store.getString('calendar');
+        const parsedCalendar = calendar ? JSON.parse(calendar) : [];
+
+        return parsedCalendar;
+    } catch (error) {
+        console.error('getCalendar', error);
+
+        return [];
+    }
+}
+
+const setCalendar = (calendar) => {
+    try {
+        store.set('calendar', JSON.stringify(calendar));
+    } catch (error) {
+        console.error('setCalendar', error);
+    }
+}
+
 export {
     getCompanies,
     setCompanies,
     getUserData,
     setUserData,
+    getSymbols,
     setSymbols,
-    getSymbols
+    getCalendar,
+    setCalendar
 };

@@ -25,7 +25,7 @@ const chunkList = (list: Array<any>, chunkSize: number) => {
  * @returns A string representing the formatted currency value.
  */
 const formatValue = (value: number, currency: typeof currencies) => {
-  return `${currencies[currency]}${value.toFixed(2)}`;
+  return `${currencies[currency]}${(value || 0).toFixed(2)}`;
 }
 
 /**
@@ -35,7 +35,7 @@ const formatValue = (value: number, currency: typeof currencies) => {
  * @returns The formatted percentage string.
  */
 const formatPercentValue = (value: number) => {
-  return `${value.toFixed(2)}%`;
+  return `${(value || 0).toFixed(2)}%`;
 }
 
 export {

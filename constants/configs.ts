@@ -2,7 +2,8 @@ const maxCompaniesPerBatch = 10;
 const maxCompaniesAllowed = 30;
 
 const months = [
-  'January', 'February', 'March', 'April', 'May', 'June', 'July',
+  'January', 'February', 'March', 
+  'April', 'May', 'June', 'July',
   'August', 'September', 'October', 'November', 'December'
 ];
 

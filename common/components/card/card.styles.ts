@@ -7,18 +7,10 @@ export default StyleSheet.create({
         backgroundColor: colors.surface,
         borderRadius: 16
     },
-    titleSectionContainer: {
+    titleContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingBottom: 8,
         alignItems: 'center'
-    },
-    titleSectionIcon: {
-        width: 24,
-        height: 24,
-        borderRadius: 12,
-        backgroundColor: colors.secondarySurface,
-        justifyContent: 'center',
-        alignItems: 'center',
     }
 });

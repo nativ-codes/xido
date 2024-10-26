@@ -7,6 +7,7 @@ export type ParseTransactionDateReturnType = {
     month: number;
     year: number;
     time: string;
+    monthByIndex: string;
 }
 
 const parseTransactionDate = (_date: string): ParseTransactionDateReturnType => {
@@ -19,7 +20,8 @@ const parseTransactionDate = (_date: string): ParseTransactionDateReturnType => 
         day,
         month,
         year,
-        time
+        time,
+        monthByIndex: getMonthByIndex(month)
     };
 }
 

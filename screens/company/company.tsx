@@ -3,7 +3,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Header, Divider, Avatar, Text, Tag, ListItem, CompanyStats } from '@/common/components';
+import { Header, Divider, Avatar, Text, Tag, ListItem, Card } from '@/common/components';
 import { getUserData } from '@/config/store/slices/user-data';
 import { formatValue, formatPercentValue } from '@/common/utils';
 import { InfoSections, TransactionsToDisplayPropTypes } from '@/types';
@@ -49,7 +49,7 @@ function Company() {
 
   const overallSection = useMemo(() => (
     <>
-      <CompanyStats.TitleSection title="Overall" onPress={showModal(InfoSections.OVERALL)} />
+      <Card.Title title="Overall" onPress={showModal(InfoSections.OVERALL)} />
       <ListItem
         leftText="Weight"
         rightText={formatPercentValue(weight)}
@@ -73,7 +73,7 @@ function Company() {
 
   const sharesSection = useMemo(() => (
     <>
-      <CompanyStats.TitleSection title="Shares" onPress={showModal(InfoSections.SHARES)} />
+      <Card.Title title="Shares" onPress={showModal(InfoSections.SHARES)} />
       <ListItem
         leftText="Shares owned"
         rightText={shares}
@@ -113,9 +113,9 @@ function Company() {
     </>
   ), []);
 
-  const dividendsSection = useMemo(() => (
+  const dividendsSection = useMemo(() => Boolean(dividendsAllTime) && (
     <>
-      <CompanyStats.TitleSection title="Dividends" onPress={showModal(InfoSections.DIVIDENDS)} />
+      <Card.Title title="Dividends" onPress={showModal(InfoSections.DIVIDENDS)} />
       <ListItem
         leftText="Dividend yield"
         rightText={formatPercentValue(dividendYield)}
@@ -132,9 +132,9 @@ function Company() {
     </>
   ), []);
 
-  const expectedDividendsSection = useMemo(() => (
+  const expectedDividendsSection = useMemo(() => Boolean(dividendsAllTime) && (
     <>
-      <CompanyStats.TitleSection title="Expected dividends" onPress={showModal(InfoSections.EXPECTED_DIVIDENDS)} />
+      <Card.Title title="Expected dividends" onPress={showModal(InfoSections.EXPECTED_DIVIDENDS)} />
       {expectedDividends.months.map((period: string) => (<ListItem
         key={period}
         leftText={period}
@@ -146,7 +146,7 @@ function Company() {
 
   const latestTransactionsSection = useMemo(() => (
     <>
-      <CompanyStats.TitleSection title="Latest transactions" onPress={showModal(InfoSections.LATEST_TRANSACTIONS)} />
+      <Card.Title title="Latest transactions" onPress={showModal(InfoSections.LATEST_TRANSACTIONS)} />
       {latestTransactions.map(({ date, type, amount }: TransactionsToDisplayPropTypes) => (<ListItem
         key={`${date} ${type} ${amount}`}
         leftText={`${date}\t${type}`}
@@ -172,13 +172,13 @@ function Company() {
             </View>
           </View>
           <View style={styles.content}>
-            <CompanyStats>
+            <Card>
               {overallSection}
               {sharesSection}
               {dividendsSection}
               {expectedDividendsSection}
               {latestTransactionsSection}
-            </CompanyStats>
+            </Card>
           </View>
         </View>
       </SafeAreaView>

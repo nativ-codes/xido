@@ -1,5 +1,4 @@
 import { InfoSections } from '@/types';
-import { months } from './configs';
 
 const InfoConstants = {
     [InfoSections.OVERALL]: [{

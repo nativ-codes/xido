@@ -4,11 +4,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
 
-import { parseTransactions, uploadCsv, validateColumnTitles } from '@/common/utils';
+import { parseTransactions, parseTransactionsForCalendar, uploadCsv, validateColumnTitles } from '@/common/utils';
 import { Text, Header, Button, Progress} from '@/common/components';
 import colors from '@/common/colors';
 import { TransactionType } from '@/types';
-import { setCompanies } from '@/config/store/slices/user-data';
+import { setCompanies, setCalendar } from '@/config/store/slices/user-data';
 
 import HelpBottomSheet from './components/help-bottom-sheet/help-bottom-sheet';
 import styles from './upload-csv.styles';
@@ -31,9 +31,12 @@ function UploadCsv() {
             if (response.data.length) {
                 if (validateColumnTitles(response.data[0])) {
                     const parsedTransactions = parseTransactions(response.data);
+                    const parsedTransactionsForCalendar = parseTransactionsForCalendar(response.data);
+                    console.log("parsedTransactions", JSON.stringify(parsedTransactionsForCalendar));
                     setUploadedTransactions(`${Object.keys(parsedTransactions.companies).length} companies found.`)
                     setIsError(false);
                     setCompanies(parsedTransactions);
+                    setCalendar(parsedTransactionsForCalendar);
                 } else {
                     setIsError(true);
                     setUploadedTransactions('Invalid column titles. Please make sure the file has the correct format.');

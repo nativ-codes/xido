@@ -413,7 +413,94 @@ const parseTransactionsForExpectedDividends = (
 	}
 };
 
+type ParseTransactionsForCalendarReturnType = {
+	[key: number]: {
+		data: {
+			[key: string]: {
+				data: {
+					[key: string]: {
+						totalDividends: number;
+					};
+				};
+				stats: {
+					totalDividends: number;
+					expectedDividends: number;
+				}
+			}
+		};
+		stats: {
+			totalDividends: number;
+			expectedDividends: number;
+		};
+	};
+};
+
+const parseTransactionsForCalendar = (transactions: TransactionType[]) => {
+	const years = transactions.reduce<ParseTransactionsForCalendarReturnType>((acc, transaction) => {
+		const [id, type, time, symbol, comment, amount] = transaction;
+
+		if (type === OperationType.Dividend) {
+			const { monthByIndex, year } = parseTransactionDate(time);
+			const companySymbol = symbol?.split('.')?.[0];
+			const month = acc[year]?.data?.[monthByIndex];
+
+			return {
+				...acc,
+				[year]: {
+					data: {
+						...(acc[year]?.data || {}),
+						[monthByIndex]: {
+							data: {
+								...month?.data,
+								[companySymbol]: {
+									totalDividends: (month?.data?.[companySymbol]?.totalDividends || 0) + parseFloat(amount),
+								}
+							},
+							stats: {
+								totalDividends: (month?.stats?.totalDividends || 0) + parseFloat(amount)
+							}
+						},
+					},
+					stats: {
+						totalDividends: (acc[year]?.stats?.totalDividends || 0) + parseFloat(amount)
+					}
+				}
+			};
+		} else {
+			return acc;
+		}
+	}, {});
+
+	const {year} = parseTransactionDate(transactions[1][2]);
+	
+	Array(12).fill(void 0).forEach((_, index) => {
+		const month = getMonthByIndex(index + 1);
+
+		if (years[year - 1]) {
+			console.log('years', year - 1, Boolean(years[year - 1]))
+			if(!years[year - 1].data[month] || years[year].data[month]) {
+				return;
+			} else {
+				years[year].data[month] = {
+					data: years[year - 1].data[month].data,
+					stats: {
+						totalDividends: 0,
+						expectedDividends: years[year - 1].data[month].stats.totalDividends,
+					}
+				};
+				years[year].stats = {
+					...years[year].stats,
+					expectedDividends: (years[year].stats.expectedDividends || 0) + years[year - 1].data[month].stats.totalDividends
+				}
+			}
+		}
+	});
+	
+return years;	
+};
+
 export {
+	parseTransactionsForCalendar,
 	parseTransactions,
 	parseCompanies,
 	parseUserData

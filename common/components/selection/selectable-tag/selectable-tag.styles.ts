@@ -3,7 +3,6 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
     container: {
-        padding: 16,
         backgroundColor: colors.surface,
         borderRadius: 16,
         alignSelf: 'flex-start',
@@ -13,5 +12,11 @@ export default StyleSheet.create({
     selected: {
         borderWidth: 2,
         borderColor: colors.primary,
+    },
+    smallContainer: {
+        padding: 8
+    },
+    mediumContainer: {
+        padding: 16
     }
 });
