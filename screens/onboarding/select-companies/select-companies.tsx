@@ -1,11 +1,11 @@
 import React, {useMemo, useState} from 'react';
-import { ScrollView, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 import { router } from 'expo-router';
 
 import { maxCompaniesAllowed } from '@/constants';
 import { getCompanies, setSymbols } from '@/config/store/slices/user-data';
-import { Selection, Text, Header, Button, Progress } from '@/common/components';
+import { Selection, Text, Button, Progress } from '@/common/components';
+import { ScreenLayout } from '@/common/layouts';
 
 import styles from './select-companies.styles';
 
@@ -38,9 +38,8 @@ function SelectCompanies() {
     }
 
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <Header onPress={router.back} center={<Progress value={75} />} />
-            <ScrollView contentContainerStyle={styles.content}>
+        <ScreenLayout canGoBack center={<Progress value={75} />}>
+            <View style={styles.content}>
                 <Text variant={Text.variants.H1} isBold>Select up to {maxCompaniesAllowed} companies you want to track</Text>
                 <View style={styles.section}>
                     <Selection
@@ -53,12 +52,12 @@ function SelectCompanies() {
                         labelExtractor={keyExtractor}
                     />
                 </View>
-            </ScrollView>
+            </View>
             <View style={styles.buttons}>
                 <Button label={selectAllText} onPress={handleOnSelectAll} variant={Button.variants.SECONDARY} />
                 <Button isDisabled={isContinueDisabled} label="Continue" onPress={handleOnContinue} variant={Button.variants.PRIMARY} />
             </View>
-        </SafeAreaView>
+        </ScreenLayout>
     )
 };
 

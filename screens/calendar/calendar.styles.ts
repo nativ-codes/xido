@@ -1,15 +1,15 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+    wrapper: {
+        flex: 1,
+    },
     tabs: {
         paddingHorizontal: 16,
         gap: 8,
     },
     tabWrapper: {
         marginBottom: 8
-    },
-    wrapper: {
-        flex: 1
     },
     header: {
         justifyContent: 'center',

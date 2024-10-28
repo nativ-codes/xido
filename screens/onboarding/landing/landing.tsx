@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
-import { Text, Header, Button, Progress } from '@/common/components';
+import { Text, Button, Progress } from '@/common/components';
+import { ScreenLayout } from '@/common/layouts';
 
 import styles from './landing.styles';
 
@@ -13,8 +13,7 @@ function Landing() {
     }
 
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <Header onPress={router.back} center={<Progress value={25} />} />
+        <ScreenLayout canGoBack center={<Progress value={25} />}>
             <View style={styles.content}>
                 <Text variant={Text.variants.H1} isBold>Track your DGI portfolio</Text>
                 <View style={styles.section}>
@@ -25,7 +24,7 @@ function Landing() {
             <View style={styles.button}>
                 <Button label="Begin" onPress={handleOnUpload} variant={Button.variants.PRIMARY} />
             </View>
-        </SafeAreaView>
+        </ScreenLayout>
     )
 };
 

@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { View, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Text, Header, Selection, Card, ListItem, Divider } from '@/common/components';
+import { Text, Selection, Card, ListItem, Divider } from '@/common/components';
+import { ScreenLayout } from '@/common/layouts';
 
 import { formatPercentValue, formatValue, defaultKeyExtractor, sortByKey, sortByMonthKeyExtractor } from '@/common/utils';
 
@@ -47,9 +47,8 @@ function Calendar() {
         , []);
 
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <ScrollView>
-                <Header title="Dividend calendar" />
+        <ScreenLayout 
+            title="Dividend calendar">
                 <View style={styles.tabWrapper}>
                     <ScrollView contentContainerStyle={styles.tabs} horizontal showsHorizontalScrollIndicator={false}>
                         <Selection
@@ -124,12 +123,11 @@ function Calendar() {
                         </Card>
                     </View>
                 </View>
-            </ScrollView>
             <CalendarInfoBottomSheet
                 isVisible={isInfoVisible}
                 hideModal={hideModal}
             />
-        </SafeAreaView>
+        </ScreenLayout >
     )
 }
 

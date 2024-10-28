@@ -1,15 +1,15 @@
 import React, { useMemo, useState } from 'react';
-import { router, useLocalSearchParams } from 'expo-router';
-import { ScrollView, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocalSearchParams } from 'expo-router';
+import { View } from 'react-native';
 
-import { Header, Divider, Avatar, Text, Tag, ListItem, Card } from '@/common/components';
+import { Divider, Avatar, Text, Tag, ListItem, Card } from '@/common/components';
 import { getUserData } from '@/config/store/slices/user-data';
 import { formatValue, formatPercentValue } from '@/common/utils';
 import { CompanyInfoSections, TransactionsToDisplayPropTypes } from '@/types';
 
 import CompanyInfoBottomSheet from './components/company-info-bottom-sheet/company-info-bottom-sheet';
 import styles from './company.styles';
+import { ScreenLayout } from '@/common/layouts';
 
 function Company() {
   const userData = useMemo(getUserData, []);
@@ -156,37 +156,34 @@ function Company() {
   ), [])
 
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
-      <SafeAreaView>
-        <Header onPress={router.back} />
-        <View style={styles.wrapper}>
-          <View style={styles.headerContainer}>
-            <Avatar
-              size={Avatar.sizes.LARGE}
-              placeholder={symbol}
-              url={companyLogo}
-            />
-            <Text variant={Text.variants.H1}>{companyName}</Text>
-            <View>
-              <Tag value={symbol} variant={Tag.variants.PRIMARY} />
-            </View>
-          </View>
-          <View style={styles.content}>
-            <Card>
-              {overallSection}
-              {sharesSection}
-              {dividendsSection}
-              {expectedDividendsSection}
-              {latestTransactionsSection}
-            </Card>
+    <ScreenLayout canGoBack>
+      <View style={styles.wrapper}>
+        <View style={styles.headerContainer}>
+          <Avatar
+            size={Avatar.sizes.LARGE}
+            placeholder={symbol}
+            url={companyLogo}
+          />
+          <Text variant={Text.variants.H1}>{companyName}</Text>
+          <View>
+            <Tag value={symbol} variant={Tag.variants.PRIMARY} />
           </View>
         </View>
-      </SafeAreaView>
+        <View style={styles.content}>
+          <Card>
+            {overallSection}
+            {sharesSection}
+            {dividendsSection}
+            {expectedDividendsSection}
+            {latestTransactionsSection}
+          </Card>
+        </View>
+      </View>
       <CompanyInfoBottomSheet
         infoSection={infoSection}
         hideModal={hideModal}
       />
-    </ScrollView>
+    </ScreenLayout>
   )
 }
 

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
 
 import { parseTransactions, parseTransactionsForCalendar, uploadCsv, validateColumnTitles } from '@/common/utils';
-import { Text, Header, Button, Progress} from '@/common/components';
-import colors from '@/common/colors';
+import { Text, Button, Progress} from '@/common/components';
 import { TransactionType } from '@/types';
+import { ScreenLayout } from '@/common/layouts';
 import { setCompanies, setCalendar } from '@/config/store/slices/user-data';
+import colors from '@/common/colors';
 
 import HelpBottomSheet from './components/help-bottom-sheet/help-bottom-sheet';
 import styles from './upload-csv.styles';
@@ -56,12 +56,11 @@ function UploadCsv() {
     }
 
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <Header
-                onPress={router.back}
-                center={<Progress value={50} />}
-                right={<Button.Icon onPress={showHelpModal} name="help-circle-outline" size={Button.Icon.sizes.MEDIUM} color={colors.secondaryText} />}
-            />
+        <ScreenLayout
+            canGoBack
+            center={<Progress value={50} />}
+            right={<Button.Icon onPress={showHelpModal} name="help-circle-outline" size={Button.Icon.sizes.MEDIUM} color={colors.secondaryText} />}
+        >
             <View style={styles.content}>
                 <Text variant={Text.variants.H1} isBold>Upload the exported CSV file</Text>
                 <View style={styles.section}>
@@ -88,7 +87,8 @@ function UploadCsv() {
                 isVisible={isHelpModalVisible}
                 hideModal={hideHelpModal}
             />
-        </SafeAreaView>
+        </ScreenLayout>
+
     )
 };
 

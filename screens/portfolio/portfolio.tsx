@@ -1,52 +1,25 @@
-import { ScrollView, TextInput, TouchableOpacity, Image, StyleSheet, Platform, View, Dimensions } from 'react-native';
-import * as DocumentPicker from 'expo-document-picker';
+import { useMemo, useRef, useState } from 'react';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
-import {
-    SafeAreaView,
-    SafeAreaProvider,
-    SafeAreaInsetsContext,
-    useSafeAreaInsets,
-} from 'react-native-safe-area-context';
 
-import { readRemoteFile } from 'react-native-csv';
-import { getCompanies, getCompaniesInBatches } from '@/services/companies';
-import { chunkList, uploadCsv, parseCompanies, parseTransactions, validateColumnTitles, parseUserData } from '@/common/utils';
-import { useMMKVString } from 'react-native-mmkv';
-import { store } from '@/config/store';
-import { getUserData } from '@/config/store/slices/user-data';
-import { companies } from '@/__mocks__';
-import CompanyCard from '@/common/components/company-card/company-card';
-import colors from '@/common/colors';
-import { useRef, useState } from 'react';
-import Modal from "react-native-modal";
-import Text from '@/common/components/text/text';
-import { Button } from '@/common/components';
-import SortByBottomSheet from './components/sort-by-bottom-sheet/sort-by-bottom-sheet';
+import { Button, CompanyCard } from '@/common/components';
 import { SortByPropTypes } from '@/types/components';
+import { getUserData } from '@/config/store/slices/user-data';
+import { ScreenLayout } from '@/common/layouts';
+import colors from '@/common/colors';
 
-// Total dividends received
-// Total amount of stocks bought
-// Total amount of stocks sold
-// Total amount of stocks received from spin-offs
-// Total amount of free funds interests received
-// Total amount of free funds interests tax paid
+import SortByBottomSheet from './components/sort-by-bottom-sheet/sort-by-bottom-sheet';
+import styles from './portfolio.styles';
 
 function Portfolio() {
     const router = useRouter();
-    const { bottom } = useSafeAreaInsets();
-    // const [username, setUsername] = useMMKVString('transactions')
     const userData = useRef(Object.values(getUserData()));
-    // const [userData, setUserData] = useState([]);
+
     const [filteredUserData, setFilteredUserData] = useState(userData.current);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [sortByValue, setSortByValue] = useState<SortByPropTypes>();
-
-    const handleOnUploadCsv = () => {
-        uploadCsv(parseResponse)
-    }
 
     const showModal = () => setIsModalVisible(true);
     const hideModal = () => setIsModalVisible(false);
@@ -77,96 +50,34 @@ function Portfolio() {
         hideModal();
     }
 
-    const parseResponse = response => {
-        if (response.data.length) {
-            if (validateColumnTitles(response.data[0])) {
-                // console.log(JSON.stringify(response));
-                const parsedTransactions = parseTransactions(response.data);
-                console.log(JSON.stringify(parsedTransactions))
-                // const tickers = Object.keys(parsedTransactions.companies)
-                // getCompaniesInBatches(tickers);
-                const parsedUserData = parseUserData({
-                    transactions: parsedTransactions,
-                    companies: companies,
-                });
-                // console.log(Object.values(parsedUserData))
-                userData.current = Object.values(parsedUserData)
-                setFilteredUserData(userData.current)
-                
-                // console.log('userData:', JSON.stringify(parsedUserData));
-                store.set('userData', JSON.stringify(parsedUserData));
-            } else {
-                console.log('Invalid column titles. Please make sure the file has the correct format.');
-            }
-        } else {
-            console.log('Unable to parse the file. Please make sure the file has the correct format.');
-        }
-    }
-
     const handleOnCompanyPress = (symbol: string) => () => {
         router.push(`/company?symbol=${symbol}`)
     }
 
+    const renderItem = useMemo(() => ({ item }) => (
+        <TouchableOpacity activeOpacity={0.7} onPress={handleOnCompanyPress(item.summary.symbol)} style={styles.card}>
+            <CompanyCard {...item.summary} />
+        </TouchableOpacity>
+    ), [])
+
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-
-            <View style={{
-                marginTop: 100,
-                backgroundColor: colors.background,
-                // padding: 16,
-                gap: 16,
-                flex: 1
-            }}>
-                <View style={{
-                    paddingHorizontal: 16,
-                    gap: 8,
-                    flexDirection: 'row',
-                }}>
-                    <View style={{
-                        position: 'absolute',
-                        width: 40,
-                        height: 40,
-                        left: 16,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: 1
-                    }}>
+        <ScreenLayout title="Portfolio">
+            <View style={styles.wrapper}>
+                <View style={styles.search}>
+                    <View style={styles.icon}>
                         <Ionicons name="magnify" size={24} color={colors.secondaryText} />
-
                     </View>
-                    <TextInput style={{
-                        fontSize: 18,
-                        borderRadius: 24,
-                        paddingLeft: 40,
-                        paddingRight: 16,
-                        fontFamily: 'Urbanist',
-                        paddingVertical: 8,
-                        backgroundColor: colors.surface,
-                        flex: 1,
-                    }} placeholder="Company name or ticker..." onChangeText={handleOnChangeText} />
-                    <TouchableOpacity onPress={showModal} style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        backgroundColor: colors.surface,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}>
-                        <Ionicons name="sort-variant" size={24} color={colors.secondaryText} />
-                    </TouchableOpacity>
+                    <TextInput style={styles.textinput} placeholder="Company name or ticker..." onChangeText={handleOnChangeText} />
+                    <Button.Icon
+                        onPress={showModal}
+                        name="sort-variant" size={Button.Icon.sizes.MEDIUM} color={colors.secondaryText}
+                    />
                 </View>
 
-                <TouchableOpacity onPress={handleOnUploadCsv}>
-                    <Text>click</Text>
-                </TouchableOpacity>
                 <FlashList
-                    contentContainerStyle={{
-                        padding: 16,
-                    }}
+                    contentContainerStyle={styles.contentContainer}
                     data={filteredUserData}
-                    renderItem={({ item }) => <TouchableOpacity onPress={handleOnCompanyPress(item.summary.symbol)} style={{
-                        marginBottom: 16
-                    }}><CompanyCard {...item.summary} /></TouchableOpacity>}
+                    renderItem={renderItem}
                     estimatedItemSize={200}
                 />
             </View>
@@ -178,7 +89,7 @@ function Portfolio() {
                 isModalVisible={isModalVisible}
                 hideModal={hideModal}
             />
-        </SafeAreaView>
+        </ScreenLayout>
     );
 }
 

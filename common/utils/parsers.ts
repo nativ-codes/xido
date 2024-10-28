@@ -471,14 +471,14 @@ const parseTransactionsForCalendar = (transactions: TransactionType[]) => {
 		}
 	}, {});
 
-	const {year} = parseTransactionDate(transactions[1][2]);
-	
+	const { year } = parseTransactionDate(transactions[1][2]);
+
 	Array(12).fill(void 0).forEach((_, index) => {
 		const month = getMonthByIndex(index + 1);
 
 		if (years[year - 1]) {
 			console.log('years', year - 1, Boolean(years[year - 1]))
-			if(!years[year - 1].data[month] || years[year].data[month]) {
+			if (!years[year - 1].data[month] || years[year].data[month]) {
 				return;
 			} else {
 				years[year].data[month] = {
@@ -495,8 +495,8 @@ const parseTransactionsForCalendar = (transactions: TransactionType[]) => {
 			}
 		}
 	});
-	
-return years;	
+
+	return years;
 };
 
 export {

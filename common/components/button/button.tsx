@@ -47,7 +47,6 @@ const variants = {
     }
 }
 
-
 type IconPropTypes = {
     name: string,
     size: IconSizes,

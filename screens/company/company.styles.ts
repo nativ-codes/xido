@@ -1,10 +1,6 @@
-import colors from '@/common/colors';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-    contentContainer: {
-        backgroundColor: colors.background
-    },
     headerContainer: {
         alignItems: 'center',
         gap: 16

@@ -1,13 +1,13 @@
 import { View } from 'react-native';
 
-import { InfoSections } from '@/types/components';
+import { CompanyInfoSections } from '@/types/components';
 import { Text, BottomSheet } from '@/common/components';
 import { CompanyInfo } from '@/constants';
 
 import styles from './company-info-bottom-sheet.styles';
 
 type CompanyInfoBottomSheetPropTypes = {
-    infoSection: InfoSections | undefined,
+    infoSection: CompanyInfoSections | undefined,
     hideModal: () => void | any
 }
 
@@ -18,7 +18,7 @@ function CompanyInfoBottomSheet({
     return (
         <BottomSheet title="Info" isVisible={Boolean(infoSection)} onBackdropPress={hideModal}>
             {Boolean(infoSection) && <View style={styles.content}>
-                {CompanyInfo[infoSection as InfoSections].map(({ title, description }) => (
+                {CompanyInfo[infoSection as CompanyInfoSections].map(({ title, description }: {title: string, description: string}) => (
                     <View key={title}>
                         <Text variant={Text.variants.H4} isBold>{title}</Text>
                         <Text>{description}</Text>
