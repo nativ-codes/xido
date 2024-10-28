@@ -1,13 +1,14 @@
 import React, { useMemo, useState } from 'react';
-import {View, ScrollView} from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Text, Header, Selection, Card, ListItem, Divider} from '@/common/components';
+import { Text, Header, Selection, Card, ListItem, Divider } from '@/common/components';
 
 import { formatPercentValue, formatValue, defaultKeyExtractor, sortByKey, sortByMonthKeyExtractor } from '@/common/utils';
 
 import styles from './calendar.styles';
 import { getCalendar } from '@/config/store/slices/user-data';
+import CalendarInfoBottomSheet from './components/calendar-info-bottom-sheet/calendar-info-bottom-sheet';
 
 type SortKeyExtractorPropTypes = [
     symbol: string,
@@ -21,10 +22,14 @@ const sortKeyExtractor = ([symbol, { totalDividends }]: SortKeyExtractorPropType
 function Calendar() {
     const calendar = useMemo(getCalendar, []);
     const years = useMemo(() => Object.keys(calendar).reverse(), [calendar]);
-    const [selectedYear, setSelectedYear] = useState<string>(years[years.length - 1]);
+    const [selectedYear, setSelectedYear] = useState<string>(years[0]);
     const months = useMemo(() => sortByKey(Object.keys(calendar[selectedYear].data), sortByMonthKeyExtractor(item => item)), [calendar, selectedYear]);
     const [selectedMonth, setSelectedMonth] = useState<string>(months[0]);
     const currentMonth = calendar?.[selectedYear]?.data?.[selectedMonth];
+    const [isInfoVisible, setIsInfoVisible] = useState(false);
+
+    const showModal = () => setIsInfoVisible(true);
+    const hideModal = () => setIsInfoVisible(false);
 
     const handleOnChangeYear = (year: string) => {
         setSelectedYear(year);
@@ -34,64 +39,52 @@ function Calendar() {
         }
     }
 
+    const renderDateTabs = useMemo(() => (props: any) =>
+        <Selection.SelectableTag
+            {...props}
+            size={Selection.SelectableTag.sizes.SMALL}
+        />
+        , []);
+
     return (
-        <SafeAreaView style={{
-            flex: 1
-        }}>
+        <SafeAreaView style={styles.wrapper}>
             <ScrollView>
-            <Header 
-                title="Dividend calendar"
-            />
-            <View style={{
-                marginTop: 16,
-                marginHorizontal: 16,
-                marginBottom: 8
-            }}>
-                <Text>Select the year and month</Text>
+                <Header title="Dividend calendar" />
+                <View style={styles.tabWrapper}>
+                    <ScrollView contentContainerStyle={styles.tabs} horizontal showsHorizontalScrollIndicator={false}>
+                        <Selection
+                            options={years}
+                            onPress={handleOnChangeYear}
+                            selected={selectedYear}
+                            Element={renderDateTabs}
+                            keyExtractor={defaultKeyExtractor}
+                            labelExtractor={defaultKeyExtractor}
+                        />
+                    </ScrollView>
                 </View>
-            <View style={styles.tabWrapper}>
-                <ScrollView contentContainerStyle={styles.tabs} horizontal showsHorizontalScrollIndicator={false}>
-                    <Selection
-                        options={years}
-                        onPress={handleOnChangeYear}
-                        selected={selectedYear}
-                        Element={props => <Selection.SelectableTag {...props} size={Selection.SelectableTag.sizes.SMALL} />}
-                        keyExtractor={defaultKeyExtractor}
-                        labelExtractor={defaultKeyExtractor}
-                    />
-                </ScrollView>
-            </View>
-            <View style={styles.tabWrapper}>
-                <ScrollView contentContainerStyle={styles.tabs} horizontal showsHorizontalScrollIndicator={false}>
-                    <Selection
-                        options={months}
-                        onPress={setSelectedMonth}
-                        selected={selectedMonth}
-                        Element={props => <Selection.SelectableTag {...props} size={Selection.SelectableTag.sizes.SMALL} />}
-                        keyExtractor={defaultKeyExtractor}
-                        labelExtractor={defaultKeyExtractor}
-                    />
-                </ScrollView>
-            </View>
-            <View style={{
-                flex: 1
-            }}>
-                <View style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    margin: 24,
-                }}>
-                    <Text variant={Text.variants.H1}>{selectedMonth} {selectedYear}</Text>
+                <View style={styles.tabWrapper}>
+                    <ScrollView contentContainerStyle={styles.tabs} horizontal showsHorizontalScrollIndicator={false}>
+                        <Selection
+                            options={months}
+                            onPress={setSelectedMonth}
+                            selected={selectedMonth}
+                            Element={renderDateTabs}
+                            keyExtractor={defaultKeyExtractor}
+                            labelExtractor={defaultKeyExtractor}
+                        />
+                    </ScrollView>
                 </View>
-                <View style={{
-                    paddingHorizontal: 16
-                }}>
-                    <Card>
-                        <Card.Title title="Overall" />
+                <View style={styles.wrapper}>
+                    <View style={styles.header}>
+                        <Text variant={Text.variants.H2}>{selectedMonth} {selectedYear}</Text>
+                    </View>
+                    <View style={styles.content}>
+                        <Card>
+                            <Card.Title title="Overall" onPress={showModal} />
                             {Boolean(currentMonth?.stats?.totalDividends) && (
                                 <ListItem
-                            leftText="Month weight"
-                            rightText={formatPercentValue(currentMonth?.stats?.totalDividends / calendar?.[selectedYear]?.stats?.totalDividends * 100)}
+                                    leftText="Month weight"
+                                    rightText={formatPercentValue(currentMonth?.stats?.totalDividends / calendar?.[selectedYear]?.stats?.totalDividends * 100)}
                                 />
                             )}
                             {Boolean(calendar?.[selectedYear]?.stats?.expectedDividends) && (
@@ -101,39 +94,41 @@ function Calendar() {
                                 />
                             )}
                             {Boolean(currentMonth?.stats?.expectedDividends) ? (
-                            <ListItem
-                                leftText="Expected dividends this month"
-                                rightText={formatValue(currentMonth?.stats?.expectedDividends, 'USD')}
-                            />                        
-                        ) : (
-                            <ListItem
-                                leftText="Dividends this month"
-                                rightText={formatValue(currentMonth?.stats?.totalDividends, 'USD')}
-                            />
-                        )}
+                                <ListItem
+                                    leftText="Expected dividends this month"
+                                    rightText={formatValue(currentMonth?.stats?.expectedDividends, 'USD')}
+                                />
+                            ) : (
+                                <ListItem
+                                    leftText="Dividends this month"
+                                    rightText={formatValue(currentMonth?.stats?.totalDividends, 'USD')}
+                                />
+                            )}
                             {!Boolean(currentMonth?.stats?.expectedDividends) && (
                                 <ListItem
                                     leftText="Dividends this year"
                                     rightText={formatValue(calendar?.[selectedYear]?.stats?.totalDividends, 'USD')}
                                 />
-                            )
-
-                        }
+                            )}
                             {Boolean(calendar?.[selectedYear]?.stats?.expectedDividends) && (
                                 <ListItem
                                     leftText="Expected dividends this year"
                                     rightText={formatValue(calendar?.[selectedYear]?.stats?.totalDividends + calendar?.[selectedYear]?.stats?.expectedDividends, 'USD')}
-                                />                        
+                                />
                             )}
-                        <Divider />
-                        <Card.Title title="Companies" />
-                        {sortByKey(Object.entries(currentMonth.data), sortKeyExtractor).map(([symbol, { totalDividends }]: SortKeyExtractorPropTypes) => (
-                            <ListItem key={symbol} leftText={symbol} rightText={formatValue(totalDividends, 'USD')} />
-                        ))}
-                    </Card>
+                            <Divider />
+                            <Card.Title title="Companies" />
+                            {sortByKey(Object.entries(currentMonth.data), sortKeyExtractor).map(([symbol, { totalDividends }]: SortKeyExtractorPropTypes) => (
+                                <ListItem key={symbol} leftText={symbol} rightText={formatValue(totalDividends, 'USD')} />
+                            ))}
+                        </Card>
+                    </View>
                 </View>
-            </View>
             </ScrollView>
+            <CalendarInfoBottomSheet
+                isVisible={isInfoVisible}
+                hideModal={hideModal}
+            />
         </SafeAreaView>
     )
 }

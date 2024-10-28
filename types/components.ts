@@ -9,10 +9,11 @@ export type SortByPropTypes = {
   key: string;
 }
 
-export enum InfoSections {
+export enum CompanyInfoSections {
   OVERALL = 'OVERALL',
   SHARES = 'SHARES',
   DIVIDENDS = 'DIVIDENDS',
   EXPECTED_DIVIDENDS = 'EXPECTED_DIVIDENDS',
   LATEST_TRANSACTIONS = 'LATEST_TRANSACTIONS',
+  CALENDAR = 'CALENDAR'
 }

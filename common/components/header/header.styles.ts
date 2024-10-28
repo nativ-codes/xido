@@ -5,9 +5,8 @@ import Button, {sizes} from '@/common/components/button/button';
 export default StyleSheet.create({
     header: {
         flexDirection: 'row',
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        justifyContent: 'space-between'        
+        padding: 16,
+        justifyContent: 'space-between'
     },
     placeholder: {
         width: sizes[Button.Icon.sizes.MEDIUM].container.width,

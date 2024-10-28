@@ -7,5 +7,16 @@ export default StyleSheet.create({
     },
     tabWrapper: {
         marginBottom: 8
+    },
+    wrapper: {
+        flex: 1
+    },
+    header: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 24,
+    },
+    content: {
+        paddingHorizontal: 16
     }
 })

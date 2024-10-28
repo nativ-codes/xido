@@ -6,14 +6,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header, Divider, Avatar, Text, Tag, ListItem, Card } from '@/common/components';
 import { getUserData } from '@/config/store/slices/user-data';
 import { formatValue, formatPercentValue } from '@/common/utils';
-import { InfoSections, TransactionsToDisplayPropTypes } from '@/types';
+import { CompanyInfoSections, TransactionsToDisplayPropTypes } from '@/types';
 
-import InfoBottomSheet from './components/info-bottom-sheet/info-bottom-sheet';
+import CompanyInfoBottomSheet from './components/company-info-bottom-sheet/company-info-bottom-sheet';
 import styles from './company.styles';
 
 function Company() {
   const userData = useMemo(getUserData, []);
-  const [infoSection, setInfoSection] = useState<InfoSections>();
+  const [infoSection, setInfoSection] = useState<CompanyInfoSections>();
   const { symbol }: { symbol: string } = useLocalSearchParams();
   const { summary } = userData[symbol] || {};
   const {
@@ -45,11 +45,11 @@ function Company() {
   const marketVsMaxSharePercentage = (marketVsMaxShare / maxShare) * 100;
 
   const hideModal = () => setInfoSection(undefined);
-  const showModal = (section: InfoSections) => () => setInfoSection(section);
+  const showModal = (section: CompanyInfoSections) => () => setInfoSection(section);
 
   const overallSection = useMemo(() => (
     <>
-      <Card.Title title="Overall" onPress={showModal(InfoSections.OVERALL)} />
+      <Card.Title title="Overall" onPress={showModal(CompanyInfoSections.OVERALL)} />
       <ListItem
         leftText="Weight"
         rightText={formatPercentValue(weight)}
@@ -73,7 +73,7 @@ function Company() {
 
   const sharesSection = useMemo(() => (
     <>
-      <Card.Title title="Shares" onPress={showModal(InfoSections.SHARES)} />
+      <Card.Title title="Shares" onPress={showModal(CompanyInfoSections.SHARES)} />
       <ListItem
         leftText="Shares owned"
         rightText={shares}
@@ -115,7 +115,7 @@ function Company() {
 
   const dividendsSection = useMemo(() => Boolean(dividendsAllTime) && (
     <>
-      <Card.Title title="Dividends" onPress={showModal(InfoSections.DIVIDENDS)} />
+      <Card.Title title="Dividends" onPress={showModal(CompanyInfoSections.DIVIDENDS)} />
       <ListItem
         leftText="Dividend yield"
         rightText={formatPercentValue(dividendYield)}
@@ -134,7 +134,7 @@ function Company() {
 
   const expectedDividendsSection = useMemo(() => Boolean(dividendsAllTime) && (
     <>
-      <Card.Title title="Expected dividends" onPress={showModal(InfoSections.EXPECTED_DIVIDENDS)} />
+      <Card.Title title="Expected dividends" onPress={showModal(CompanyInfoSections.EXPECTED_DIVIDENDS)} />
       {expectedDividends.months.map((period: string) => (<ListItem
         key={period}
         leftText={period}
@@ -146,7 +146,7 @@ function Company() {
 
   const latestTransactionsSection = useMemo(() => (
     <>
-      <Card.Title title="Latest transactions" onPress={showModal(InfoSections.LATEST_TRANSACTIONS)} />
+      <Card.Title title="Latest transactions" onPress={showModal(CompanyInfoSections.LATEST_TRANSACTIONS)} />
       {latestTransactions.map(({ date, type, amount }: TransactionsToDisplayPropTypes) => (<ListItem
         key={`${date} ${type} ${amount}`}
         leftText={`${date}\t${type}`}
@@ -182,7 +182,7 @@ function Company() {
           </View>
         </View>
       </SafeAreaView>
-      <InfoBottomSheet
+      <CompanyInfoBottomSheet
         infoSection={infoSection}
         hideModal={hideModal}
       />
