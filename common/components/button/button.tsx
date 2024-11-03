@@ -34,6 +34,7 @@ function Button({
 enum ButtonVariants {
     PRIMARY = 'primary',
     SECONDARY = 'secondary',
+    DANGER = 'danger'
 }
 
 const variants = {
@@ -44,7 +45,11 @@ const variants = {
     secondary: {
         backgroundColor: 'transparent',
         color: colors.primary
-    }
+    },
+    danger: {
+        backgroundColor: colors.error,
+        color: colors.background
+    }    
 }
 
 type IconPropTypes = {

@@ -84,7 +84,54 @@ const setCalendar = (calendar) => {
     }
 }
 
+
+const getLast12MonthsDividend = () => {
+    try {
+        const last12MonthsDividend = store.getString('last12MonthsDividend');
+        const parsedLast12MonthsDividend = last12MonthsDividend ? JSON.parse(last12MonthsDividend) : 0;
+
+        return parsedLast12MonthsDividend;
+    } catch (error) {
+        console.error('getLast12MonthsDividend', error);
+
+        return [];
+    }
+}
+
+const setLast12MonthsDividend = (last12MonthsDividend) => {
+    try {
+        store.set('last12MonthsDividend', JSON.stringify(last12MonthsDividend));
+    } catch (error) {
+        console.error('setLast12MonthsDividend', error);
+    }
+}
+
+const getGoals = () => {
+    try {
+        const goals = store.getString('goals');
+        const parsedGoals = goals ? JSON.parse(goals) : [];
+
+        return parsedGoals;
+    } catch (error) {
+        console.error('getGoals', error);
+
+        return [];
+    }
+}
+
+const setGoals = (goals) => {
+    try {
+        store.set('goals', JSON.stringify(goals));
+    } catch (error) {
+        console.error('setGoals', error);
+    }
+}
+
 export {
+    getGoals,
+    setGoals,
+    getLast12MonthsDividend,
+    setLast12MonthsDividend,
     getCompanies,
     setCompanies,
     getUserData,

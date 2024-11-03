@@ -3,12 +3,13 @@ import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
 
-import { parseTransactions, parseTransactionsForCalendar, uploadCsv, validateColumnTitles } from '@/common/utils';
+import { getLast12MonthsDividend, parseTransactions, parseTransactionsForCalendar, parseTransactionsForLast12MonthsDividend, uploadCsv, validateColumnTitles } from '@/common/utils';
 import { Text, Button, Progress} from '@/common/components';
 import { TransactionType } from '@/types';
 import { ScreenLayout } from '@/common/layouts';
-import { setCompanies, setCalendar } from '@/config/store/slices/user-data';
+import { setGoals, setCompanies, setCalendar, setLast12MonthsDividend } from '@/config/store/slices/user-data';
 import colors from '@/common/colors';
+import { defaultGoals } from '@/constants';
 
 import HelpBottomSheet from './components/help-bottom-sheet/help-bottom-sheet';
 import styles from './upload-csv.styles';
@@ -32,11 +33,14 @@ function UploadCsv() {
                 if (validateColumnTitles(response.data[0])) {
                     const parsedTransactions = parseTransactions(response.data);
                     const parsedTransactionsForCalendar = parseTransactionsForCalendar(response.data);
-                    console.log("parsedTransactions", JSON.stringify(parsedTransactionsForCalendar));
+                    const parsedTransactionsForLast12MonthsDividend = parseTransactionsForLast12MonthsDividend(response.data);
+
                     setUploadedTransactions(`${Object.keys(parsedTransactions.companies).length} companies found.`)
                     setIsError(false);
                     setCompanies(parsedTransactions);
+                    setGoals(defaultGoals);
                     setCalendar(parsedTransactionsForCalendar);
+                    setLast12MonthsDividend(getLast12MonthsDividend(parsedTransactionsForLast12MonthsDividend));
                 } else {
                     setIsError(true);
                     setUploadedTransactions('Invalid column titles. Please make sure the file has the correct format.');

@@ -21,9 +21,10 @@ const sortKeyExtractor = ([symbol, { totalDividends }]: SortKeyExtractorPropType
 
 function Calendar() {
     const calendar = useMemo(getCalendar, []);
+    console.log('calendar', JSON.stringify(calendar));
     const years = useMemo(() => Object.keys(calendar).reverse(), [calendar]);
     const [selectedYear, setSelectedYear] = useState<string>(years[0]);
-    const months = useMemo(() => sortByKey(Object.keys(calendar[selectedYear].data), sortByMonthKeyExtractor(item => item)), [calendar, selectedYear]);
+    const months = useMemo(() => sortByKey(Object.keys(calendar[selectedYear]?.data || {}), sortByMonthKeyExtractor(item => item)), [calendar, selectedYear]);
     const [selectedMonth, setSelectedMonth] = useState<string>(months[0]);
     const currentMonth = calendar?.[selectedYear]?.data?.[selectedMonth];
     const [isInfoVisible, setIsInfoVisible] = useState(false);
@@ -117,7 +118,7 @@ function Calendar() {
                             )}
                             <Divider />
                             <Card.Title title="Companies" />
-                            {sortByKey(Object.entries(currentMonth.data), sortKeyExtractor).map(([symbol, { totalDividends }]: SortKeyExtractorPropTypes) => (
+                            {sortByKey(Object.entries(currentMonth?.data || {}), sortKeyExtractor).map(([symbol, { totalDividends }]: SortKeyExtractorPropTypes) => (
                                 <ListItem key={symbol} leftText={symbol} rightText={formatValue(totalDividends, 'USD')} />
                             ))}
                         </Card>

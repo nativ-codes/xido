@@ -14,6 +14,8 @@ export default StyleSheet.create({
     centerWrapper: {
         flex: 1,
         justifyContent: 'center',
+    },
+    titleSpacing: {
         paddingHorizontal: 8
     }
 })

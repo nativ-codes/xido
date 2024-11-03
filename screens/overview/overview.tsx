@@ -1,9 +1,11 @@
-import react from "react";
+import React from "react";
 import { View } from 'react-native';
-
-import { Button } from '@/common/components';
-import { ScreenLayout } from "@/common/layouts";
 import { router } from "expo-router";
+
+import { Text, Button } from '@/common/components';
+import { ScreenLayout } from "@/common/layouts";
+
+import styles from './overview.styles'
 
 function Overview() {
 
@@ -13,7 +15,10 @@ function Overview() {
 
     return (
         <ScreenLayout title="Overview">
-            <Button label="Add a portfolio" onPress={handleOnAddPortfolio} />
+            <View style={styles.noPortfolio}>
+                <Text>You haven't added a portfolio yet.</Text>
+                <Button label="Add portfolio" onPress={handleOnAddPortfolio}/>
+            </View>
         </ScreenLayout>
     );
 }

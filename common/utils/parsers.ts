@@ -1,6 +1,7 @@
 import {
 	companiesStatsDefault,
 	dividendStatsDefault,
+	oneYearInMilliseconds,
 	shareStatsDefault
 } from '@/constants';
 import {
@@ -12,14 +13,17 @@ import {
 	CalculateMarketSummaryReturnType,
 	Company,
 	CompanyData,
-	ParseTransactionsForExpectedDividendsReturnType
+	ParseTransactionsForExpectedDividendsReturnType,
+	GoalsPropTypes
 } from '@/types';
 import {
+	compareDates,
 	getIsOlderThanOneYear,
 	getMonthByIndex,
 	parseTransactionDate,
 	ParseTransactionDateReturnType
 } from './dates';
+import { formatPercentValue } from './formatters';
 
 type ParseTransactionsForShareStatsReturnType = {
 	maxShare: number;
@@ -477,7 +481,6 @@ const parseTransactionsForCalendar = (transactions: TransactionType[]) => {
 		const month = getMonthByIndex(index + 1);
 
 		if (years[year - 1]) {
-			console.log('years', year - 1, Boolean(years[year - 1]))
 			if (!years[year - 1].data[month] || years[year].data[month]) {
 				return;
 			} else {
@@ -499,9 +502,55 @@ const parseTransactionsForCalendar = (transactions: TransactionType[]) => {
 	return years;
 };
 
+const parseTransactionsForLast12MonthsDividend = (transactions: TransactionType[]) => {
+	const lastDividendTransaction = transactions.find((transaction) => transaction[1] === OperationType.Dividend);
+	const { day, month, year } = parseTransactionDate(lastDividendTransaction[2]);
+	const lastDividendTransactionDate = new Date(year, month - 1, day);
+	const lastDividendTransactionTimestamp = lastDividendTransactionDate.getTime();
+
+	return transactions.filter((transaction) => {
+		if (transaction[1] === OperationType.Dividend) {
+			const transactionDate = parseTransactionDate(transaction[2]);
+			const currentDate = new Date(transactionDate.year, transactionDate.month - 1, transactionDate.day);
+			const currentDateTimestamp = currentDate.getTime();
+	
+			const timeDifference = lastDividendTransactionTimestamp - currentDateTimestamp;
+	
+			return timeDifference >= 0 && timeDifference <= oneYearInMilliseconds;
+		} else {
+			return false;
+		}
+	});
+};
+
+const getLast12MonthsDividend = (transactions: TransactionType[]) => 
+	transactions.reduce((total, transaction) => {
+		const [id, type, time, symbol, comment, amount] = transaction;
+		return total + parseFloat(amount);
+	}, 0);
+
+const parseGoals = ({goals, value}: {
+	goals: GoalsPropTypes[],
+	value: number
+}) => 
+	goals.map(({title, amount}) => {
+		const progress = value / (parseFloat(amount) * 12) * 100;
+		const isGoalAchieved = progress >= 100;
+
+		return {
+			title,
+			amount,
+			isGoalAchieved,
+			progress: formatPercentValue(progress > 100 ? 100 : progress)
+		}
+	});
+
 export {
+	getLast12MonthsDividend,
+	parseTransactionsForLast12MonthsDividend,
 	parseTransactionsForCalendar,
 	parseTransactions,
 	parseCompanies,
-	parseUserData
+	parseUserData,
+	parseGoals
 };

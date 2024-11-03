@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 
 import Button from '@/common/components/button/button';
@@ -20,11 +20,13 @@ function Header({
     canGoBack,
     right
 }: HeaderPropTypes) {
+    const hasButtons = canGoBack || right;
+
     return (
         <View style={styles.header}>
             {Boolean(canGoBack) && <Button.Icon onPress={router.back} name="chevron-left" size={Button.Icon.sizes.MEDIUM} color={colors.secondaryText} />}
             {Boolean(title || center) && 
-                <View style={styles.centerWrapper}>
+                <View style={StyleSheet.compose(styles.centerWrapper, hasButtons ? styles.titleSpacing : void 0)}>
                     {Boolean(title) && <Text variant={Text.variants.H2} isBold>{title}</Text>}
                     {Boolean(center) && <View style={styles.centerWrapper}>{center}</View>}
                 </View>}
