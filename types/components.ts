@@ -22,6 +22,11 @@ export enum LegalTypes {
   PRIVACY_POLICY = 'PrivacyPolicy'
 };
 
+export enum OverviewInfoSections {
+  OVERALL = 'OVERALL',
+  GOALS = 'GOALS'
+};
+
 export type GoalsPropTypes = {
   id: string;
   title: string;

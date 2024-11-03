@@ -11,9 +11,9 @@ import { ScreenLayout } from '@/common/layouts';
 import colors from '@/common/colors';
 
 import SortByBottomSheet from './components/sort-by-bottom-sheet/sort-by-bottom-sheet';
-import styles from './portfolio.styles';
+import styles from './companies.styles';
 
-function Portfolio() {
+function Companies() {
     const router = useRouter();
     const userData = useRef(Object.values(getUserData()));
 
@@ -61,7 +61,7 @@ function Portfolio() {
     ), [])
 
     return (
-        <ScreenLayout title="Portfolio">
+        <ScreenLayout title="Companies">
             <View style={styles.wrapper}>
                 <View style={styles.search}>
                     <View style={styles.icon}>
@@ -93,4 +93,4 @@ function Portfolio() {
     );
 }
 
-export default Portfolio;
+export default Companies;
