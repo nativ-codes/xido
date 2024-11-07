@@ -7,14 +7,14 @@ import { formatPercentValue, formatValue } from "@/common/utils";
 import { ScreenLayout } from "@/common/layouts";
 import colors from "@/common/colors";
 
-import OverviewInfoBottomSheet from "./components/overview-info-bottom-sheet/overview-info-bottom-sheet";
-import styles from './overview.styles'
-import { OverviewInfoSections } from "@/types";
+import HomeInfoBottomSheet from "./components/home-info-bottom-sheet/home-info-bottom-sheet";
+import styles from './home.styles'
+import { HomeInfoSections } from "@/types";
 
-function Overview() {
-    const [infoSection, setInfoSection] = useState<OverviewInfoSections>();
+function Home() {
+    const [infoSection, setInfoSection] = useState<HomeInfoSections>();
     const hideModal = () => setInfoSection(undefined);
-    const showModal = (section: OverviewInfoSections) => () => setInfoSection(section);
+    const showModal = (section: HomeInfoSections) => () => setInfoSection(section);
 
     const isPortfolioAdded = true;
     const profitOrLoss = 200;
@@ -25,12 +25,12 @@ function Overview() {
     }
 
     return (
-        <ScreenLayout title="Overview">
+        <ScreenLayout title="Home">
             <View style={styles.wrapper}>
 
             {isPortfolioAdded ? (
                 <Card>
-                    <Card.Title title="Overall" onPress={showModal(OverviewInfoSections.OVERALL)}/>
+                    <Card.Title title="Overall" onPress={showModal(HomeInfoSections.OVERALL)}/>
                     <ListItem
                         leftText="Invested"
                         rightText={formatValue(200, currency)}
@@ -49,7 +49,7 @@ function Overview() {
                         rightText={formatValue(200, currency)}
                     />            
                     <Divider />
-                    <Card.Title title="Goals" onPress={showModal(OverviewInfoSections.GOALS)} />
+                    <Card.Title title="Goals" onPress={showModal(HomeInfoSections.GOALS)} />
                     <ListItem
                         leftText="Latest goal achieved"
                         rightText={`${formatValue(200, currency)} / month`}
@@ -74,7 +74,7 @@ function Overview() {
                 </View>
             )}
             </View>
-            <OverviewInfoBottomSheet 
+            <HomeInfoBottomSheet 
                 infoSection={infoSection}
                 hideModal={hideModal}
             />
@@ -82,4 +82,4 @@ function Overview() {
     );
 }
 
-export default Overview;
+export default Home;

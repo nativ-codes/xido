@@ -127,7 +127,30 @@ const setGoals = (goals) => {
     }
 }
 
+const getCurrency = () => {
+    try {
+        const currency = store.getString('currency');
+        const parsedCurrency = currency ? JSON.parse(currency) : [];
+
+        return parsedCurrency;
+    } catch (error) {
+        console.error('getCurrency', error);
+
+        return [];
+    }
+}
+
+const setCurrency = (currency) => {
+    try {
+        store.set('currency', JSON.stringify(currency));
+    } catch (error) {
+        console.error('setCurrency', error);
+    }
+}
+
 export {
+    getCurrency,
+    setCurrency,
     getGoals,
     setGoals,
     getLast12MonthsDividend,

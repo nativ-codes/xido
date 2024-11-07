@@ -1,24 +1,24 @@
 import { View } from 'react-native';
 
-import { OverviewInfoSections } from '@/types/components';
+import { HomeInfoSections } from '@/types/components';
 import { Text, BottomSheet } from '@/common/components';
-import { OverviewInfo } from '@/constants';
+import { HomeInfo } from '@/constants';
 
-import styles from './overview-info-bottom-sheet.styles';
+import styles from './home-info-bottom-sheet.styles';
 
-type OverviewInfoBottomSheetPropTypes = {
-    infoSection: OverviewInfoSections | undefined,
+type HomeInfoBottomSheetPropTypes = {
+    infoSection: HomeInfoSections | undefined,
     hideModal: () => void | any
 }
 
-function OverviewInfoBottomSheet({
+function HomeInfoBottomSheet({
     infoSection,
     hideModal
-}: OverviewInfoBottomSheetPropTypes) {
+}: HomeInfoBottomSheetPropTypes) {
     return (
         <BottomSheet title="Info" isVisible={Boolean(infoSection)} onBackdropPress={hideModal}>
             {Boolean(infoSection) && <View style={styles.content}>
-                {OverviewInfo[infoSection as OverviewInfoSections].map(({ title, description }: {title: string, description: string}) => (
+                {HomeInfo[infoSection as HomeInfoSections].map(({ title, description }: {title: string, description: string}) => (
                     <View key={title}>
                         <Text variant={Text.variants.H4} isBold>{title}</Text>
                         <Text>{description}</Text>
@@ -29,4 +29,4 @@ function OverviewInfoBottomSheet({
     );
 }
 
-export default OverviewInfoBottomSheet;
+export default HomeInfoBottomSheet;

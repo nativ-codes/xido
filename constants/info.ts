@@ -1,4 +1,4 @@
-import { CompanyInfoSections, OverviewInfoSections } from '@/types';
+import { CompanyInfoSections, HomeInfoSections } from '@/types';
 
 const CompanyInfo = {
     [CompanyInfoSections.OVERALL]: [{
@@ -79,8 +79,8 @@ const CalendarInfo = [{
     description: 'Expected dividends to be received for the current year.'
 }];
 
-const OverviewInfo = {
-    [OverviewInfoSections.OVERALL]: [{
+const HomeInfo = {
+    [HomeInfoSections.OVERALL]: [{
         title: 'Invested',
         description: 'Total capital invested in the portfolio.'
     }, {
@@ -93,7 +93,7 @@ const OverviewInfo = {
         title: 'Dividends last 12 months',
         description: 'Total dividends received in the last 12 months.'
     }],
-    [OverviewInfoSections.GOALS]: [{
+    [HomeInfoSections.GOALS]: [{
         title: 'Latest goal achieved',
         description: 'The most recent financial goal that has been reached.'
     }, {
@@ -106,7 +106,7 @@ const OverviewInfo = {
 };
 
 export {
-    OverviewInfo,
+    HomeInfo,
     CalendarInfo,
     CompanyInfo
 };

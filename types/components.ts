@@ -22,7 +22,7 @@ export enum LegalTypes {
   PRIVACY_POLICY = 'PrivacyPolicy'
 };
 
-export enum OverviewInfoSections {
+export enum HomeInfoSections {
   OVERALL = 'OVERALL',
   GOALS = 'GOALS'
 };
