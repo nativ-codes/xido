@@ -220,6 +220,7 @@ const parseTransactions = (transactions: TransactionType[]) => {
 			const [id, type, time, symbol, comment, amount] =
 				transaction as TransactionType;
 			const companySymbol = symbol?.split('.')?.[0];
+
 			const newCompanies = Boolean(companySymbol)
 				? {
 					...parsedTransactions.companies,
@@ -442,10 +443,10 @@ type ParseTransactionsForCalendarReturnType = {
 const parseTransactionsForCalendar = (transactions: TransactionType[]) => {
 	const years = transactions.reduce<ParseTransactionsForCalendarReturnType>((acc, transaction) => {
 		const [id, type, time, symbol, comment, amount] = transaction;
-
+		
 		if (type === OperationType.Dividend) {
-			const { monthByIndex, year } = parseTransactionDate(time);
 			const companySymbol = symbol?.split('.')?.[0];
+			const { monthByIndex, year } = parseTransactionDate(time);
 			const month = acc[year]?.data?.[monthByIndex];
 
 			return {
@@ -545,9 +546,33 @@ const parseGoals = ({goals, value}: {
 		}
 	});
 
+const parseTransactionsForTotalCompanies = (transactions: TransactionType[]) => 
+	transactions.reduce<string[]>((acc, transaction, key) => {
+		const [id, type, time, symbol, comment, amount] = transaction;
+		const companySymbol = symbol?.split('.')?.[0];
+		// Skip the first element, which is the header row
+		if (key === 0) return acc;
+
+		if (Boolean(companySymbol) && !acc.includes(companySymbol)) {
+			return [...acc, companySymbol];
+		} else {
+			return acc;
+		}
+	}, []);
+
+const filterRawTransactions = (transactions: TransactionType[], symbols: string[]) => 
+	transactions.filter((transaction) => {
+		const [id, type, time, symbol, comment, amount] = transaction;
+		const companySymbol = symbol?.split('.')?.[0];
+
+		return symbols.includes(companySymbol);
+	});
+
 export {
+	filterRawTransactions,
 	getLast12MonthsDividend,
 	parseTransactionsForLast12MonthsDividend,
+	parseTransactionsForTotalCompanies,
 	parseTransactionsForCalendar,
 	parseTransactions,
 	parseCompanies,

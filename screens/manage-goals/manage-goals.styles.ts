@@ -1,5 +1,6 @@
-import colors from "@/common/colors";
 import { StyleSheet } from "react-native";
+
+import colors from "@/common/colors";
 
 export default StyleSheet.create({
     cardWrapper: {
@@ -17,5 +18,10 @@ export default StyleSheet.create({
         marginHorizontal: 16,
         gap: 8,
         paddingBottom: 90
+    },
+    floatingButton: {
+        position: 'absolute',
+        left: 16,
+        right: 16,
     }
 });

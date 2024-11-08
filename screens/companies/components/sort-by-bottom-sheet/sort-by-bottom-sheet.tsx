@@ -2,11 +2,11 @@ import { Dispatch, SetStateAction } from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { SortByPropTypes } from '@/types/components';
 import { Button, Selection, BottomSheet } from '@/common/components';
 import { sortBy } from '@/constants';
 
 import styles from './sort-by-bottom-sheet.styles'
-import { SortByPropTypes } from '@/types/components';
 
 const keyExtractor = (item: SortByPropTypes) => item?.label;
 

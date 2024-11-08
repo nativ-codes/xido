@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import { Alert, TextInput, View } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
 
 import { Button, Text } from '@/common/components';
-import { getGoals, setGoals } from '@/config/store/slices/user-data';
+import Store from '@/config/store/slices/user-data';
 import { ScreenLayout } from '@/common/layouts';
-
-import { router, useLocalSearchParams } from 'expo-router';
 import { getRandomString } from '@/common/utils';
 import { GoalsPropTypes } from '@/types';
 
@@ -13,7 +12,7 @@ import styles from './update-goal.styles'
 
 function UpdateGoal() {
     const { goalId }: { goalId: string } = useLocalSearchParams();
-    const goals = getGoals();
+    const goals = Store.useGoals();
     const goal = goals.find((goal: GoalsPropTypes) => goal.id === goalId) || {};
     const isAdd = !goalId;
 
@@ -24,7 +23,7 @@ function UpdateGoal() {
 
     const handleOnUpdate = () => {
         if (isAdd) {
-            setGoals([...goals, {
+            Store.setGoals([...goals, {
                 id: getRandomString(),
                 amount: parseFloat(amount),
                 title
@@ -36,14 +35,14 @@ function UpdateGoal() {
                 title
             }) : goal);
     
-            setGoals(updatedGoal);
+            Store.setGoals(updatedGoal);
         }
         router.back();
     }
 
     const removeGoal = () => {
         const updatedGoal = goals.filter((goal: GoalsPropTypes) => goal.id !== goalId);
-        setGoals(updatedGoal);
+        Store.setGoals(updatedGoal);
         router.back();        
     }
 

@@ -5,11 +5,9 @@ import Tag from '@/common/components/tag/tag';
 import Avatar from '@/common/components/avatar/avatar';
 import Row from '@/common/layouts/row/row';
 
-import { currencies } from '@/constants';
 import styles from './company-card.styles';
 import { CalculateMarketSummaryReturnType } from '@/types/companies';
 import ListItem from '@/common/components/list-item/list-item';
-import { ListItemVariants } from '@/types/components';
 import { formatPercentValue, formatValue } from '@/common/utils';
 
 function CompanyCard({

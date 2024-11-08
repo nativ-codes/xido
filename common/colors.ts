@@ -2,6 +2,7 @@ const colors = {
     primary: '#12d18e',
     error: '#FE5F55',
     background: '#F7F7F7',
+    overlay: '#F7F7F7CC',
     surface: '#FFFFFF',
     primaryText: '#000000',
     disable: '#9E9E9E',

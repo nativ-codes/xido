@@ -1,4 +1,4 @@
-const transactions = [
+export const mockedTransactions = [
     ["ID", "Type", "Time", "Symbol", "Comment", "Amount"],
     [
       "615433738",
@@ -3427,7 +3427,3 @@ const transactions = [
     [""],
     [""]
 ]
-
-export {
-  transactions
-};

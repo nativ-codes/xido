@@ -6,7 +6,7 @@ import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { Button, CompanyCard } from '@/common/components';
 import { SortByPropTypes } from '@/types/components';
-import { getUserData } from '@/config/store/slices/user-data';
+import Store from '@/config/store/slices/user-data';
 import { ScreenLayout } from '@/common/layouts';
 import colors from '@/common/colors';
 
@@ -15,9 +15,9 @@ import styles from './companies.styles';
 
 function Companies() {
     const router = useRouter();
-    const userData = useRef(Object.values(getUserData()));
+    const userData = Object.values(Store.useUserData());
 
-    const [filteredUserData, setFilteredUserData] = useState(userData.current);
+    const [filteredUserData, setFilteredUserData] = useState(userData);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [sortByValue, setSortByValue] = useState<SortByPropTypes>();
 
@@ -25,7 +25,7 @@ function Companies() {
     const hideModal = () => setIsModalVisible(false);
 
     const handleOnChangeText = (text: string) => {
-        setFilteredUserData(userData.current.filter(item =>
+        setFilteredUserData(userData.filter(item =>
             item.summary.companyName.toLowerCase().includes(text.toLowerCase()) ||
             item.summary.symbol.toLowerCase().includes(text.toLowerCase())
         ))
@@ -33,7 +33,7 @@ function Companies() {
 
     const handleOnSortBy = () => {
         if (sortByValue) {
-            const shallowCopy = [...userData.current];
+            const shallowCopy = [...userData];
 
             setFilteredUserData(shallowCopy.sort((a, b) => b.summary[sortByValue?.key] - a.summary[sortByValue?.key]))
         }
@@ -46,7 +46,7 @@ function Companies() {
 
     const handleOnReset = () => {
         setSortByValue(void 0);
-        setFilteredUserData(userData.current);
+        setFilteredUserData(userData);
         hideModal();
     }
 

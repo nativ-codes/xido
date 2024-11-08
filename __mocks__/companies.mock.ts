@@ -1,4 +1,4 @@
-const companies = [
+export const mockedCompanies = [
   {
     language: "en-US",
     region: "US",
@@ -8032,5 +8032,3 @@ const companies = [
     symbol: "DAVA",
   },
 ];
-
-export { companies };

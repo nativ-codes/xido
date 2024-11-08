@@ -6,9 +6,9 @@ import { Text } from '@/common/components';
 import { ScreenLayout } from '@/common/layouts';
 import { Legal as LegalConstant } from '@/constants';
 import { LegalTypes } from '@/types';
+import colors from '@/common/colors';
 
 import styles from './legal.styles'
-import colors from '@/common/colors';
 
 function Legal() {
     const { type }: { type: LegalTypes } = useLocalSearchParams();

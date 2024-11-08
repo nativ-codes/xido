@@ -1,24 +1,22 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
-import { useMMKVString } from 'react-native-mmkv';
 
 import { ScreenLayout } from '@/common/layouts';
 import { Text } from '@/common/components';
 import colors from '@/common/colors';
 import { parseGoals, sortByNumbers } from '@/common/utils';
-import { getLast12MonthsDividend } from '@/config/store/slices/user-data';
+import Store from '@/config/store/slices/user-data';
 
 import styles from './goals.styles';
 
 function Goals() {
-    const [storeGoals] = useMMKVString('goals');
-    const parsedGoals = JSON.parse(storeGoals || '[]');
-    const value = getLast12MonthsDividend();
+    const parsedGoals = Store.useGoals();
+    const last12MonthsDividend = Store.useLast12MonthsDividend();
 
     const goals = parseGoals({
         goals: sortByNumbers(parsedGoals, item => item.amount),
-        value
+        value: last12MonthsDividend
     });
 
     const renderChecked = (
@@ -36,13 +34,13 @@ function Goals() {
             <View style={styles.wrapper}>
                 {goals.map((goal, key) => (
                     <View key={`${goal.title}-${goal.amount}`} style={styles.cardWrapper}>
-                        <View style={StyleSheet.compose(styles.line, 
+                        {goals.length > 1 && <View style={StyleSheet.compose(styles.line, 
                             key === 0 
                                 ? styles.lineStart 
                                 : key === parsedGoals.length - 1 
                                     ? styles.lineEnd 
                                     : styles.lineMiddle
-                        )} />
+                        )} />}
                         {goal.isGoalAchieved ? renderChecked : renderNotChecked}
                         <View style={styles.card}>
                             <View style={styles.header}>

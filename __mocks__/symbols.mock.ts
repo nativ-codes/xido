@@ -1,0 +1,1 @@
+export const mockedSymbols = ["MMM", "MSFT", "JNJ", "TGT", "AMGN", "INTC", "ALLY", "O", "ABBV", "HRL", "ADC", "TXN", "VZ", "MO", "FDX", "HPQ", "KO", "DLR", "KHC", "TROW", "FSM", "PATH", "DAVA"]

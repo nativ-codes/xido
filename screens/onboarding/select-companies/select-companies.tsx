@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { router } from 'expo-router';
 
 import { maxCompaniesAllowed } from '@/constants';
-import { getCompanies, setSymbols } from '@/config/store/slices/user-data';
+import Store from '@/config/store/slices/user-data';
 import { Selection, Text, Button, Progress } from '@/common/components';
 import { ScreenLayout } from '@/common/layouts';
 
@@ -12,7 +12,7 @@ import styles from './select-companies.styles';
 const keyExtractor = (item: string) => item;
 
 function SelectCompanies() {
-    const uploadedCompanies = useMemo(() => Object.keys(getCompanies().companies), []);
+    const uploadedCompanies = useMemo(Store.getSymbols, []);
     const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
 
     const selectAllText = uploadedCompanies.length <= maxCompaniesAllowed ? 'Select all' : `Select first ${maxCompaniesAllowed} companies`;
@@ -33,8 +33,8 @@ function SelectCompanies() {
     }
 
     const handleOnContinue = () => {
-        setSymbols(selectedCompanies);
-        router.navigate('/all-set');
+        Store.setSymbols(selectedCompanies);
+        router.navigate('/fetch-companies');
     }
 
     return (

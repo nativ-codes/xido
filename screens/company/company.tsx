@@ -3,16 +3,16 @@ import { useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 
 import { Divider, Avatar, Text, Tag, ListItem, Card } from '@/common/components';
-import { getUserData } from '@/config/store/slices/user-data';
+import Store from '@/config/store/slices/user-data';
 import { formatValue, formatPercentValue } from '@/common/utils';
 import { CompanyInfoSections, TransactionsToDisplayPropTypes } from '@/types';
+import { ScreenLayout } from '@/common/layouts';
 
 import CompanyInfoBottomSheet from './components/company-info-bottom-sheet/company-info-bottom-sheet';
 import styles from './company.styles';
-import { ScreenLayout } from '@/common/layouts';
 
 function Company() {
-  const userData = useMemo(getUserData, []);
+  const userData = Store.useUserData();
   const [infoSection, setInfoSection] = useState<CompanyInfoSections>();
   const { symbol }: { symbol: string } = useLocalSearchParams();
   const { summary } = userData[symbol] || {};

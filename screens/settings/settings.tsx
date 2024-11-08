@@ -1,20 +1,26 @@
 import React from 'react';
 import { View, TouchableOpacity, Linking, Alert } from 'react-native';
+import { router } from 'expo-router';
 
 import { Text, Card, ListItem } from '@/common/components';
+import Store from '@/config/store/slices/user-data';
 import { ScreenLayout } from '@/common/layouts';
 import { LegalTypes } from '@/types';
-import { router } from 'expo-router';
 import colors from '@/common/colors';
 
 import styles from './settings.styles'
 
 function Settings() {
     const handleOnManageGoals = () => router.push('/manage-goals');
-    const handleOnImportNewPortfolio = () => {};
+
+    const handleOnImportNewPortfolio = () => 
+        router.push('/landing');
+
     const handleOnRemoveData = () => Alert.alert('Remove data', 'This will permanently remove all data stored in the app, including imported transactions and generated insights.\nThis action cannot be undone.', [
         { text: 'Cancel', style: 'cancel' },
-        { text: 'Remove', style: 'destructive' }
+        { text: 'Remove', style: 'destructive', onPress: () => {
+            Store.clearAll()
+        }}
     ]);
 
     const handleOnTermsAndConditions = () => 

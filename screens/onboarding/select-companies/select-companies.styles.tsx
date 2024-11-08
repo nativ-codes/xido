@@ -13,17 +13,6 @@ export default StyleSheet.create({
         justifyContent: 'center',
         gap: 8        
     },
-    uploadBox: {
-        marginVertical: 16,
-        backgroundColor: colors.secondarySurface,
-        borderWidth: 3,
-        borderColor: colors.primary,
-        height: 200,
-        borderRadius: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 8,
-    },
     buttons: {
         paddingHorizontal: 16,
         paddingBottom: 16,
