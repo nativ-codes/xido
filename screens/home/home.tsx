@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import { View } from 'react-native';
-import { router } from "expo-router";
 
-import { Text, Button, Card, ListItem, Progress, Divider } from '@/common/components';
-import { formatPercentValue, formatValue } from "@/common/utils";
+import { Text, Card, ListItem, Progress, Divider } from '@/common/components';
+import { formatPercentValue, formatValue, getOverall, parseGoals, sortByNumbers } from "@/common/utils";
 import { ScreenLayout } from "@/common/layouts";
+import Store from "@/config/store/slices/user-data";
 import colors from "@/common/colors";
 
 import HomeInfoBottomSheet from "./components/home-info-bottom-sheet/home-info-bottom-sheet";
@@ -12,67 +12,70 @@ import styles from './home.styles'
 import { HomeInfoSections } from "@/types";
 
 function Home() {
+    const userData = Store.useUserData();
+    const goals = Store.useGoals();
+    const overall = getOverall(userData);
+    const currency = Store.useCurrency();
+    const last12MonthsDividend = Store.useLast12MonthsDividend();
+
+    const parsedGoals = parseGoals({
+        goals: sortByNumbers(goals, item => item.amount),
+        value: last12MonthsDividend
+    });
+    const lastNotAchievedGoalIndex = parsedGoals.findIndex(goal => !goal.isGoalAchieved);
+    const lastAchievedGoal = parsedGoals[lastNotAchievedGoalIndex - 1]?.amount || 0;
+    const nextGoal = parsedGoals[lastNotAchievedGoalIndex]?.amount || 0;
+    const nextGoalProgress = parsedGoals[lastNotAchievedGoalIndex]?.progress || 0;
+
     const [infoSection, setInfoSection] = useState<HomeInfoSections>();
     const hideModal = () => setInfoSection(undefined);
     const showModal = (section: HomeInfoSections) => () => setInfoSection(section);
 
-    const isPortfolioAdded = true;
-    const profitOrLoss = 200;
-    const profitOrLossPercentage = 20;
-    const currency = 'USD';
-    const handleOnAddPortfolio = () => {
-        router.navigate('/landing');
-    }
-
     return (
-        <ScreenLayout title="Home">
+        <ScreenLayout title="Home" isEmpty={!Boolean(Object.values(userData).length)}>
             <View style={styles.wrapper}>
-
-            {isPortfolioAdded ? (
                 <Card>
                     <Card.Title title="Overall" onPress={showModal(HomeInfoSections.OVERALL)}/>
                     <ListItem
                         leftText="Invested"
-                        rightText={formatValue(200, currency)}
+                        rightText={formatValue(overall.boughtValue, currency)}
                     />
                     <ListItem
                         leftText="Market value"
-                        rightText={formatValue(200, currency)}
+                        rightText={formatValue(overall.marketValue, currency)}
                     />       
                     <ListItem
                         leftText="Profit/Loss"
-                        rightText={`${formatValue(profitOrLoss, currency)} (${formatPercentValue(profitOrLossPercentage)})`}
-                        variant={Number(profitOrLoss) > 0 ? ListItem.variants.PROFIT : ListItem.variants.LOSS}
+                            rightText={`${formatValue(overall.profitOrLoss, currency)} (${formatPercentValue(overall.profitOrLossPercentage)})`}
+                            variant={Number(overall.profitOrLoss) > 0 ? ListItem.variants.PROFIT : ListItem.variants.LOSS}
                     />      
                     <ListItem
                         leftText="Dividends last 12 months"
-                        rightText={formatValue(200, currency)}
-                    />            
+                        rightText={formatValue(last12MonthsDividend, currency)}
+                    />
+                        <ListItem
+                            leftText="Average dividend yield"
+                            rightText={formatPercentValue(overall.dividendYield)}
+                        />               
                     <Divider />
                     <Card.Title title="Goals" onPress={showModal(HomeInfoSections.GOALS)} />
-                    <ListItem
+                    {Boolean(lastAchievedGoal) && <ListItem
                         leftText="Latest goal achieved"
-                        rightText={`${formatValue(200, currency)} / month`}
-                    />
+                        rightText={`${formatValue(lastAchievedGoal, currency)} / month`}
+                    />}
                     <ListItem
                         leftText="Next goal"
-                        rightText={`${formatValue(400, currency)} / month`}
+                        rightText={`${formatValue(nextGoal, currency)} / month`}
                     />
                     <View style={styles.goalProgressWrapper}>
                         <View style={styles.goalHeader}>
-                            <Text color={colors.secondaryText} variant={Text.variants.H6}>200$</Text>
-                            <Text color={colors.primaryText} variant={Text.variants.H5} isBold>86%</Text>
-                            <Text color={colors.secondaryText} variant={Text.variants.H6}>400$</Text>
+                            <Text color={colors.secondaryText} variant={Text.variants.H6}>{formatValue(lastAchievedGoal, currency)}</Text>
+                            <Text color={colors.primaryText} variant={Text.variants.H5} isBold>{formatPercentValue(nextGoalProgress)}</Text>
+                            <Text color={colors.secondaryText} variant={Text.variants.H6}>{formatValue(nextGoal, currency)}</Text>
                         </View>
-                        <Progress value={86} />                                                     
+                        <Progress value={nextGoalProgress} />
                     </View>
                 </Card>
-            ) : (
-                <View style={styles.noPortfolio}>
-                    <Text>You haven't added a portfolio yet.</Text>
-                    <Button label="Add portfolio" onPress={handleOnAddPortfolio}/>
-                </View>
-            )}
             </View>
             <HomeInfoBottomSheet 
                 infoSection={infoSection}

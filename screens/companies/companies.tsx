@@ -61,7 +61,7 @@ function Companies() {
     ), [])
 
     return (
-        <ScreenLayout title="Companies">
+        <ScreenLayout title="Companies" isEmpty={!Boolean(userData.length)}>
             <View style={styles.wrapper}>
                 <View style={styles.search}>
                     <View style={styles.icon}>

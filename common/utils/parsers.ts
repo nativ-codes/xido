@@ -530,19 +530,26 @@ const getLast12MonthsDividend = (transactions: TransactionType[]) =>
 		return total + parseFloat(amount);
 	}, 0);
 
+type ParseGoalsPropTypes = {
+	title: string;
+	amount: number;
+	isGoalAchieved: boolean;
+	progress: number;
+}
+
 const parseGoals = ({goals, value}: {
 	goals: GoalsPropTypes[],
 	value: number
-}) => 
+}): ParseGoalsPropTypes[] => 
 	goals.map(({title, amount}) => {
 		const progress = value / (parseFloat(amount) * 12) * 100;
 		const isGoalAchieved = progress >= 100;
 
 		return {
 			title,
-			amount,
+			amount: parseFloat(amount),
 			isGoalAchieved,
-			progress: formatPercentValue(progress > 100 ? 100 : progress)
+			progress //formatPercentValue(progress > 100 ? 100 : progress)
 		}
 	});
 
@@ -568,6 +575,34 @@ const filterRawTransactions = (transactions: TransactionType[], symbols: string[
 		return symbols.includes(companySymbol);
 	});
 
+const getOverall = (userData) => {
+	const companiesData = Object.values(userData);
+	const overall = companiesData.reduce((total, company) => {
+		const { boughtValue, marketValue, dividendYield = 0 } = company.summary;
+
+		return {
+			boughtValue: total.boughtValue + boughtValue,
+			marketValue: total.marketValue + marketValue,
+			dividendYields: total.dividendYields + dividendYield
+		}
+	}, {
+		boughtValue: 0,
+		marketValue: 0,
+		dividendYields: 0
+	})
+
+	const profitOrLoss = overall.marketValue - Math.abs(overall.boughtValue);
+	const profitOrLossPercentage =
+		(profitOrLoss / Math.abs(overall.boughtValue)) * 100;
+
+	return {
+		...overall,
+		profitOrLoss,
+		profitOrLossPercentage,
+		dividendYield: overall.dividendYields / companiesData.length
+	}
+};
+
 export {
 	filterRawTransactions,
 	getLast12MonthsDividend,
@@ -577,5 +612,6 @@ export {
 	parseTransactions,
 	parseCompanies,
 	parseUserData,
-	parseGoals
+	parseGoals,
+	getOverall
 };

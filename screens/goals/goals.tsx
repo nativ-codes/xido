@@ -11,11 +11,11 @@ import Store from '@/config/store/slices/user-data';
 import styles from './goals.styles';
 
 function Goals() {
-    const parsedGoals = Store.useGoals();
+    const goals = Store.useGoals();
     const last12MonthsDividend = Store.useLast12MonthsDividend();
 
-    const goals = parseGoals({
-        goals: sortByNumbers(parsedGoals, item => item.amount),
+    const parsedGoals = parseGoals({
+        goals: sortByNumbers(goals, item => item.amount),
         value: last12MonthsDividend
     });
 
@@ -30,14 +30,14 @@ function Goals() {
     )
 
     return (
-        <ScreenLayout title="Goals">
+        <ScreenLayout title="Goals" isEmpty={!Boolean(goals.length)}>
             <View style={styles.wrapper}>
-                {goals.map((goal, key) => (
+                {parsedGoals.map((goal, key) => (
                     <View key={`${goal.title}-${goal.amount}`} style={styles.cardWrapper}>
-                        {goals.length > 1 && <View style={StyleSheet.compose(styles.line, 
+                        {parsedGoals.length > 1 && <View style={StyleSheet.compose(styles.line, 
                             key === 0 
                                 ? styles.lineStart 
-                                : key === parsedGoals.length - 1 
+                                : key === goals.length - 1 
                                     ? styles.lineEnd 
                                     : styles.lineMiddle
                         )} />}

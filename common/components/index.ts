@@ -11,3 +11,4 @@ export { default as BottomSheet } from './bottom-sheet/bottom-sheet';
 export { default as Header } from './header/header';
 export { default as Progress } from './progress/progress';
 export { default as CompanyCard } from './company-card/company-card';
+export { default as EmptyPlaceholder } from './empty-placeholder/empty-placeholder';

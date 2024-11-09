@@ -206,14 +206,21 @@ const useCalendar = () => {
 
 const useCurrency = () => {
     const [currency] = useMMKVString('currency');
+    console.log('>> currency', currency)
 
-    return useMemo(() => (currency || ""), [currency]);
+    return useMemo(() => (currency ? JSON.parse(currency) : ""), [currency]);
 }
 
 const useGoals = () => {
     const [goals] = useMMKVString('goals');
 
     return useMemo(() => JSON.parse(goals || '[]'), [goals]);
+}
+
+const useTransactions = () => {
+    const [transactions] = useMMKVString('transactions');
+
+    return useMemo(() => JSON.parse(transactions || '[]'), [transactions]);
 }
 
 const useLast12MonthsDividend = () => {
@@ -245,6 +252,7 @@ export {
 };
 
 export default {
+    useTransactions,
     clearAll,
     useGoals,
     useCurrency,

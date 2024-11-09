@@ -48,7 +48,7 @@ function Calendar() {
         , []);
 
     return (
-        <ScreenLayout title="Dividend calendar">
+        <ScreenLayout isEmpty={!Boolean(years.length)} title="Dividend calendar">
             <View style={styles.tabWrapper}>
                 <ScrollView contentContainerStyle={styles.tabs} horizontal showsHorizontalScrollIndicator={false}>
                     <Selection

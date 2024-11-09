@@ -35,6 +35,7 @@ function FetchCompanies() {
 
                         const goals = Store.getGoals();
                         Store.setGoals(goals.length ? goals : defaultGoals);
+                        console.log('companies[0].currency', companies[0].currency)
                         Store.setCurrency(companies[0].currency);
                         Store.setUserData(parsedUserData);
                         Store.setTransactions(parsedTransactions);
