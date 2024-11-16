@@ -1,9 +1,4 @@
-import {
-	companiesStatsDefault,
-	dividendStatsDefault,
-	oneYearInMilliseconds,
-	shareStatsDefault
-} from '@/constants';
+import { companiesStatsDefault, dividendStatsDefault, oneYearInMilliseconds, shareStatsDefault } from '@/constants';
 import {
 	OperationType,
 	SummaryType,
@@ -14,27 +9,22 @@ import {
 	Company,
 	CompanyData,
 	ParseTransactionsForExpectedDividendsReturnType,
-	GoalsPropTypes
+	GoalsPropTypes,
+	TransactionFields
 } from '@/types';
-import {
-	compareDates,
-	getIsOlderThanOneYear,
-	getMonthByIndex,
-	parseTransactionDate,
-	ParseTransactionDateReturnType
-} from './dates';
-import { formatPercentValue } from './formatters';
+import { getIsOlderThanOneYear, getMonthByIndex, parseTransactionDate, ParseTransactionDateReturnType } from './dates';
+import { getTransactionValue } from './misc';
 
 type ParseTransactionsForShareStatsReturnType = {
 	maxShare: number;
 	minShare: number;
 };
 
-const parseTransactionsForShareStats = (
-	transactions: TransactionType[]
-): ParseTransactionsForShareStatsReturnType =>
+const parseTransactionsForShareStats = (transactions: TransactionType[]): ParseTransactionsForShareStatsReturnType =>
 	transactions.reduce((acc, transaction) => {
-		const [id, type, time, symbol, comment, amount] = transaction;
+		const getValue = getTransactionValue({ transaction });
+		const type = getValue(TransactionFields.TYPE);
+		const comment = getValue(TransactionFields.COMMENT);
 
 		if (type === OperationType.StocksEtfPurchase) {
 			const stock = parseMessageForShares(comment);
@@ -58,7 +48,10 @@ const parseTransactionsForDividendStats = (
 	transactions: TransactionType[]
 ): ParseTransactionsForDividendStatsReturnType =>
 	transactions.reduce((acc, transaction) => {
-		const [id, type, time, symbol, comment, amount] = transaction;
+		const getValue = getTransactionValue({ transaction });
+		const type = getValue(TransactionFields.TYPE);
+		const time = getValue(TransactionFields.TIME);
+		const amount = getValue(TransactionFields.AMOUNT);
 
 		if (type === OperationType.Dividend) {
 			if (getIsOlderThanOneYear(time)) {
@@ -69,8 +62,7 @@ const parseTransactionsForDividendStats = (
 			} else {
 				return {
 					...acc,
-					dividendsLastYear:
-						acc.dividendsLastYear + parseFloat(amount),
+					dividendsLastYear: acc.dividendsLastYear + parseFloat(amount),
 					dividendsAllTime: acc.dividendsAllTime + parseFloat(amount)
 				};
 			}
@@ -84,9 +76,7 @@ type ParseMessageForSharesReturnType = {
 	value: string;
 };
 
-const parseMessageForShares = (
-	message: string
-): ParseMessageForSharesReturnType => {
+const parseMessageForShares = (message: string): ParseMessageForSharesReturnType => {
 	// 'OPEN BUY 10 @ 114.51'
 	const splitByAt = message.split('@');
 	// ['OPEN BUY 10 ', ' 114.51']
@@ -121,15 +111,10 @@ const calculateMarketSummary = ({
 }: CalculateMarketSummaryPropsType): CalculateMarketSummaryReturnType => {
 	const marketValue = company.bid * summary.shares;
 	const profitOrLoss = marketValue - Math.abs(summary.boughtValue);
-	const profitOrLossPercentage =
-		(profitOrLoss / Math.abs(summary.boughtValue)) * 100;
+	const profitOrLossPercentage = (profitOrLoss / Math.abs(summary.boughtValue)) * 100;
 
-	const latestTransactions =
-		parseTransactionsForLatestTransactions(transactions);
-	const expectedDividends = parseTransactionsForExpectedDividends(
-		transactions,
-		transactions[0]
-	);
+	const latestTransactions = parseTransactionsForLatestTransactions(transactions);
+	const expectedDividends = parseTransactionsForExpectedDividends(transactions, transactions[0]);
 	const shareStats = parseTransactionsForShareStats(transactions);
 	const dividendStats = parseTransactionsForDividendStats(transactions);
 
@@ -160,12 +145,7 @@ type CalculateSummaryPropsType = {
 	comment: string;
 };
 
-const calculateSummary = ({
-	summary,
-	type,
-	amount,
-	comment
-}: CalculateSummaryPropsType): SummaryType => {
+const calculateSummary = ({ summary, type, amount, comment }: CalculateSummaryPropsType): SummaryType => {
 	const newSummary = { ...summary };
 
 	switch (type) {
@@ -177,15 +157,11 @@ const calculateSummary = ({
 			break;
 		case OperationType.StocksEtfPurchase:
 			newSummary.boughtValue += parseFloat(amount);
-			newSummary.shares += parseFloat(
-				parseMessageForShares(comment).amount
-			);
+			newSummary.shares += parseFloat(parseMessageForShares(comment).amount);
 			break;
 		case OperationType.StocksEtfSale:
 			newSummary.boughtValue -= parseFloat(amount);
-			newSummary.shares -= parseFloat(
-				parseMessageForShares(comment).amount
-			);
+			newSummary.shares -= parseFloat(parseMessageForShares(comment).amount);
 			break;
 		case OperationType.SpinOff:
 			newSummary.spinOffs += parseFloat(amount);
@@ -211,83 +187,69 @@ type ParsedTransactionsType = {
 	companies: Record<string, ParsedTransactionsPropsType>;
 };
 
-const parseTransactions = (transactions: TransactionType[]) => {
-	return transactions.reduce(
-		(parsedTransactions: ParsedTransactionsType, transaction, key) => {
-			// Skip the first element, which is the header row
-			if (key === 0) return parsedTransactions;
+const parseTransactions = (transactions: TransactionType[]) =>
+	transactions.reduce((parsedTransactions: ParsedTransactionsType, transaction, key): ParsedTransactionsType => {
+		// Skip the first element, which is the header row
+		if (key === 0) return parsedTransactions;
+		const getValue = getTransactionValue({ transaction });
+		const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
+		const type = getValue(TransactionFields.TYPE);
+		const comment = getValue(TransactionFields.COMMENT);
+		const amount = getValue(TransactionFields.AMOUNT);
 
-			const [id, type, time, symbol, comment, amount] =
-				transaction as TransactionType;
-			const companySymbol = symbol?.split('.')?.[0];
-
-			const newCompanies = Boolean(companySymbol)
-				? {
+		const newCompanies = Boolean(companySymbol)
+			? {
 					...parsedTransactions.companies,
 					[companySymbol]: {
 						summary: calculateSummary({
-							summary:
-								parsedTransactions.companies[companySymbol]
-									?.summary ||
-								companiesStatsDefault.summary,
+							summary: parsedTransactions.companies[companySymbol]?.summary || companiesStatsDefault.summary,
 							type,
 							amount,
 							comment
 						}),
-						transactions: [
-							...(parsedTransactions.companies[companySymbol]
-								?.transactions || []),
-							transaction
-						]
+						transactions: [...(parsedTransactions.companies[companySymbol]?.transactions || []), transaction]
 					}
-				}
-				: parsedTransactions.companies;
+			  }
+			: parsedTransactions.companies;
+
+		return {
+			summary: calculateSummary({
+				summary: parsedTransactions.summary,
+				type,
+				amount,
+				comment
+			}),
+			companies: newCompanies
+		};
+	}, companiesStatsDefault);
+
+const parseTransactionsForLatestTransactions = (transactions: TransactionType[]): TransactionsToDisplayPropTypes[] => {
+	const transactionsMapper = transactions.reduce<TransactionsToDisplayMapperPropTypes>((acc, transaction) => {
+		const getValue = getTransactionValue({ transaction });
+		const type = getValue(TransactionFields.TYPE);
+
+		if (
+			type === OperationType.Dividend ||
+			type === OperationType.StocksEtfSale ||
+			type === OperationType.StocksEtfPurchase
+		) {
+			const time = getValue(TransactionFields.TIME);
+			const amount = getValue(TransactionFields.AMOUNT);
+			const { displayDate } = parseTransactionDate(time);
 
 			return {
-				summary: calculateSummary({
-					summary: parsedTransactions.summary,
+				...acc,
+				[displayDate]: {
+					date: displayDate,
 					type,
-					amount,
-					comment
-				}),
-				companies: newCompanies
-			};
-		},
-		companiesStatsDefault
-	);
-};
-
-const parseTransactionsForLatestTransactions = (
-	transactions: TransactionType[]
-): TransactionsToDisplayPropTypes[] => {
-	const transactionsMapper =
-		transactions.reduce<TransactionsToDisplayMapperPropTypes>(
-			(acc, transaction) => {
-				const [id, type, time, symbol, comment, amount] = transaction;
-
-				if (
-					type === OperationType.Dividend ||
-					type === OperationType.StocksEtfSale ||
-					type === OperationType.StocksEtfPurchase
-				) {
-					const date = time.split(' ')[0];
-
-					return {
-						...acc,
-						[date]: {
-							date,
-							type,
-							// Sum the amount for the same date
-							amount:
-								(acc[date]?.amount || 0) + parseFloat(amount)
-						}
-					};
-				} else {
-					return acc;
+					// Sum the amount for the same date
+					amount: (acc[displayDate]?.amount || 0) + parseFloat(amount)
 				}
-			},
-			{}
-		);
+			};
+		} else {
+			return acc;
+		}
+	}, {});
 
 	return Object.values(transactionsMapper);
 };
@@ -306,7 +268,11 @@ type ParseUserDataPropsType = {
 	companies: CompanyData[];
 };
 
-const parseUserData = ({ transactions, companies }: ParseUserDataPropsType) => {
+type ParseUserDataReturnType = {
+	[key: string]: CalculateMarketSummaryReturnType;
+};
+
+const parseUserData = ({ transactions, companies }: ParseUserDataPropsType): ParseUserDataReturnType => {
 	const totalPortfolioValue = companies.reduce((acc, company) => {
 		const currentCompany = transactions.companies[company.symbol];
 		return acc + company.bid * currentCompany.summary.shares;
@@ -331,75 +297,66 @@ const parseUserData = ({ transactions, companies }: ParseUserDataPropsType) => {
 
 type GroupTransactionsByMonths = {
 	[key: number]: string[];
-}
+};
 
 const groupTransactionsByMonths = (
 	transactions: TransactionType[],
 	lastTransactionDate: ParseTransactionDateReturnType
-): GroupTransactionsByMonths => transactions.reduce((acc, transaction) => {
-	const [id, type, time, symbol, comment, amount] = transaction;
+): GroupTransactionsByMonths =>
+	transactions.reduce((acc, transaction) => {
+		const getValue = getTransactionValue({ transaction });
+		const type = getValue(TransactionFields.TYPE);
 
-	if (type === OperationType.Dividend) {
-		const { month, year } = parseTransactionDate(time);
-		const currentMonthList = (acc as GroupTransactionsByMonths)[month] || [];
-		const isTransactionRecent =
-			lastTransactionDate.year === year ||
-			lastTransactionDate.year - 1 === year;
+		if (type === OperationType.Dividend) {
+			const { month, year } = parseTransactionDate(getValue(TransactionFields.TIME));
+			const currentMonthList = (acc as GroupTransactionsByMonths)[month] || [];
+			const isTransactionRecent = lastTransactionDate.year === year || lastTransactionDate.year - 1 === year;
 
-		return {
-			...acc,
-			[month]:
-				currentMonthList.includes(year.toString()) || !isTransactionRecent
-					? currentMonthList
-					: [...currentMonthList, year]
-		};
-	} else {
-		return acc;
-	}
-}, {});
+			return {
+				...acc,
+				[month]:
+					currentMonthList.includes(year.toString()) || !isTransactionRecent
+						? currentMonthList
+						: [...currentMonthList, year]
+			};
+		} else {
+			return acc;
+		}
+	}, {});
 
 const parseTransactionsForExpectedDividends = (
 	transactions: TransactionType[],
 	lastTransaction: TransactionType
 ): ParseTransactionsForExpectedDividendsReturnType => {
-	const lastTransactionDate = parseTransactionDate(lastTransaction[2]);
+	const lastTransactionDate = parseTransactionDate(
+		getTransactionValue({ transaction: lastTransaction })(TransactionFields.TIME)
+	);
 	const lastDividendReceived = transactions.find(
-		(transaction) => transaction[1] === OperationType.Dividend
+		(transaction) => getTransactionValue({ transaction })(TransactionFields.TYPE) === OperationType.Dividend
 	);
 
 	if (lastDividendReceived) {
-		const lastDividendValueReceived = parseMessageForDividends(
-			lastDividendReceived[4]
-		);
-		const months = groupTransactionsByMonths(
-			transactions,
-			lastTransactionDate
-		);
+		const lastDividendValueReceived = parseMessageForDividends(lastDividendReceived[4]);
+		const months = groupTransactionsByMonths(transactions, lastTransactionDate);
 
-		const parsedMonths = Object.entries(months).reduce<{ next: string[]; previous: string[] }>((acc, [month, years]) => {
-			if (years.length) {
-				if (Number(month) >= lastTransactionDate.month) {
-					return {
-						...acc,
-						next: [
-							...acc.next,
-							`${getMonthByIndex(Number(month))} ${lastTransactionDate.year
-							}`
-						]
-					};
+		const parsedMonths = Object.entries(months).reduce<{ next: string[]; previous: string[] }>(
+			(acc, [month, years]) => {
+				if (years.length) {
+					if (Number(month) >= lastTransactionDate.month) {
+						return {
+							...acc,
+							next: [...acc.next, `${getMonthByIndex(Number(month))} ${lastTransactionDate.year}`]
+						};
+					} else {
+						return {
+							...acc,
+							previous: [...acc.previous, `${getMonthByIndex(Number(month))} ${lastTransactionDate.year + 1}`]
+						};
+					}
 				} else {
-					return {
-						...acc,
-						previous: [
-							...acc.previous,
-							`${getMonthByIndex(Number(month))} ${lastTransactionDate.year + 1}`
-						]
-					};
+					return acc;
 				}
-			} else {
-				return acc;
-			}
-		},
+			},
 			{
 				next: [],
 				previous: []
@@ -429,25 +386,26 @@ type ParseTransactionsForCalendarReturnType = {
 				};
 				stats: {
 					totalDividends: number;
-					expectedDividends: number;
-				}
-			}
+					expectedDividends?: number;
+				};
+			};
 		};
 		stats: {
 			totalDividends: number;
-			expectedDividends: number;
+			expectedDividends?: number;
 		};
 	};
 };
 
-const parseTransactionsForCalendar = (transactions: TransactionType[]) => {
+const parseTransactionsForCalendar = (transactions: TransactionType[]): ParseTransactionsForCalendarReturnType => {
 	const years = transactions.reduce<ParseTransactionsForCalendarReturnType>((acc, transaction) => {
-		const [id, type, time, symbol, comment, amount] = transaction;
-		
-		if (type === OperationType.Dividend) {
-			const companySymbol = symbol?.split('.')?.[0];
-			const { monthByIndex, year } = parseTransactionDate(time);
+		const getValue = getTransactionValue({ transaction });
+
+		if (getValue(TransactionFields.TYPE) === OperationType.Dividend) {
+			const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
+			const { monthByIndex, year } = parseTransactionDate(getValue(TransactionFields.TIME));
 			const month = acc[year]?.data?.[monthByIndex];
+			const amount = getValue(TransactionFields.AMOUNT);
 
 			return {
 				...acc,
@@ -458,13 +416,13 @@ const parseTransactionsForCalendar = (transactions: TransactionType[]) => {
 							data: {
 								...month?.data,
 								[companySymbol]: {
-									totalDividends: (month?.data?.[companySymbol]?.totalDividends || 0) + parseFloat(amount),
+									totalDividends: (month?.data?.[companySymbol]?.totalDividends || 0) + parseFloat(amount)
 								}
 							},
 							stats: {
 								totalDividends: (month?.stats?.totalDividends || 0) + parseFloat(amount)
 							}
-						},
+						}
 					},
 					stats: {
 						totalDividends: (acc[year]?.stats?.totalDividends || 0) + parseFloat(amount)
@@ -476,47 +434,63 @@ const parseTransactionsForCalendar = (transactions: TransactionType[]) => {
 		}
 	}, {});
 
-	const { year } = parseTransactionDate(transactions[1][2]);
+	const { year } = parseTransactionDate(
+		getTransactionValue({
+			transaction: transactions[1]
+		})(TransactionFields.TIME)
+	);
 
-	Array(12).fill(void 0).forEach((_, index) => {
-		const month = getMonthByIndex(index + 1);
+	Array(12)
+		.fill(void 0)
+		.forEach((_, index) => {
+			const month = getMonthByIndex(index + 1);
 
-		if (years[year - 1]) {
-			if (!years[year - 1].data[month] || years[year].data[month]) {
-				return;
-			} else {
-				years[year].data[month] = {
-					data: years[year - 1].data[month].data,
-					stats: {
-						totalDividends: 0,
-						expectedDividends: years[year - 1].data[month].stats.totalDividends,
-					}
-				};
-				years[year].stats = {
-					...years[year].stats,
-					expectedDividends: (years[year].stats.expectedDividends || 0) + years[year - 1].data[month].stats.totalDividends
+			if (years[year - 1]) {
+				if (!years[year - 1].data[month] || years[year].data[month]) {
+					return;
+				} else {
+					years[year].data[month] = {
+						data: years[year - 1].data[month].data,
+						stats: {
+							totalDividends: 0,
+							expectedDividends: years[year - 1].data[month].stats.totalDividends
+						}
+					};
+					years[year].stats = {
+						...years[year].stats,
+						expectedDividends:
+							(years[year].stats.expectedDividends || 0) + years[year - 1].data[month].stats.totalDividends
+					};
 				}
 			}
-		}
-	});
+		});
 
 	return years;
 };
 
 const parseTransactionsForLast12MonthsDividend = (transactions: TransactionType[]) => {
-	const lastDividendTransaction = transactions.find((transaction) => transaction[1] === OperationType.Dividend);
-	const { day, month, year } = parseTransactionDate(lastDividendTransaction[2]);
+	const lastDividendTransaction = transactions.find(
+		(transaction) => getTransactionValue({ transaction })(TransactionFields.TYPE) === OperationType.Dividend
+	);
+	const lastDividendTransactionTime = getTransactionValue({
+		transaction: lastDividendTransaction
+	})(TransactionFields.TIME);
+	const { day, month, year } = parseTransactionDate(lastDividendTransactionTime);
 	const lastDividendTransactionDate = new Date(year, month - 1, day);
 	const lastDividendTransactionTimestamp = lastDividendTransactionDate.getTime();
 
 	return transactions.filter((transaction) => {
-		if (transaction[1] === OperationType.Dividend) {
-			const transactionDate = parseTransactionDate(transaction[2]);
+		const getValue = getTransactionValue({ transaction });
+		const type = getValue(TransactionFields.TYPE);
+
+		if (type === OperationType.Dividend) {
+			const time = getValue(TransactionFields.TIME);
+			const transactionDate = parseTransactionDate(time);
 			const currentDate = new Date(transactionDate.year, transactionDate.month - 1, transactionDate.day);
 			const currentDateTimestamp = currentDate.getTime();
-	
+
 			const timeDifference = lastDividendTransactionTimestamp - currentDateTimestamp;
-	
+
 			return timeDifference >= 0 && timeDifference <= oneYearInMilliseconds;
 		} else {
 			return false;
@@ -524,9 +498,11 @@ const parseTransactionsForLast12MonthsDividend = (transactions: TransactionType[
 	});
 };
 
-const getLast12MonthsDividend = (transactions: TransactionType[]) => 
+const getLast12MonthsDividend = (transactions: TransactionType[]): number =>
 	transactions.reduce((total, transaction) => {
-		const [id, type, time, symbol, comment, amount] = transaction;
+		const getValue = getTransactionValue({ transaction });
+		const amount = getValue(TransactionFields.AMOUNT);
+
 		return total + parseFloat(amount);
 	}, 0);
 
@@ -535,28 +511,26 @@ type ParseGoalsPropTypes = {
 	amount: number;
 	isGoalAchieved: boolean;
 	progress: number;
-}
+};
 
-const parseGoals = ({goals, value}: {
-	goals: GoalsPropTypes[],
-	value: number
-}): ParseGoalsPropTypes[] => 
-	goals.map(({title, amount}) => {
-		const progress = value / (parseFloat(amount) * 12) * 100;
+const parseGoals = ({ goals, value }: { goals: GoalsPropTypes[]; value: number }): ParseGoalsPropTypes[] =>
+	goals.map(({ title, amount }) => {
+		const progress = (value / (parseFloat(amount) * 12)) * 100;
 		const isGoalAchieved = progress >= 100;
 
 		return {
 			title,
 			amount: parseFloat(amount),
 			isGoalAchieved,
-			progress //formatPercentValue(progress > 100 ? 100 : progress)
-		}
+			progress
+		};
 	});
 
-const parseTransactionsForTotalCompanies = (transactions: TransactionType[]) => 
+const parseTransactionsForTotalCompanies = (transactions: TransactionType[]): string[] =>
 	transactions.reduce<string[]>((acc, transaction, key) => {
-		const [id, type, time, symbol, comment, amount] = transaction;
-		const companySymbol = symbol?.split('.')?.[0];
+		const getValue = getTransactionValue({ transaction });
+		const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
+
 		// Skip the first element, which is the header row
 		if (key === 0) return acc;
 
@@ -567,40 +541,51 @@ const parseTransactionsForTotalCompanies = (transactions: TransactionType[]) =>
 		}
 	}, []);
 
-const filterRawTransactions = (transactions: TransactionType[], symbols: string[]) => 
+const filterRawTransactions = (transactions: TransactionType[], symbols: string[]): TransactionType[] =>
 	transactions.filter((transaction) => {
-		const [id, type, time, symbol, comment, amount] = transaction;
-		const companySymbol = symbol?.split('.')?.[0];
+		const getValue = getTransactionValue({ transaction });
+		const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
 
 		return symbols.includes(companySymbol);
 	});
 
-const getOverall = (userData) => {
-	const companiesData = Object.values(userData);
-	const overall = companiesData.reduce((total, company) => {
-		const { boughtValue, marketValue, dividendYield = 0 } = company.summary;
+type GetOverallReturnType = {
+	boughtValue: number;
+	marketValue: number;
+	dividendYields: number;
+	profitOrLoss: number;
+	profitOrLossPercentage: number;
+	dividendYield: number;
+};
 
-		return {
-			boughtValue: total.boughtValue + boughtValue,
-			marketValue: total.marketValue + marketValue,
-			dividendYields: total.dividendYields + dividendYield
+const getOverall = (userData: ParseUserDataReturnType): GetOverallReturnType => {
+	const companiesData = Object.values(userData);
+	const overall = companiesData.reduce(
+		(total, company) => {
+			const { boughtValue, marketValue, dividendYield = 0 } = company.summary;
+
+			return {
+				boughtValue: total.boughtValue + boughtValue,
+				marketValue: total.marketValue + marketValue,
+				dividendYields: total.dividendYields + dividendYield
+			};
+		},
+		{
+			boughtValue: 0,
+			marketValue: 0,
+			dividendYields: 0
 		}
-	}, {
-		boughtValue: 0,
-		marketValue: 0,
-		dividendYields: 0
-	})
+	);
 
 	const profitOrLoss = overall.marketValue - Math.abs(overall.boughtValue);
-	const profitOrLossPercentage =
-		(profitOrLoss / Math.abs(overall.boughtValue)) * 100;
+	const profitOrLossPercentage = (profitOrLoss / Math.abs(overall.boughtValue)) * 100;
 
 	return {
 		...overall,
 		profitOrLoss,
 		profitOrLossPercentage,
 		dividendYield: overall.dividendYields / companiesData.length
-	}
+	};
 };
 
 export {
