@@ -24,8 +24,8 @@ const chunkList = (list: Array<any>, chunkSize: number) => {
  * @param currency - The currency type to format the value in.
  * @returns A string representing the formatted currency value.
  */
-const formatValue = (value: number, currency: typeof currencies) => {
-  return `${currencies[currency]}${(value || 0).toFixed(2)}`;
+const formatValue = (value: number, currency: keyof typeof currencies) => {
+  return `${currencies[currency]}${(value || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 }
 
 /**

@@ -189,8 +189,6 @@ type ParsedTransactionsType = {
 
 const parseTransactions = (transactions: TransactionType[]) =>
 	transactions.reduce((parsedTransactions: ParsedTransactionsType, transaction, key): ParsedTransactionsType => {
-		// Skip the first element, which is the header row
-		if (key === 0) return parsedTransactions;
 		const getValue = getTransactionValue({ transaction });
 		const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
 		const type = getValue(TransactionFields.TYPE);
@@ -268,8 +266,13 @@ type ParseUserDataPropsType = {
 	companies: CompanyData[];
 };
 
+type ParseUserDataCompanyType = {
+	summary: CalculateMarketSummaryReturnType;
+	transactions: TransactionType[];
+};
+
 type ParseUserDataReturnType = {
-	[key: string]: CalculateMarketSummaryReturnType;
+	[key: string]: ParseUserDataCompanyType;
 };
 
 const parseUserData = ({ transactions, companies }: ParseUserDataPropsType): ParseUserDataReturnType => {
@@ -436,7 +439,7 @@ const parseTransactionsForCalendar = (transactions: TransactionType[]): ParseTra
 
 	const { year } = parseTransactionDate(
 		getTransactionValue({
-			transaction: transactions[1]
+			transaction: transactions[0]
 		})(TransactionFields.TIME)
 	);
 
@@ -472,6 +475,11 @@ const parseTransactionsForLast12MonthsDividend = (transactions: TransactionType[
 	const lastDividendTransaction = transactions.find(
 		(transaction) => getTransactionValue({ transaction })(TransactionFields.TYPE) === OperationType.Dividend
 	);
+
+	if (!lastDividendTransaction) {
+		return [];
+	}
+
 	const lastDividendTransactionTime = getTransactionValue({
 		transaction: lastDividendTransaction
 	})(TransactionFields.TIME);
@@ -546,7 +554,7 @@ const filterRawTransactions = (transactions: TransactionType[], symbols: string[
 		const getValue = getTransactionValue({ transaction });
 		const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
 
-		return symbols.includes(companySymbol);
+		return Boolean(companySymbol) && symbols.includes(companySymbol);
 	});
 
 type GetOverallReturnType = {
@@ -559,6 +567,7 @@ type GetOverallReturnType = {
 };
 
 const getOverall = (userData: ParseUserDataReturnType): GetOverallReturnType => {
+	console.log('userData', JSON.stringify(userData));
 	const companiesData = Object.values(userData);
 	const overall = companiesData.reduce(
 		(total, company) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Text from '@/common/components/text/text';
 import Row from '@/common/layouts/row/row';
@@ -19,14 +19,15 @@ function ListItem({
             style={styles.row}
             left={<Text variant={Text.variants.H4} color={colors.primaryText}>{leftText}</Text>}
             right={Boolean(rightText) ? 
-                <Text isBold variant={Text.variants.H4} color={colorMapper[variant]}>{rightText}</Text> : <Ionicons name={rightIcon} size={24} color={colors.primaryText} />}
+                <Text isBold variant={Text.variants.H4} color={colorMapper[variant]}>{rightText}</Text> : 
+                <MaterialCommunityIcons name={rightIcon} size={24} color={colors.primaryText} />}
         />
     )
 }
 
 type ListItemPropTypes = {
     leftText: string;
-    rightIcon?: string;
+    rightIcon?: keyof typeof MaterialCommunityIcons.glyphMap;
     rightText?: string;
     variant?: ListItemVariants;
 }

@@ -39,6 +39,11 @@ function Settings() {
 					style: 'destructive',
 					onPress: () => {
 						Store.clearAll();
+						Alert.alert(
+							'Success',
+							'All data has been successfully removed.',
+							[{ text: 'OK' }]
+						);
 					}
 				}
 			]
@@ -48,8 +53,18 @@ function Settings() {
 
 	const handleOnPrivacyPolicy = () => router.push(`/legal?type=${LegalTypes.PRIVACY_POLICY}`);
 
-	// TODO: Update link
-	const handleOnFeedback = () => Linking.openURL('https://nativ.codes#contact');
+	const handleOnFeedback = () =>
+		Alert.alert(
+			'Redirect to Feedback',
+			'You will be redirected to the https://nativ.codes website to provide your feedback.',
+			[
+				{ text: 'Cancel', style: 'cancel' },
+				{
+					text: 'Proceed',
+					onPress: () => Linking.openURL('https://nativ.codes?page=contact')
+				}
+			]
+		);
 
 	return (
 		<ScreenLayout title='Settings'>

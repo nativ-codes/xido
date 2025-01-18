@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Text from '@/common/components/text/text';
 import colors from '@/common/colors';
@@ -8,7 +8,7 @@ import styles from './button.styles'
 import { noop } from '@/common/utils';
 
 type ButtonPropTypes = {
-    onPress: () => void | any,
+    onPress?: () => void | any,
     label: string,
     variant?: ButtonVariants,
     isDisabled?: boolean
@@ -53,11 +53,11 @@ const variants = {
 }
 
 type IconPropTypes = {
-    name: string,
-    size: IconSizes,
-    color: string,
-    onPress: () => void | any
-}
+	name: keyof typeof MaterialCommunityIcons.glyphMap;
+	size: IconSizes;
+	color: string;
+	onPress?: () => void | any;
+};
 
 function Icon({
     name,
@@ -69,9 +69,9 @@ function Icon({
 
     return (
         <TouchableOpacity onPress={onPress} style={StyleSheet.compose(styles.icon, iconSize.container)}>
-            <Ionicons name={name} size={iconSize.icon} color={color} />
+            <MaterialCommunityIcons name={name} size={iconSize.icon} color={color} />
         </TouchableOpacity>
-    )
+    );
 }
 
 enum IconSizes {

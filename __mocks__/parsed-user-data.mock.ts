@@ -1,4 +1,4 @@
-{
+export default {
   "MMM": {
     "summary": {
       "dividends": 148.2,

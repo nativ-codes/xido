@@ -1,4 +1,3 @@
-import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -27,15 +26,15 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-          <Stack.Screen name="company" options={{ headerShown: false }} />
-          <Stack.Screen name="legal" options={{ headerShown: false }} />
-          <Stack.Screen name="manage-goals" options={{ headerShown: false }} />
-          <Stack.Screen name="update-goal" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+        <Stack.Screen name="company" options={{ headerShown: false }} />
+        <Stack.Screen name="legal" options={{ headerShown: false }} />
+        <Stack.Screen name="manage-goals" options={{ headerShown: false }} />
+        <Stack.Screen name="update-goal" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
     </SafeAreaProvider>
   );
 }

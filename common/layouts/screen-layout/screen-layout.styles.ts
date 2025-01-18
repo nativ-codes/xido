@@ -7,6 +7,7 @@ export default StyleSheet.create({
         backgroundColor: colors.background
     },
     contentContainer: {
-        flexGrow: 1
+        flexGrow: 1,
+        paddingBottom: 32
     }
 });

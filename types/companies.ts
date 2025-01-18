@@ -10,7 +10,7 @@ export interface Company {
 	triggerable: boolean;
 	customPriceAlertConfidence: string;
 	quoteSummary: QuoteSummary;
-	currency: typeof currencies;
+	currency: keyof typeof currencies;
 	components?: string[] | null;
 	totalCash: number;
 	floatShares: number;
@@ -113,48 +113,48 @@ export interface QuoteSummary {
 }
 
 export interface SummaryDetail {
-  maxAge: number;
-  priceHint: number;
-  previousClose: number;
-  open: number;
-  dayLow: number;
-  dayHigh: number;
-  regularMarketPreviousClose: number;
-  regularMarketOpen: number;
-  regularMarketDayLow: number;
-  regularMarketDayHigh: number;
-  dividendRate: number;
-  dividendYield: number;
-  exDividendDate: number;
-  payoutRatio: number;
-  fiveYearAvgDividendYield: number;
-  beta: number;
-  trailingPE: number;
-  forwardPE: number;
-  volume: number;
-  regularMarketVolume: number;
-  averageVolume: number;
-  averageVolume10days: number;
-  averageDailyVolume10Day: number;
-  bid: number;
-  ask: number;
-  bidSize: number;
-  askSize: number;
-  marketCap: number;
-  fiftyTwoWeekLow: number;
-  fiftyTwoWeekHigh: number;
-  priceToSalesTrailing12Months: number;
-  fiftyDayAverage: number;
-  twoHundredDayAverage: number;
-  trailingAnnualDividendRate: number;
-  trailingAnnualDividendYield: number;
-  currency: string;
-  fromCurrency?: null;
-  toCurrency?: null;
-  lastMarket?: null;
-  coinMarketCapLink?: null;
-  algorithm?: null;
-  tradeable: boolean;
+	maxAge: number;
+	priceHint: number;
+	previousClose: number;
+	open: number;
+	dayLow: number;
+	dayHigh: number;
+	regularMarketPreviousClose: number;
+	regularMarketOpen: number;
+	regularMarketDayLow: number;
+	regularMarketDayHigh: number;
+	dividendRate: number;
+	dividendYield: number;
+	exDividendDate: number;
+	payoutRatio: number;
+	fiveYearAvgDividendYield: number;
+	beta: number;
+	trailingPE: number;
+	forwardPE: number;
+	volume: number;
+	regularMarketVolume: number;
+	averageVolume: number;
+	averageVolume10days: number;
+	averageDailyVolume10Day: number;
+	bid: number;
+	ask: number;
+	bidSize: number;
+	askSize: number;
+	marketCap: number;
+	fiftyTwoWeekLow: number;
+	fiftyTwoWeekHigh: number;
+	priceToSalesTrailing12Months: number;
+	fiftyDayAverage: number;
+	twoHundredDayAverage: number;
+	trailingAnnualDividendRate: number;
+	trailingAnnualDividendYield: number;
+	currency: keyof typeof currencies;
+	fromCurrency?: null;
+	toCurrency?: null;
+	lastMarket?: null;
+	coinMarketCapLink?: null;
+	algorithm?: null;
+	tradeable: boolean;
 }
 
 export interface PageViews {
@@ -171,7 +171,7 @@ export type CompanyData = {
 	shortName?: string;
 	longName?: string;
 	dividendYield: number;
-	currency: typeof currencies;
+	currency: keyof typeof currencies;
 };
 
 export type ParseTransactionsForExpectedDividendsReturnType = {
@@ -185,8 +185,8 @@ export type CalculateMarketSummaryReturnType = {
   profitOrLoss: number;
   dividendYield: number;
   profitOrLossPercentage: number;
-  currency: typeof currencies;
-  companyLogo: string | null | undefined;
+  currency: keyof typeof currencies;
+  companyLogo: string | undefined;
   companyName: string | undefined;
   symbol: string;
   weight: number;

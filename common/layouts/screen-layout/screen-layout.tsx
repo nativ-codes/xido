@@ -1,30 +1,37 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView, View, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Header, EmptyPlaceholder } from '@/common/components';
+import { Header, EmptyPlaceholder as EmptyPlaceholderComponent} from '@/common/components';
 import { HeaderPropTypes } from '@/common/components/header/header';
 
 import styles from './screen-layout.styles';
 
 type ScreenLayoutPropTypes = {
-    isEmpty?: boolean;
-    children: React.ReactNode;
-} & HeaderPropTypes
+	isEmpty?: boolean;
+	children: React.ReactNode;
+	emptyPlaceholder?: React.ReactNode;
+} & HeaderPropTypes;
 
 function ScreenLayout({
     children,
     isEmpty,
+    emptyPlaceholder = <EmptyPlaceholderComponent />,
     ...headerProps
 }: ScreenLayoutPropTypes) {
+	const insets = useSafeAreaInsets();
+
     return (
-        <SafeAreaView style={styles.wrapper}>
-            <ScrollView contentContainerStyle={styles.contentContainer}>
-                {Boolean(headerProps) && <Header {...headerProps} />}
-                {isEmpty ? <EmptyPlaceholder /> : children}
-            </ScrollView>
-        </SafeAreaView>
-    )
+		<View style={styles.wrapper}>
+			<ScrollView contentContainerStyle={StyleSheet.compose(styles.contentContainer, {
+				paddingTop: insets.top,
+				paddingBottom: insets.bottom
+			})}>
+				{Boolean(headerProps) && <Header {...headerProps} />}
+				{isEmpty ? emptyPlaceholder : children}
+			</ScrollView>
+		</View>
+	);
 }
 
 export default ScreenLayout;

@@ -11,12 +11,12 @@ const sortByKey = (list: any[], keyExtractor: (props: any) => string | number) =
 		return keyA < keyB ? 1 : keyA > keyB ? -1 : 0;
 	});
 
-const sortByMonthKeyExtractor = (keyExtractor: (props: any) => string | number) => (item: any) =>
+const sortByMonthKeyExtractor = (keyExtractor: (props: any) => string) => (item: any) =>
 	months.indexOf(keyExtractor(item));
 const sortByNumbers = (list: any[], keyExtractor: (props: any) => string | number) =>
 	list.sort((a, b) => {
-		const keyA = keyExtractor(a);
-		const keyB = keyExtractor(b);
+		const keyA = keyExtractor(a) as any;
+		const keyB = keyExtractor(b) as any;
 		return keyA - keyB;
 	});
 

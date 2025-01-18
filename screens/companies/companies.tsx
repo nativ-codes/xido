@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { TextInput, TouchableOpacity, View } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { useRouter } from 'expo-router';
@@ -15,11 +15,16 @@ import styles from './companies.styles';
 
 function Companies() {
     const router = useRouter();
-    const userData = Object.values(Store.useUserData());
+    const userDataStore = Store.useUserData();
+    const userData = Object.values(userDataStore);
 
     const [filteredUserData, setFilteredUserData] = useState(userData);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [sortByValue, setSortByValue] = useState<SortByPropTypes>();
+
+    useEffect(() => {
+        setFilteredUserData(userData);
+    }, [userDataStore]);
 
     const showModal = () => setIsModalVisible(true);
     const hideModal = () => setIsModalVisible(false);
@@ -58,7 +63,7 @@ function Companies() {
         <TouchableOpacity activeOpacity={0.7} onPress={handleOnCompanyPress(item.summary.symbol)} style={styles.card}>
             <CompanyCard {...item.summary} />
         </TouchableOpacity>
-    ), [])
+    ), [userData])
 
     return (
         <ScreenLayout title="Companies" isEmpty={!Boolean(userData.length)}>

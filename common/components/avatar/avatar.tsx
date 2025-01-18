@@ -5,7 +5,7 @@ import styles from './avatar.styles'
 import colors from '@/common/colors';
 
 type AvatarPropTypes = {
-    url: string | null | undefined;
+    url?: string;
     size?: AvatarSize;
     placeholder?: string;
 }

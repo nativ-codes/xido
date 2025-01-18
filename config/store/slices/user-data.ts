@@ -206,7 +206,6 @@ const useCalendar = () => {
 
 const useCurrency = () => {
     const [currency] = useMMKVString('currency');
-    console.log('>> currency', currency)
 
     return useMemo(() => (currency ? JSON.parse(currency) : ""), [currency]);
 }

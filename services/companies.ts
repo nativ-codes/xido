@@ -1,6 +1,6 @@
 import { chunkList } from "@/common/utils";
 import { maxCompaniesPerBatch } from "@/constants";
-import { Company, CompanyData } from "@/types/companies";
+import { CompanyData } from "@/types/companies";
 
 type EnvType = {
     EXPO_PUBLIC_API_URL: string;
@@ -11,7 +11,6 @@ type EnvType = {
 }
 
 const getCompanies = async (symbols: string) => {
-    console.log('symbols', symbols)
     const {
         EXPO_PUBLIC_API_URL,
         EXPO_PUBLIC_HEADER_KEY_KEY,

@@ -5,7 +5,8 @@ export default StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 8
+        gap: 8,
+        padding: 64
     },
     content: {
         alignItems: 'center',
