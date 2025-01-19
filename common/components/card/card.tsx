@@ -30,8 +30,8 @@ function Title({
 }: TitleTitlePropTypes) {
     return (
         <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={styles.titleContainer}>
-            <Text variant={Text.variants.H3} isBold>{title}</Text>
-            {Boolean(onPress) && <Button.Icon onPress={onPress} name="information-variant" size={Button.Icon.sizes.SMALL} color={colors.secondaryText} />}
+            <Text variant="h3" isBold>{title}</Text>
+            {Boolean(onPress) && <Button.Icon onPress={onPress} name="information-variant" size="small" color={colors.secondaryText} />}
         </TouchableOpacity>
     )
 }

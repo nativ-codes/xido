@@ -15,13 +15,13 @@ function AllSet() {
     return (
         <ScreenLayout canGoBack center={<Progress value={100} />}>
             <View style={styles.content}>
-                <Text variant={Text.variants.H1} isBold>You're all set</Text>
+                <Text variant="h1" isBold>You're all set</Text>
                 <View style={styles.section}>
                     <Text>Your profile is now ready.</Text>
                 </View>
             </View>
             <View style={styles.button}>
-                <Button label="Finish" onPress={handleOnUpload} variant={Button.variants.PRIMARY} />
+                <Button label="Finish" onPress={handleOnUpload} variant="primary" />
             </View>
         </ScreenLayout>
     )

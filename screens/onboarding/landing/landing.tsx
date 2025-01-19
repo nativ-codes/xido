@@ -15,14 +15,14 @@ function Landing() {
     return (
         <ScreenLayout canGoBack center={<Progress value={25} />}>
             <View style={styles.content}>
-                <Text variant={Text.variants.H1} isBold>Track your DGI portfolio</Text>
+                <Text variant="h1" isBold>Track your DGI portfolio</Text>
                 <View style={styles.section}>
                     <Text>It's easy to track your DGI portfolio and monitor your progress. Get clear stats and charts that show you exactly how close you are to reaching your goals.</Text>
                     <Text>Let's get started!</Text>
                 </View>
             </View>
             <View style={styles.button}>
-                <Button label="Begin" onPress={handleOnUpload} variant={Button.variants.PRIMARY} />
+                <Button label="Begin" onPress={handleOnUpload} variant="primary" />
             </View>
         </ScreenLayout>
     )

@@ -24,10 +24,10 @@ function Header({
 
     return (
         <View style={styles.header}>
-            {Boolean(canGoBack) && <Button.Icon onPress={router.back} name="chevron-left" size={Button.Icon.sizes.MEDIUM} color={colors.secondaryText} />}
+            {Boolean(canGoBack) && <Button.Icon onPress={router.back} name="chevron-left" size="medium" color={colors.secondaryText} />}
             {Boolean(title || center) && 
                 <View style={StyleSheet.compose(styles.centerWrapper, hasButtons ? styles.titleSpacing : void 0)}>
-                    {Boolean(title) && <Text variant={Text.variants.H2} isBold>{title}</Text>}
+                    {Boolean(title) && <Text variant="h2" isBold>{title}</Text>}
                     {Boolean(center) && <View style={styles.centerWrapper}>{center}</View>}
                 </View>}
             {Boolean(right) ? right : Boolean(canGoBack) && <View style={styles.placeholder} />}

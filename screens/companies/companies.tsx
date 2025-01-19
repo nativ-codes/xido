@@ -95,7 +95,7 @@ function Companies() {
 					<Button.Icon
 						onPress={showModal}
 						name='sort-variant'
-						size={Button.Icon.sizes.MEDIUM}
+						size="medium"
 						color={colors.secondaryText}
 					/>
 				</View>

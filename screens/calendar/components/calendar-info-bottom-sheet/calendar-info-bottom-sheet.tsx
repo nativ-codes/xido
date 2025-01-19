@@ -19,7 +19,7 @@ function CompanyInfoBottomSheet({
             <View style={styles.content}>
                 {CalendarInfo.map(({ title, description }) => (
                     <View key={title}>
-                        <Text variant={Text.variants.H4} isBold>{title}</Text>
+                        <Text variant="h4" isBold>{title}</Text>
                         <Text>{description}</Text>
                     </View>
                 ))}

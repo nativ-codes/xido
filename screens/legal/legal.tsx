@@ -17,7 +17,7 @@ function Legal() {
 	return (
 		<ScreenLayout canGoBack title={data.title}>
 			<View style={styles.wrapper}>
-				<Text variant={Text.variants.H5} color={colors.secondaryText}>
+				<Text variant="h5" color={colors.secondaryText}>
 					{data.lastUpdated}
 				</Text>
 				{data.sections.map(({ title, content, sections }, index) => (

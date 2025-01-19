@@ -9,7 +9,7 @@ export default StyleSheet.create({
         justifyContent: 'space-between'
     },
     placeholder: {
-        width: sizes[Button.Icon.sizes.MEDIUM].container.width,
+        width: sizes["medium"].container.width,
     },
     centerWrapper: {
         flex: 1,

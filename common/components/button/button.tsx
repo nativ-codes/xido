@@ -10,31 +10,31 @@ import { noop } from '@/common/utils';
 type ButtonPropTypes = {
     onPress?: () => void | any,
     label: string,
-    variant?: ButtonVariants,
+    variant?: keyof typeof ButtonVariants,
     isDisabled?: boolean
 }
 
 function Button({
     onPress,
     label,
-    variant,
+    variant = ButtonVariants.primary,
     isDisabled
 }: ButtonPropTypes) {
-    const {backgroundColor, color} = variants[variant || ButtonVariants.PRIMARY]
+    const {backgroundColor, color} = variants[variant]
     const handleOnPress = isDisabled ? noop : onPress;
     const opacity = isDisabled ? 0.5 : 1;
 
     return (
         <TouchableOpacity activeOpacity={0.7} onPress={handleOnPress} style={StyleSheet.compose(styles.wrapper, {backgroundColor, opacity})}>
-            <Text variant={Text.variants.H4} isBold color={color}>{label}</Text>
+            <Text variant="h4" isBold color={color}>{label}</Text>
         </TouchableOpacity>    
     )
 }
 
 enum ButtonVariants {
-    PRIMARY = 'primary',
-    SECONDARY = 'secondary',
-    DANGER = 'danger'
+	primary = 'primary',
+	secondary = 'secondary',
+	danger = 'danger'
 }
 
 const variants = {
@@ -54,30 +54,25 @@ const variants = {
 
 type IconPropTypes = {
 	name: keyof typeof MaterialCommunityIcons.glyphMap;
-	size: IconSizes;
+	size: keyof typeof IconSizes;
 	color: string;
 	onPress?: () => void | any;
 };
 
-function Icon({
-    name,
-    size,
-    color,
-    onPress
-}: IconPropTypes) {
-    const iconSize = sizes[size || IconSizes.MEDIUM];
+function Icon({ name, size = IconSizes.medium, color, onPress }: IconPropTypes) {
+	const iconSize = sizes[size || IconSizes.medium];
 
-    return (
-        <TouchableOpacity onPress={onPress} style={StyleSheet.compose(styles.icon, iconSize.container)}>
-            <MaterialCommunityIcons name={name} size={iconSize.icon} color={color} />
-        </TouchableOpacity>
-    );
+	return (
+		<TouchableOpacity onPress={onPress} style={StyleSheet.compose(styles.icon, iconSize.container)}>
+			<MaterialCommunityIcons name={name} size={iconSize.icon} color={color} />
+		</TouchableOpacity>
+	);
 }
 
 enum IconSizes {
-    SMALL = 'small',
-    MEDIUM = 'medium',
-    LARGE = 'large'
+	small = 'small',
+	medium = 'medium',
+	large = 'large'
 }
 
 const sizes = {
@@ -108,8 +103,6 @@ const sizes = {
 }
 
 
-Button.variants = ButtonVariants;
-Icon.sizes = IconSizes;
 Button.Icon = Icon;
 
 export {sizes};

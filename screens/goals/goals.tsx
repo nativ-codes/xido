@@ -45,7 +45,7 @@ function Goals() {
 							{goal.isGoalAchieved ? renderChecked : renderNotChecked}
 							<View style={styles.card}>
 								<View style={styles.header}>
-									<Text variant={Text.variants.H5} color={colors.secondaryText}>
+									<Text variant="h5" color={colors.secondaryText}>
 										{`${goal.isGoalAchieved ? '100%' : formatPercentValue(goal.progress)} progress`}
 									</Text>
 									<Text isBold>${goal.amount} / month</Text>

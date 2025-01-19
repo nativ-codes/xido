@@ -50,7 +50,7 @@ function ManageGoals() {
                     label="Add new goal"
                     onPress={handleOnAddGoal}
                     isDisabled={false}
-                    variant={Button.variants.PRIMARY}
+                    variant="primary"
                 />                
             </View>
         </>

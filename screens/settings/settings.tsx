@@ -94,7 +94,7 @@ function Settings() {
 					</TouchableOpacity>
 				</Card>
 				<View style={styles.footer}>
-					<Text color={colors.secondaryText} variant={Text.variants.H5}>
+					<Text color={colors.secondaryText} variant="h5">
 						Xido v1.0.0
 					</Text>
 				</View>

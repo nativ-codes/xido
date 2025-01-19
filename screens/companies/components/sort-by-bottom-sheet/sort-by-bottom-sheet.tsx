@@ -42,12 +42,12 @@ function SortByBottomSheet({
         <Button
           label="Reset"
           onPress={onReset}
-          variant={Button.variants.SECONDARY}
+          variant="secondary"
         />
         <Button
           label="Apply"
           onPress={onApply}
-          variant={Button.variants.PRIMARY}
+          variant="primary"
         />
       </View>
     </BottomSheet>

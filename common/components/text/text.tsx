@@ -3,7 +3,7 @@ import { StyleSheet, Text as RNText } from 'react-native';
 
 type TextPropTypes = {
     children: React.ReactNode,
-    variant?: TextVariants,
+    variant?: keyof typeof TextVariants,
     color?: string,
     isBold?: boolean,
     numberOfLines?: number,
@@ -12,14 +12,14 @@ type TextPropTypes = {
 
 function Text({
     children,
-    variant,
+    variant = 'h4',
     color,
     isBold,
     textAlign,
     numberOfLines
 }: TextPropTypes) {
     return (
-        <RNText numberOfLines={numberOfLines} style={StyleSheet.compose(variants[variant || TextVariants.H4], {
+        <RNText numberOfLines={numberOfLines} style={StyleSheet.compose(variants[variant], {
             color,
             textAlign,
             fontFamily: isBold ? 'UrbanistBold' : 'Urbanist'
@@ -28,12 +28,12 @@ function Text({
 }
 
 enum TextVariants {
-    H1 = 'h1',
-    H2 = 'h2',
-    H3 = 'h3',
-    H4 = 'h4',
-    H5 = 'h5',
-    H6 = 'h6',
+    h1 = 'h1',
+    h2 = 'h2',
+    h3 = 'h3',
+    h4 = 'h4',
+    h5 = 'h5',
+    h6 = 'h6',
 }
 
 const variants = {
@@ -57,7 +57,5 @@ const variants = {
         fontSize: 12
     }
 }
-
-Text.variants = TextVariants;
 
 export default Text;

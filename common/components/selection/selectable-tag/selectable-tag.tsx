@@ -9,25 +9,26 @@ type SelectableTagPropTypes = {
     isSelected: boolean,
     label: string,
     onPress: () => void | any,
-    size?: SelectableTagSizes
+    size?: keyof typeof SelectableTagSizes
 }
 
-function SelectableTag({ isSelected, label, onPress, size = SelectableTagSizes.MEDIUM }: SelectableTagPropTypes) {
-    const containerStyles = StyleSheet.compose(styles.container, styles[`${size}Container`]);
-    const textSize = size === SelectableTagSizes.MEDIUM ? Text.variants.H3 : Text.variants.H5;
+function SelectableTag({ isSelected, label, onPress, size = SelectableTagSizes.medium }: SelectableTagPropTypes) {
+	const containerStyles = StyleSheet.compose(styles.container, styles[`${size}Container`]);
+	const textSize = size === SelectableTagSizes.medium ? 'h3' : 'h5';
 
-    return (
-        <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={StyleSheet.compose(containerStyles, isSelected && styles.selected)}>
-            <Text variant={textSize}>{label}</Text>
-        </TouchableOpacity>        
-    )
+	return (
+		<TouchableOpacity
+			activeOpacity={0.7}
+			onPress={onPress}
+			style={StyleSheet.compose(containerStyles, isSelected && styles.selected)}>
+			<Text variant={textSize}>{label}</Text>
+		</TouchableOpacity>
+	);
 }
 
 enum SelectableTagSizes {
-    SMALL = 'small',
-    MEDIUM = 'medium'
+	small = 'small',
+	medium = 'medium'
 }
-
-SelectableTag.sizes = SelectableTagSizes;
 
 export default SelectableTag;

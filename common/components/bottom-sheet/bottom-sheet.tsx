@@ -28,8 +28,8 @@ function BottomSheet({
         <Modal isVisible={isVisible} onBackdropPress={onBackdropPress} style={styles.wrapper}>
             <View style={styles.content}>
                 <View style={Boolean(title) ? styles.header : styles.noTitle}>
-                    {Boolean(title) && <Text variant={Text.variants.H3} isBold>{title}</Text>}
-                    <Button.Icon onPress={onBackdropPress} name="close" size={Button.Icon.sizes.SMALL} color={colors.secondaryText}  />
+                    {Boolean(title) && <Text variant="h3" isBold>{title}</Text>}
+                    <Button.Icon onPress={onBackdropPress} name="close" size="small" color={colors.secondaryText}  />
                 </View>
                 <ScrollView contentContainerStyle={{ paddingBottom: bottom }}>
                     {children}

@@ -567,7 +567,6 @@ type GetOverallReturnType = {
 };
 
 const getOverall = (userData: ParseUserDataReturnType): GetOverallReturnType => {
-	console.log('userData', JSON.stringify(userData));
 	const companiesData = Object.values(userData);
 	const overall = companiesData.reduce(
 		(total, company) => {

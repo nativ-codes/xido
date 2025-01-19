@@ -6,17 +6,17 @@ import colors from '@/common/colors';
 
 type AvatarPropTypes = {
     url?: string;
-    size?: AvatarSize;
+    size?: keyof typeof AvatarSize;
     placeholder?: string;
 }
 
 function Avatar({
     url,
     placeholder,
-    size = AvatarSize.SMALL
+    size = AvatarSize.small
 }: AvatarPropTypes) {
-    const sizeStyle = sizes[size || AvatarSize.SMALL];
-    const textVariant = size === AvatarSize.SMALL ? Text.variants.H6 : Text.variants.H2;
+    const sizeStyle = sizes[size || AvatarSize.small];
+    const textVariant = size === AvatarSize.small ? 'h6' : 'h2';
 
     return Boolean(url) ? (
         <Image
@@ -28,15 +28,13 @@ function Avatar({
 }
 
 enum AvatarSize {
-    SMALL = 'small',
-    LARGE = 'large'
+	small = 'small',
+	large = 'large'
 }
 
 const sizes = {
-    [AvatarSize.SMALL]: styles.avatarSmall,
-    [AvatarSize.LARGE]: styles.avatarLarge
+    [AvatarSize.small]: styles.avatarSmall,
+    [AvatarSize.large]: styles.avatarLarge
 }
-
-Avatar.sizes = AvatarSize;
 
 export default Avatar;

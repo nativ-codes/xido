@@ -20,7 +20,7 @@ function SelectableListItem({label, isSelected, onPress}: SelectableListItemProp
       }, styles.circle)}>
         {isSelected && <View style={styles.selected}/>}
       </View>
-      <Text variant={Text.variants.H4}>{label}</Text>
+      <Text variant="h4">{label}</Text>
     </TouchableOpacity>
   )
 }

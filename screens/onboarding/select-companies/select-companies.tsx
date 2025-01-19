@@ -40,7 +40,7 @@ function SelectCompanies() {
     return (
         <ScreenLayout canGoBack center={<Progress value={75} />}>
             <View style={styles.content}>
-                <Text variant={Text.variants.H1} isBold>Select up to {maxCompaniesAllowed} companies you want to track</Text>
+                <Text variant="h1" isBold>Select up to {maxCompaniesAllowed} companies you want to track</Text>
                 <View style={styles.section}>
                     <Selection
                         isMultiple
@@ -54,8 +54,8 @@ function SelectCompanies() {
                 </View>
             </View>
             <View style={styles.buttons}>
-                <Button label={selectAllText} onPress={handleOnSelectAll} variant={Button.variants.SECONDARY} />
-                <Button isDisabled={isContinueDisabled} label="Continue" onPress={handleOnContinue} variant={Button.variants.PRIMARY} />
+                <Button label={selectAllText} onPress={handleOnSelectAll} variant="secondary" />
+                <Button isDisabled={isContinueDisabled} label="Continue" onPress={handleOnContinue} variant="primary" />
             </View>
         </ScreenLayout>
     )

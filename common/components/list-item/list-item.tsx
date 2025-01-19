@@ -17,9 +17,9 @@ function ListItem({
     return (
         <Row
             style={styles.row}
-            left={<Text variant={Text.variants.H4} color={colors.primaryText}>{leftText}</Text>}
+            left={<Text variant="h4" color={colors.primaryText}>{leftText}</Text>}
             right={Boolean(rightText) ? 
-                <Text isBold variant={Text.variants.H4} color={colorMapper[variant]}>{rightText}</Text> : 
+                <Text isBold variant="h4" color={colorMapper[variant]}>{rightText}</Text> : 
                 <MaterialCommunityIcons name={rightIcon} size={24} color={colors.primaryText} />}
         />
     )

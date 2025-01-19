@@ -58,13 +58,13 @@ function Home() {
 					<ListItem leftText='Next goal' rightText={`${formatValue(nextGoal, currency)} / month`} />
 					<View style={styles.goalProgressWrapper}>
 						<View style={styles.goalHeader}>
-							<Text color={colors.secondaryText} variant={Text.variants.H6}>
+							<Text color={colors.secondaryText} variant="h6">
 								{formatValue(lastAchievedGoal, currency)}
 							</Text>
-							<Text color={colors.primaryText} variant={Text.variants.H5} isBold>
+							<Text color={colors.primaryText} variant="h5" isBold>
 								{formatPercentValue(nextGoalProgress)}
 							</Text>
-							<Text color={colors.secondaryText} variant={Text.variants.H6}>
+							<Text color={colors.secondaryText} variant="h6">
 								{formatValue(nextGoal, currency)}
 							</Text>
 						</View>

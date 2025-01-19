@@ -63,12 +63,12 @@ function UploadCsv() {
 				<Button.Icon
 					onPress={showHelpModal}
 					name='help-circle-outline'
-					size={Button.Icon.sizes.MEDIUM}
+					size="medium"
 					color={colors.secondaryText}
 				/>
 			}>
 			<View style={styles.content}>
-				<Text variant={Text.variants.H1} isBold>
+				<Text variant="h1" isBold>
 					Upload the exported CSV file
 				</Text>
 				<View style={styles.section}>
@@ -102,7 +102,7 @@ function UploadCsv() {
 					isDisabled={isButtonDisabled}
 					label='Continue'
 					onPress={handleOnContinue}
-					variant={Button.variants.PRIMARY}
+					variant="primary"
 				/>
 			</View>
 			<HelpBottomSheet isVisible={isHelpModalVisible} hideModal={hideHelpModal} />

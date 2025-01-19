@@ -80,12 +80,12 @@ function UpdateGoal() {
 					</View>
 				</View>
 				<View style={styles.buttonsWrapper}>
-					{!isAdd && <Button label='Remove goal' onPress={handleOnRemove} variant={Button.variants.DANGER} />}
+					{!isAdd && <Button label='Remove goal' onPress={handleOnRemove} variant="danger" />}
 					<Button
 						label={isAdd ? 'Add goal' : 'Save goal'}
 						onPress={handleOnUpdate}
 						isDisabled={isButtonDisabled}
-						variant={Button.variants.PRIMARY}
+						variant="primary"
 					/>
 				</View>
 			</View>

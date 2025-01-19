@@ -160,13 +160,13 @@ function Company() {
       <View style={styles.wrapper}>
         <View style={styles.headerContainer}>
           <Avatar
-            size={Avatar.sizes.LARGE}
+            size="large"
             placeholder={symbol}
             url={companyLogo}
           />
-          <Text variant={Text.variants.H1}>{companyName}</Text>
+          <Text variant="h1">{companyName}</Text>
           <View>
-            <Tag value={symbol} variant={Tag.variants.PRIMARY} />
+            <Tag value={symbol} variant="primary" />
           </View>
         </View>
         <View style={styles.content}>

@@ -28,15 +28,15 @@ function CompanyCard({
                 left={<Avatar url={companyLogo} placeholder={symbol}/>}
                 center={
                     <View style={styles.center}>
-                        <Tag value={symbol} variant={Tag.variants.PRIMARY} />
+                        <Tag value={symbol} variant="primary" />
                         <View style={styles.companyName}>
-                            <Text variant={Text.variants.H3} numberOfLines={1}>{companyName}</Text>
+                            <Text variant="h3" numberOfLines={1}>{companyName}</Text>
                         </View>
                     </View>
                 }
             />
             <View style={styles.weight}>
-                <Text isBold variant={Text.variants.H6}>{formatPercentValue(weight)}</Text>
+                <Text isBold variant="h6">{formatPercentValue(weight)}</Text>
             </View>
 
             {Boolean(dividendYield) && <ListItem

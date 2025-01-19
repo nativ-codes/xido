@@ -21,11 +21,11 @@ function EmptyPlaceholder({ title = 'There is no data to display', shouldHideBut
 		<View style={styles.wrapper}>
 			<Ionicons name='magnify' size={72} color={colors.disable} />
 			<View style={styles.content}>
-				<Text textAlign='center' variant={Text.variants.H3} color={colors.disable}>
+				<Text textAlign='center' variant="h3" color={colors.disable}>
 					{title}
 				</Text>
 				{!shouldHideButton && (
-					<Button variant={Button.variants.PRIMARY} label='Import a portfolio' onPress={handleOnImportPortfolio} />
+					<Button variant="primary" label='Import a portfolio' onPress={handleOnImportPortfolio} />
 				)}
 			</View>
 		</View>

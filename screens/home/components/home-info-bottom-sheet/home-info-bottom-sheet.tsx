@@ -20,7 +20,7 @@ function HomeInfoBottomSheet({
             {Boolean(infoSection) && <View style={styles.content}>
                 {HomeInfo[infoSection as HomeInfoSections].map(({ title, description }: {title: string, description: string}) => (
                     <View key={title}>
-                        <Text variant={Text.variants.H4} isBold>{title}</Text>
+                        <Text variant="h4" isBold>{title}</Text>
                         <Text>{description}</Text>
                     </View>
                 ))}

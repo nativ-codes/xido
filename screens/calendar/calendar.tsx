@@ -54,7 +54,7 @@ function Calendar() {
 	};
 
 	const renderDateTabs = useMemo(
-		() => (props: any) => <Selection.SelectableTag {...props} size={Selection.SelectableTag.sizes.SMALL} />,
+		() => (props: any) => <Selection.SelectableTag {...props} size="small" />,
 		[]
 	);
 
@@ -93,7 +93,7 @@ function Calendar() {
 			</View>
 			<View style={styles.wrapper}>
 				<View style={styles.header}>
-					<Text variant={Text.variants.H2}>
+					<Text variant="h2">
 						{selectedMonth} {selectedYear}
 					</Text>
 				</View>
