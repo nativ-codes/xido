@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "xido",
+    "name": "Xido",
     "slug": "xido",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -34,11 +34,6 @@
     ],
     "experiments": {
       "typedRoutes": true
-    },
-    "extra": {
-      "eas": {
-        "projectId": "badf9a45-6701-47a6-a3be-fdb43d6a2d31"
-      }
     }
   }
 }

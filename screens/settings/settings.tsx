@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Linking, Alert } from 'react-native';
 import { router } from 'expo-router';
+import * as Application from 'expo-application';
 
 import { Text, Card, ListItem } from '@/common/components';
 import Store from '@/config/store/slices/user-data';
@@ -95,7 +96,7 @@ function Settings() {
 				</Card>
 				<View style={styles.footer}>
 					<Text color={colors.secondaryText} variant="h5">
-						Xido v1.0.0
+						Xido v{Application.nativeApplicationVersion}
 					</Text>
 				</View>
 			</View>
