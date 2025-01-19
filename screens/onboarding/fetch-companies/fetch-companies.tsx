@@ -17,6 +17,7 @@ import { ScreenLayout } from '@/common/layouts';
 import { getCompaniesInBatches } from '@/services/companies';
 import colors from '@/common/colors';
 import { defaultGoals } from '@/constants';
+import styles from './fetch-companies.styles';
 
 const shouldUseMockedData = false;
 
@@ -33,10 +34,8 @@ function FetchCompanies() {
 					const companies = shouldUseMockedData ? mockedCompanies : await getCompaniesInBatches(storedSymbols);
 
 					if (companies.length === storedSymbols.length) {
-                        const dividend = parseTransactionsForLast12MonthsDividend(filteredRawTransactions);
-						const parsedTransactionsForLast12MonthsDividend = getLast12MonthsDividend(
-							parseTransactionsForLast12MonthsDividend(filteredRawTransactions)
-						);
+						const dividend = parseTransactionsForLast12MonthsDividend(filteredRawTransactions);
+						const parsedTransactionsForLast12MonthsDividend = getLast12MonthsDividend(dividend);
 						const parsedTransactionsForCalendar = parseTransactionsForCalendar(filteredRawTransactions);
 						const parsedUserData = parseUserData({
 							transactions: parsedTransactions,
@@ -46,7 +45,7 @@ function FetchCompanies() {
 
 						const goals = Store.getGoals();
 						Store.setGoals(goals.length ? goals : defaultGoals);
-						
+
 						Store.setCurrency(companies[0].currency);
 						Store.setUserData(parsedUserData);
 						Store.setTransactions(parsedTransactions);
@@ -69,13 +68,7 @@ function FetchCompanies() {
 
 	return (
 		<ScreenLayout canGoBack center={<Progress value={80} />}>
-			<View
-				style={{
-					...StyleSheet.absoluteFill,
-					backgroundColor: colors.overlay,
-					flex: 1,
-					justifyContent: 'center'
-				}}>
+			<View style={StyleSheet.compose(StyleSheet.absoluteFill, styles.loading)}>
 				<ActivityIndicator size='large' color={colors.primary} />
 			</View>
 		</ScreenLayout>

@@ -34,7 +34,7 @@ const formatValue = (value: number, currency: keyof typeof currencies) => {
  * @param value - The numeric value to format.
  * @returns The formatted percentage string.
  */
-const formatPercentValue = (value: number) => {
+const formatPercentValue = (value?: number) => {
   return `${(value || 0).toFixed(2)}%`;
 }
 

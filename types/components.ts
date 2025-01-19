@@ -1,3 +1,5 @@
+import { CalculateMarketSummaryReturnType } from "./companies";
+
 export enum ListItemVariants {
   DEFAULT = 'DEFAULT',
   PROFIT = 'PROFIT',
@@ -5,9 +7,9 @@ export enum ListItemVariants {
 }
 
 export type SortByPropTypes = {
-  label: string;
-  key: string;
-}
+	label: string;
+	key: keyof CalculateMarketSummaryReturnType;
+};
 
 export enum CompanyInfoSections {
   OVERALL = 'OVERALL',
@@ -31,6 +33,6 @@ export type GoalsPropTypes = {
   id: string;
   title: string;
   amount: string;
-  isGoalAchieved: boolean;
-  progress: string;
+  isGoalAchieved?: boolean;
+  progress?: string;
 };

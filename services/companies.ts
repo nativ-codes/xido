@@ -24,7 +24,7 @@ const getCompanies = async (symbols: string) => {
         method: 'GET',
         headers: {
             [EXPO_PUBLIC_HEADER_KEY_KEY]: EXPO_PUBLIC_HEADER_KEY_VALUE,
-            [EXPO_PUBLIC_HEADER_HOST_KEY]: [EXPO_PUBLIC_HEADER_HOST_VALUE]
+            [EXPO_PUBLIC_HEADER_HOST_KEY]: EXPO_PUBLIC_HEADER_HOST_VALUE
         }
     });
 

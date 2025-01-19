@@ -124,7 +124,7 @@ const calculateMarketSummary = ({
 		boughtValue: Math.abs(summary.boughtValue),
 		marketValue: marketValue,
 		profitOrLoss: profitOrLoss,
-		dividendYield: company.dividendYield,
+		dividendYield: company.dividendYield || 0, 
 		profitOrLossPercentage: profitOrLossPercentage,
 		currency: company.currency,
 		companyLogo: company.logoUrl || company.companyLogoUrl,
@@ -182,16 +182,16 @@ type ParsedTransactionsPropsType = {
 	transactions: Array<TransactionType>;
 };
 
-type ParsedTransactionsType = {
+export type ParsedTransactionsType = {
 	summary: SummaryType;
 	companies: Record<string, ParsedTransactionsPropsType>;
 };
 
 const parseTransactions = (transactions: TransactionType[]) =>
-	transactions.reduce((parsedTransactions: ParsedTransactionsType, transaction, key): ParsedTransactionsType => {
+	transactions.reduce((parsedTransactions: ParsedTransactionsType, transaction): ParsedTransactionsType => {
 		const getValue = getTransactionValue({ transaction });
 		const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
-		const type = getValue(TransactionFields.TYPE);
+		const type = getValue(TransactionFields.TYPE) as OperationType;
 		const comment = getValue(TransactionFields.COMMENT);
 		const amount = getValue(TransactionFields.AMOUNT);
 
@@ -252,7 +252,7 @@ const parseTransactionsForLatestTransactions = (transactions: TransactionType[])
 	return Object.values(transactionsMapper);
 };
 
-const parseCompanies = (companies: Company[]): CompanyData[] =>
+const parseCompanies = (companies: Company[]): Omit<CompanyData, 'shortName' | 'longName'>[] =>
 	companies.map(({ symbol, bid, logoUrl, dividendYield, currency }) => ({
 		symbol,
 		bid,
@@ -266,13 +266,13 @@ type ParseUserDataPropsType = {
 	companies: CompanyData[];
 };
 
-type ParseUserDataCompanyType = {
+export type ParseUserDataCompanyType = {
 	summary: CalculateMarketSummaryReturnType;
 	transactions: TransactionType[];
 };
 
-type ParseUserDataReturnType = {
-	[key: string]: ParseUserDataCompanyType;
+export type ParseUserDataReturnType = {
+	[companySymbol: string]: ParseUserDataCompanyType;
 };
 
 const parseUserData = ({ transactions, companies }: ParseUserDataPropsType): ParseUserDataReturnType => {
@@ -378,12 +378,12 @@ const parseTransactionsForExpectedDividends = (
 	}
 };
 
-type ParseTransactionsForCalendarReturnType = {
-	[key: number]: {
+export type ParseTransactionsForCalendarReturnType = {
+	[year: number]: {
 		data: {
-			[key: string]: {
+			[monthByIndex: string]: {
 				data: {
-					[key: string]: {
+					[companySymbol: string]: {
 						totalDividends: number;
 					};
 				};

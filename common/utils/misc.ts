@@ -1,5 +1,5 @@
 import { months, providers } from '@/constants';
-import { TransactionProvider } from '@/types';
+import { TransactionFields, TransactionProvider, TransactionType } from '@/types';
 
 const noop = () => {};
 const defaultKeyExtractor = (item: string | number) => item;
@@ -22,9 +22,14 @@ const sortByNumbers = (list: any[], keyExtractor: (props: any) => string | numbe
 
 const getRandomString = () => (Math.random() + 1).toString(36).substring(7);
 
+type GetTransactionValueType = {
+	transaction: TransactionType;
+	provider?: TransactionProvider;
+};
+
 const getTransactionValue =
-	({ transaction, provider = TransactionProvider.XTB }) =>
-	(fieldType) => {
+	({ transaction, provider = TransactionProvider.XTB }: GetTransactionValueType) =>
+	(fieldType: TransactionFields) => {
 		const field = providers[provider][fieldType];
 
 		return transaction[field];

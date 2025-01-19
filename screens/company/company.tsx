@@ -76,7 +76,7 @@ function Company() {
       <Card.Title title="Shares" onPress={showModal(CompanyInfoSections.SHARES)} />
       <ListItem
         leftText="Shares owned"
-        rightText={shares}
+        rightText={shares.toString()}
       />
       <ListItem
         leftText="Market share value"

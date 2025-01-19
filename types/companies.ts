@@ -60,13 +60,13 @@ export interface Company {
 	messageBoardId: string;
 	fullExchangeName: string;
 	shortName: string;
-	companyLogoUrl?: string | null;
+	companyLogoUrl?: string;
 	longName: string;
 	regularMarketOpen: number;
 	averageDailyVolume3Month: number;
 	averageDailyVolume10Day: number;
 	beta: number;
-	logoUrl?: string | null;
+	logoUrl?: string;
 	fiftyTwoWeekLowChange: number;
 	fiftyTwoWeekLowChangePercent: number;
 	fiftyTwoWeekRange: string;
@@ -166,11 +166,11 @@ export interface PageViews {
 export type CompanyData = {
 	symbol: string;
 	bid: number;
-	logoUrl?: string | null | undefined;
-	companyLogoUrl?: string | null | undefined;
-	shortName?: string;
-	longName?: string;
-	dividendYield: number;
+	logoUrl?: string;
+	companyLogoUrl?: string;
+	shortName: string;
+	longName: string;
+	dividendYield?: number;
 	currency: keyof typeof currencies;
 };
 
@@ -183,11 +183,11 @@ export type CalculateMarketSummaryReturnType = {
   bid: number;
   marketValue: number;
   profitOrLoss: number;
-  dividendYield: number;
+  dividendYield?: number;
   profitOrLossPercentage: number;
   currency: keyof typeof currencies;
-  companyLogo: string | undefined;
-  companyName: string | undefined;
+  companyLogo?: string;
+  companyName: string;
   symbol: string;
   weight: number;
   boughtValue: number;

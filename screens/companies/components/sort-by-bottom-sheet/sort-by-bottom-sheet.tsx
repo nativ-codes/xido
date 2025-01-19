@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
 import { View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SortByPropTypes } from '@/types/components';
 import { Button, Selection, BottomSheet } from '@/common/components';
@@ -27,8 +26,6 @@ function SortByBottomSheet({
   isModalVisible,
   hideModal
 }: SortByBottomSheetPropTypes) {
-  const { bottom } = useSafeAreaInsets();
-
   return (
     <BottomSheet title="Sort by" isVisible={isModalVisible} onBackdropPress={hideModal}>
       <View style={styles.options}>
