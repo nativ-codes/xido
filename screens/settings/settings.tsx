@@ -10,6 +10,7 @@ import { LegalTypes } from '@/types';
 import colors from '@/common/colors';
 
 import styles from './settings.styles';
+import { Analytics } from '@/config/store/analytics';
 
 function Settings() {
 	const handleOnManageGoals = () => router.push('/manage-goals');
@@ -23,6 +24,7 @@ function Settings() {
 				{
 					text: 'Add portfolio',
 					onPress: () => {
+						Analytics.sendEvent(Analytics.events.import_portfolio, 'settings');
 						router.push('/landing');
 					}
 				}
@@ -40,11 +42,8 @@ function Settings() {
 					style: 'destructive',
 					onPress: () => {
 						Store.clearAll();
-						Alert.alert(
-							'Success',
-							'All data has been successfully removed.',
-							[{ text: 'OK' }]
-						);
+						Analytics.sendEvent(Analytics.events.remove_data);
+						Alert.alert('Success', 'All data has been successfully removed.', [{ text: 'OK' }]);
 					}
 				}
 			]
@@ -95,7 +94,7 @@ function Settings() {
 					</TouchableOpacity>
 				</Card>
 				<View style={styles.footer}>
-					<Text color={colors.secondaryText} variant="h5">
+					<Text color={colors.secondaryText} variant='h5'>
 						Xido v{Application.nativeApplicationVersion}
 					</Text>
 				</View>

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, ActivityIndicator, View } from 'react-native';
 import { router } from 'expo-router';
-
 import Store from '@/config/store/slices/user-data';
 import { Progress } from '@/common/components';
 import {
@@ -10,7 +9,8 @@ import {
 	parseTransactions,
 	parseTransactionsForCalendar,
 	parseTransactionsForLast12MonthsDividend,
-	parseUserData
+	parseUserData,
+	safelyPrintError
 } from '@/common/utils';
 import { mockedCompanies, mockedSymbols } from '@/__mocks__';
 import { ScreenLayout } from '@/common/layouts';
@@ -18,8 +18,9 @@ import { getCompaniesInBatches } from '@/services/companies';
 import colors from '@/common/colors';
 import { defaultGoals } from '@/constants';
 import styles from './fetch-companies.styles';
+import { Analytics } from '@/config/store/analytics';
 
-const shouldUseMockedData = false;
+const shouldUseMockedData = true;
 
 function FetchCompanies() {
 	useEffect(() => {
@@ -51,6 +52,7 @@ function FetchCompanies() {
 						Store.setTransactions(parsedTransactions);
 						Store.setRawTransactions(filteredRawTransactions);
 						Store.setCalendar(parsedTransactionsForCalendar);
+						Store.setTimestamp(Date.now());
 						Store.setLast12MonthsDividend(parsedTransactionsForLast12MonthsDividend);
 					} else {
 						console.log('lengths not matching', companies.length, storedSymbols.length);
@@ -58,10 +60,11 @@ function FetchCompanies() {
 				} else {
 					console.log('no symbols found');
 				}
+				router.navigate('/all-set');
 			} catch (error) {
 				console.error('FetchCompanies', error);
-			} finally {
-				router.navigate('/all-set');
+				Analytics.sendEvent(Analytics.events.error_fetch, safelyPrintError(error));
+				router.navigate('/error-fetching');
 			}
 		})();
 	}, []);

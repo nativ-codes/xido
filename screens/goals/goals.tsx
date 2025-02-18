@@ -11,52 +11,50 @@ import Store from '@/config/store/slices/user-data';
 import styles from './goals.styles';
 
 function Goals() {
-    const goals = Store.useGoals();
-    const last12MonthsDividend = Store.useLast12MonthsDividend();
+	const goals = Store.useGoals();
+	const last12MonthsDividend = Store.useLast12MonthsDividend();
 
-    const parsedGoals = parseGoals({
-        goals: sortByNumbers(goals, item => item.amount),
-        value: last12MonthsDividend
-    });
+	const parsedGoals = parseGoals({
+		goals: sortByNumbers(goals, (item) => item.amount),
+		value: last12MonthsDividend
+	});
 
-    const renderChecked = (
-        <View style={styles.checked}>
-            <Ionicons name="check" size={24} color={colors.background} />
-        </View>        
-    )
+	const renderChecked = (
+		<View style={styles.checked}>
+			<Ionicons name='check' size={24} color={colors.background} />
+		</View>
+	);
 
-    const renderNotChecked = (
-        <View style={styles.notChecked} />
-    )
+	const renderNotChecked = <View style={styles.notChecked} />;
 
-    return (
-			<ScreenLayout title='Goals' isEmpty={!Boolean(goals.length)}>
-				<View style={styles.wrapper}>
-					{parsedGoals.map((goal, key) => (
-						<View key={`${goal.title}-${goal.amount}`} style={styles.cardWrapper}>
-							{parsedGoals.length > 1 && (
-								<View
-									style={StyleSheet.compose(
-										styles.line,
-										key === 0 ? styles.lineStart : key === goals.length - 1 ? styles.lineEnd : styles.lineMiddle
-									)}
-								/>
-							)}
-							{goal.isGoalAchieved ? renderChecked : renderNotChecked}
-							<View style={styles.card}>
-								<View style={styles.header}>
-									<Text variant="h5" color={colors.secondaryText}>
-										{`${goal.isGoalAchieved ? '100%' : formatPercentValue(goal.progress)} progress`}
-									</Text>
-									<Text isBold>${goal.amount} / month</Text>
-								</View>
-								<Text>{goal.title}</Text>
+	return (
+		<ScreenLayout title='Goals' isEmpty={!Boolean(goals.length)}>
+			<View style={styles.wrapper}>
+				{parsedGoals.map((goal, key) => (
+					<View key={`${goal.title}-${goal.amount}`} style={styles.cardWrapper}>
+						{parsedGoals.length > 1 && (
+							<View
+								style={StyleSheet.compose(
+									styles.line,
+									key === 0 ? styles.lineStart : key === goals.length - 1 ? styles.lineEnd : styles.lineMiddle
+								)}
+							/>
+						)}
+						{goal.isGoalAchieved ? renderChecked : renderNotChecked}
+						<View style={styles.card}>
+							<View style={styles.header}>
+								<Text variant='h5' color={colors.secondaryText}>
+									{`${goal.isGoalAchieved ? '100%' : formatPercentValue(goal.progress)} progress`}
+								</Text>
+								<Text isBold>${goal.amount} / month</Text>
 							</View>
+							<Text>{goal.title}</Text>
 						</View>
-					))}
-				</View>
-			</ScreenLayout>
-		);
-};
+					</View>
+				))}
+			</View>
+		</ScreenLayout>
+	);
+}
 
 export default Goals;

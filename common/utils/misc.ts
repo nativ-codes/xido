@@ -3,6 +3,7 @@ import { TransactionFields, TransactionProvider, TransactionType } from '@/types
 
 const noop = () => {};
 const defaultKeyExtractor = (item: string | number) => item;
+const safelyPrintError = (error: unknown) => (typeof error === 'string' ? error : error.message || 'An error occurred');
 
 const sortByKey = (list: any[], keyExtractor: (props: any) => string | number) =>
 	list.sort((a, b) => {
@@ -37,6 +38,7 @@ const getTransactionValue =
 
 export {
 	sortByNumbers,
+	safelyPrintError,
 	noop,
 	getRandomString,
 	defaultKeyExtractor,

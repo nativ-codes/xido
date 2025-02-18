@@ -6,5 +6,8 @@ export default StyleSheet.create({
 		backgroundColor: colors.overlay,
 		flex: 1,
 		justifyContent: 'center'
+	},
+	error: {
+		marginHorizontal: 16
 	}
 });

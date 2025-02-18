@@ -9,11 +9,12 @@ import { getRandomString } from '@/common/utils';
 import { GoalsPropTypes } from '@/types';
 
 import styles from './update-goal.styles';
+import { Analytics } from '@/config/store/analytics';
 
 function UpdateGoal() {
 	const { goalId }: { goalId: string } = useLocalSearchParams();
 	const goals = Store.useGoals();
-	const goal = goals.find((goal: GoalsPropTypes) => goal.id === goalId) || {amount: 0, title: ''};
+	const goal = goals.find((goal: GoalsPropTypes) => goal.id === goalId) || { amount: 0, title: '' };
 	const isAdd = !goalId;
 
 	const [amount, setAmount] = useState(goal.amount?.toString() || '');
@@ -31,6 +32,7 @@ function UpdateGoal() {
 					title
 				}
 			]);
+			Analytics.sendEvent(Analytics.events.add_goal, {title, amount});
 		} else {
 			const updatedGoal = goals.map((goal: GoalsPropTypes) =>
 				goal.id === goalId
@@ -42,6 +44,7 @@ function UpdateGoal() {
 					: goal
 			);
 
+			Analytics.sendEvent(Analytics.events.edit_goal, {title, amount});
 			Store.setGoals(updatedGoal);
 		}
 		router.back();
@@ -50,6 +53,7 @@ function UpdateGoal() {
 	const removeGoal = () => {
 		const updatedGoal = goals.filter((goal: GoalsPropTypes) => goal.id !== goalId);
 		Store.setGoals(updatedGoal);
+		Analytics.sendEvent(Analytics.events.remove_goal);
 		router.back();
 	};
 
@@ -80,12 +84,12 @@ function UpdateGoal() {
 					</View>
 				</View>
 				<View style={styles.buttonsWrapper}>
-					{!isAdd && <Button label='Remove goal' onPress={handleOnRemove} variant="danger" />}
+					{!isAdd && <Button label='Remove goal' onPress={handleOnRemove} variant='danger' />}
 					<Button
 						label={isAdd ? 'Add goal' : 'Save goal'}
 						onPress={handleOnUpdate}
 						isDisabled={isButtonDisabled}
-						variant="primary"
+						variant='primary'
 					/>
 				</View>
 			</View>

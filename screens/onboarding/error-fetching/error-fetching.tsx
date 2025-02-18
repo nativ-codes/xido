@@ -5,7 +5,7 @@ import { router } from 'expo-router';
 import { Text, Button, Progress } from '@/common/components';
 import { ScreenLayout } from '@/common/layouts';
 
-import styles from './all-set.styles';
+import styles from './error-fetching.styles';
 
 function ErrorFetching() {
     const handleOnUpload = () => {
@@ -13,11 +13,11 @@ function ErrorFetching() {
     }
 
     return (
-        <ScreenLayout center={<Progress value={100} />}>
+        <ScreenLayout canGoBack center={<Progress value={100} />}>
             <View style={styles.content}>
-                <Text variant="h1" isBold>You're all set</Text>
+                <Text variant="h1" isBold>Oups...</Text>
                 <View style={styles.section}>
-                    <Text>Your profile is now ready.</Text>
+                    <Text>There was an error fetching the prices. Please try again later.</Text>
                 </View>
             </View>
             <View style={styles.button}>

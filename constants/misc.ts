@@ -1,4 +1,5 @@
 export const oneYearInMilliseconds = 365 * 24 * 60 * 60 * 1000;
+export const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
 
 export const defaultGoals = [
     {
