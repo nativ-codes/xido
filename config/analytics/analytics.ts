@@ -1,3 +1,5 @@
+import { mixpanelInstance } from './mixpanel';
+
 enum EventTypeEnum {
 	uploaded_companies = 'uploaded_companies',
 	selected_companies = 'selected_companies',
@@ -17,6 +19,7 @@ const sendEvent = (eventType: EventTypeEnum, data: DataType = '') => {
 	const stringifiedData = JSON.stringify(data);
 
 	console.log('Event', eventType, stringifiedData);
+	mixpanelInstance.track(eventType, { data: stringifiedData });
 };
 
 export default {

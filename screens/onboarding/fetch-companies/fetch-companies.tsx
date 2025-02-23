@@ -18,7 +18,7 @@ import { getCompaniesInBatches } from '@/services/companies';
 import colors from '@/common/colors';
 import { defaultGoals } from '@/constants';
 import styles from './fetch-companies.styles';
-import { Analytics } from '@/config/store/analytics';
+import { Analytics } from '@/config/analytics';
 
 const shouldUseMockedData = true;
 

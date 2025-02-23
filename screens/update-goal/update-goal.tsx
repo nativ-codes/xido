@@ -9,7 +9,7 @@ import { getRandomString } from '@/common/utils';
 import { GoalsPropTypes } from '@/types';
 
 import styles from './update-goal.styles';
-import { Analytics } from '@/config/store/analytics';
+import { Analytics } from '@/config/analytics';
 
 function UpdateGoal() {
 	const { goalId }: { goalId: string } = useLocalSearchParams();

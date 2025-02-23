@@ -1,7 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
-import { useFetchCompaniesOnceADay } from '@/common/hooks';
 
 import colors from '@/common/colors';
 
@@ -11,8 +10,6 @@ const screenOptions = {
 };
 
 export default function TabLayout() {
-	useFetchCompaniesOnceADay();
-
 	return (
 		<Tabs screenOptions={screenOptions}>
 			<Tabs.Screen

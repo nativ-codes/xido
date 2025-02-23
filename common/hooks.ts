@@ -3,7 +3,7 @@ import Store from '@/config/store/slices/user-data';
 import { oneDayInMilliseconds } from '@/constants';
 import { getCompaniesInBatches } from '@/services/companies';
 import { parseUserData, safelyPrintError } from './utils';
-import { Analytics } from '@/config/store/analytics';
+import { Analytics } from '@/config/analytics';
 
 export const useFetchCompaniesOnceADay = () => {
 	useEffect(() => {

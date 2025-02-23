@@ -8,7 +8,7 @@ import Button from '@/common/components/button/button';
 import colors from '@/common/colors';
 
 import styles from './empty-placeholder.styles';
-import { Analytics } from '@/config/store/analytics';
+import { Analytics } from '@/config/analytics';
 
 type EmptyPlaceholderPropsType = {
 	title?: string;

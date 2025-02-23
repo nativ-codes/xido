@@ -10,7 +10,7 @@ import { LegalTypes } from '@/types';
 import colors from '@/common/colors';
 
 import styles from './settings.styles';
-import { Analytics } from '@/config/store/analytics';
+import { Analytics } from '@/config/analytics';
 
 function Settings() {
 	const handleOnManageGoals = () => router.push('/manage-goals');
