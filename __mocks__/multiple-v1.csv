@@ -1,0 +1,24 @@
+ID;Type;Time;Symbol;Comment;Amount
+1001;Dividend;15.11.2024 13:00:14;XYZ.US;XYZ.US USD 0.50/ SHR;25.0
+1002;Impozitul reținut;15.11.2024 13:00:14;XYZ.US;XYZ.US USD WHT 10%;-2.5
+1003;Dividend;10.11.2024 13:00:00;ABC.US;ABC.US USD 0.75/ SHR;37.5
+1004;Impozitul reținut;10.11.2024 13:00:00;ABC.US;ABC.US USD WHT 10%;-3.75
+1005;Dividend;05.11.2024 13:00:00;DEF.US;DEF.US USD 1.00/ SHR;50.0
+1006;Impozitul reținut;05.11.2024 13:00:00;DEF.US;DEF.US USD WHT 10%;-5.0
+1007;Dividend;01.11.2024 13:00:00;GHI.US;GHI.US USD 0.25/ SHR;12.5
+1008;Impozitul reținut;01.11.2024 13:00:00;GHI.US;GHI.US USD WHT 10%;-1.25
+1009;Dividend;25.10.2024 13:00:00;JKL.US;JKL.US USD 0.60/ SHR;30.0
+1010;Impozitul reținut;25.10.2024 13:00:00;JKL.US;JKL.US USD WHT 10%;-3.0
+1011;Dobânzi pentru fonduri libere;20.10.2024 16:27:00;;Free-funds Interest 2024-10;3.0
+1012;Fonduri libere pentru impozitul pe dobânzi;15.10.2024 15:14:17;;Free-funds Interest Tax 2024-10;-0.3
+1013;Depunere;10.10.2024 11:10:49;;Deposit;5000
+1014;Depunere;05.10.2024 10:44:28;;Deposit;2500
+1015;Dividend;30.09.2024 13:00:00;MNO.US;MNO.US USD 0.80/ SHR;40.0
+1016;Impozitul reținut;30.09.2024 13:00:00;MNO.US;MNO.US USD WHT 10%;-4.0
+1017;Dividend;25.09.2024 13:00:00;PQR.US;PQR.US USD 0.45/ SHR;22.5
+1018;Impozitul reținut;25.09.2024 13:00:00;PQR.US;PQR.US USD WHT 10%;-2.25
+1019;Dividend;20.09.2024 13:00:00;STU.US;STU.US USD 0.30/ SHR;15.0
+1020;Impozitul reținut;20.09.2024 13:00:00;STU.US;STU.US USD WHT 10%;-1.5
+1021;Dobânzi pentru fonduri libere;15.09.2024 16:27:00;;Free-funds Interest 2024-09;2.5
+1022;Fonduri libere pentru impozitul pe dobânzi;10.09.2024 15:14:17;;Free-funds Interest Tax 2024-09;-0.25
+1023;Depunere;05.09.2024 11:10:49;;Deposit;3000

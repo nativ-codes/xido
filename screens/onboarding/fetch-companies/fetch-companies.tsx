@@ -20,7 +20,7 @@ import { defaultGoals } from '@/constants';
 import styles from './fetch-companies.styles';
 import { Analytics } from '@/config/analytics';
 
-const shouldUseMockedData = true;
+const shouldUseMockedData = false;
 
 function FetchCompanies() {
 	useEffect(() => {

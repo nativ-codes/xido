@@ -1,0 +1,24 @@
+ID;Type;Time;Symbol;Comment;Amount
+2001;Dividend;15.12.2024 13:00:14;AAPL.US;AAPL.US USD 0.22/ SHR;11.0
+2002;Impozitul reținut;15.12.2024 13:00:14;AAPL.US;AAPL.US USD WHT 10%;-1.1
+2003;Dividend;10.12.2024 13:00:00;TSLA.US;TSLA.US USD 0.15/ SHR;7.5
+2004;Impozitul reținut;10.12.2024 13:00:00;TSLA.US;TSLA.US USD WHT 10%;-0.75
+2005;Dividend;05.12.2024 13:00:00;AMZN.US;AMZN.US USD 0.10/ SHR;5.0
+2006;Impozitul reținut;05.12.2024 13:00:00;AMZN.US;AMZN.US USD WHT 10%;-0.5
+2007;Dividend;01.12.2024 13:00:00;GOOGL.US;GOOGL.US USD 0.20/ SHR;10.0
+2008;Impozitul reținut;01.12.2024 13:00:00;GOOGL.US;GOOGL.US USD WHT 10%;-1.0
+2009;Dividend;25.11.2024 13:00:00;NFLX.US;NFLX.US USD 0.30/ SHR;15.0
+2010;Impozitul reținut;25.11.2024 13:00:00;NFLX.US;NFLX.US USD WHT 10%;-1.5
+2011;Dobânzi pentru fonduri libere;20.11.2024 16:27:00;;Free-funds Interest 2024-11;4.0
+2012;Fonduri libere pentru impozitul pe dobânzi;15.11.2024 15:14:17;;Free-funds Interest Tax 2024-11;-0.4
+2013;Depunere;10.11.2024 11:10:49;;Deposit;6000
+2014;Depunere;05.11.2024 10:44:28;;Deposit;3500
+2015;Dividend;30.10.2024 13:00:00;MSFT.US;MSFT.US USD 0.75/ SHR;37.5
+2016;Impozitul reținut;30.10.2024 13:00:00;MSFT.US;MSFT.US USD WHT 10%;-3.75
+2017;Dividend;25.10.2024 13:00:00;NVDA.US;NVDA.US USD 0.50/ SHR;25.0
+2018;Impozitul reținut;25.10.2024 13:00:00;NVDA.US;NVDA.US USD WHT 10%;-2.5
+2019;Dividend;20.10.2024 13:00:00;INTC.US;INTC.US USD 0.25/ SHR;12.5
+2020;Impozitul reținut;20.10.2024 13:00:00;INTC.US;INTC.US USD WHT 10%;-1.25
+2021;Dobânzi pentru fonduri libere;15.10.2024 16:27:00;;Free-funds Interest 2024-10;3.5
+2022;Fonduri libere pentru impozitul pe dobânzi;10.10.2024 15:14:17;;Free-funds Interest Tax 2024-10;-0.35
+2023;Depunere;05.10.2024 11:10:49;;Deposit;4000

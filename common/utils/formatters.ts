@@ -25,7 +25,9 @@ const chunkList = (list: Array<any>, chunkSize: number) => {
  * @returns A string representing the formatted currency value.
  */
 const formatValue = (value: number, currency: keyof typeof currencies) => {
-  return `${currencies[currency]}${(value || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+  const isNegative = value < 0;
+  const absoluteValue = Math.abs(value);
+  return `${isNegative ? '-' : ''}${currencies[currency]}${absoluteValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 }
 
 /**

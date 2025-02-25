@@ -6,7 +6,8 @@ export enum OperationType {
 	StocksEtfSale = 'Stocks/ETF sale',
 	StocksEtfPurchase = 'Stocks/ETF purchase',
 	FreeFundsInterests = 'Free funds interests',
-	FreeFundsInterestsTax = 'Free funds interests tax'
+	FreeFundsInterestsTax = 'Free funds interests tax',
+	Other = 'Other'
 }
 
 export type SummaryType = {

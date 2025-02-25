@@ -14,6 +14,7 @@ import {
 } from '@/types';
 import { getIsOlderThanOneYear, getMonthByIndex, parseTransactionDate, ParseTransactionDateReturnType } from './dates';
 import { getTransactionValue } from './misc';
+import { getOperationType } from './validators';
 
 type ParseTransactionsForShareStatsReturnType = {
 	maxShare: number;
@@ -26,7 +27,7 @@ const parseTransactionsForShareStats = (transactions: TransactionType[]): ParseT
 		const type = getValue(TransactionFields.TYPE);
 		const comment = getValue(TransactionFields.COMMENT);
 
-		if (type === OperationType.StocksEtfPurchase) {
+		if (getOperationType(type) === OperationType.StocksEtfPurchase) {
 			const stock = parseMessageForShares(comment);
 
 			return {
@@ -53,7 +54,7 @@ const parseTransactionsForDividendStats = (
 		const time = getValue(TransactionFields.TIME);
 		const amount = getValue(TransactionFields.AMOUNT);
 
-		if (type === OperationType.Dividend) {
+		if (getOperationType(type) === OperationType.Dividend) {
 			if (getIsOlderThanOneYear(time)) {
 				return {
 					...acc,
@@ -124,7 +125,7 @@ const calculateMarketSummary = ({
 		boughtValue: Math.abs(summary.boughtValue),
 		marketValue: marketValue,
 		profitOrLoss: profitOrLoss,
-		dividendYield: company.dividendYield || 0, 
+		dividendYield: company.dividendYield || 0,
 		profitOrLossPercentage: profitOrLossPercentage,
 		currency: company.currency,
 		companyLogo: company.logoUrl || company.companyLogoUrl,
@@ -148,7 +149,7 @@ type CalculateSummaryPropsType = {
 const calculateSummary = ({ summary, type, amount, comment }: CalculateSummaryPropsType): SummaryType => {
 	const newSummary = { ...summary };
 
-	switch (type) {
+	switch (getOperationType(type)) {
 		case OperationType.Dividend:
 			newSummary.dividends += parseFloat(amount);
 			break;
@@ -227,9 +228,9 @@ const parseTransactionsForLatestTransactions = (transactions: TransactionType[])
 		const type = getValue(TransactionFields.TYPE);
 
 		if (
-			type === OperationType.Dividend ||
-			type === OperationType.StocksEtfSale ||
-			type === OperationType.StocksEtfPurchase
+			getOperationType(type) === OperationType.Dividend ||
+			getOperationType(type) === OperationType.StocksEtfSale ||
+			getOperationType(type) === OperationType.StocksEtfPurchase
 		) {
 			const time = getValue(TransactionFields.TIME);
 			const amount = getValue(TransactionFields.AMOUNT);
@@ -239,7 +240,7 @@ const parseTransactionsForLatestTransactions = (transactions: TransactionType[])
 				...acc,
 				[displayDate]: {
 					date: displayDate,
-					type,
+					type: getOperationType(type),
 					// Sum the amount for the same date
 					amount: (acc[displayDate]?.amount || 0) + parseFloat(amount)
 				}
@@ -310,7 +311,7 @@ const groupTransactionsByMonths = (
 		const getValue = getTransactionValue({ transaction });
 		const type = getValue(TransactionFields.TYPE);
 
-		if (type === OperationType.Dividend) {
+		if (getOperationType(type) === OperationType.Dividend) {
 			const { month, year } = parseTransactionDate(getValue(TransactionFields.TIME));
 			const currentMonthList = (acc as GroupTransactionsByMonths)[month] || [];
 			const isTransactionRecent = lastTransactionDate.year === year || lastTransactionDate.year - 1 === year;
@@ -491,7 +492,7 @@ const parseTransactionsForLast12MonthsDividend = (transactions: TransactionType[
 		const getValue = getTransactionValue({ transaction });
 		const type = getValue(TransactionFields.TYPE);
 
-		if (type === OperationType.Dividend) {
+		if (getOperationType(type) === OperationType.Dividend) {
 			const time = getValue(TransactionFields.TIME);
 			const transactionDate = parseTransactionDate(time);
 			const currentDate = new Date(transactionDate.year, transactionDate.month - 1, transactionDate.day);
