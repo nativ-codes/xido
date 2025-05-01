@@ -70,7 +70,7 @@ function FetchCompanies() {
 	}, []);
 
 	return (
-		<ScreenLayout canGoBack center={<Progress value={80} />}>
+		<ScreenLayout canGoBack center={<Progress previousValue={75} value={80} />}>
 			<View style={StyleSheet.compose(StyleSheet.absoluteFill, styles.loading)}>
 				<ActivityIndicator size='large' color={colors.primary} />
 			</View>

@@ -58,7 +58,7 @@ function UploadCsv() {
 	return (
 		<ScreenLayout
 			canGoBack
-			center={<Progress value={50} />}
+			center={<Progress previousValue={25} value={50} />}
 			right={
 				<Button.Icon
 					onPress={showHelpModal}

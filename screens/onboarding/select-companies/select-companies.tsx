@@ -45,7 +45,7 @@ function SelectCompanies() {
 	};
 
 	return (
-		<ScreenLayout canGoBack center={<Progress value={75} />}>
+		<ScreenLayout canGoBack center={<Progress previousValue={50} value={75} />}>
 			<View style={styles.content}>
 				<Text variant='h1' isBold>
 					Select up to {maxCompaniesAllowed} companies you want to track

@@ -7,6 +7,7 @@ import { Text } from '@/common/components';
 import colors from '@/common/colors';
 import { formatPercentValue, parseGoals, sortByNumbers } from '@/common/utils';
 import Store from '@/config/store/slices/user-data';
+import { MotiView } from 'moti';
 
 import styles from './goals.styles';
 
@@ -33,14 +34,24 @@ function Goals() {
 				{parsedGoals.map((goal, key) => (
 					<View key={`${goal.title}-${goal.amount}`} style={styles.cardWrapper}>
 						{parsedGoals.length > 1 && (
-							<View
+							<MotiView
+								from={{ opacity: 0, scaleY: 0 }}
+								animate={{ opacity: 1, scaleY: 1 }}
+								transition={{ type: 'timing', duration: 500 }}
+								delay={250 * key}
 								style={StyleSheet.compose(
 									styles.line,
 									key === 0 ? styles.lineStart : key === goals.length - 1 ? styles.lineEnd : styles.lineMiddle
 								)}
 							/>
 						)}
-						{goal.isGoalAchieved ? renderChecked : renderNotChecked}
+						<MotiView
+							from={{ opacity: 0, scale: 0.8 }}
+							animate={{ opacity: 1, scale: 1 }}
+							transition={{ type: 'timing', duration: 500 }}
+							delay={250 * key}>
+							{goal.isGoalAchieved ? renderChecked : renderNotChecked}
+						</MotiView>
 						<View style={styles.card}>
 							<View style={styles.header}>
 								<Text variant='h5' color={colors.secondaryText}>
