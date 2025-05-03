@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 
 export default StyleSheet.create({
     wrapper: {
@@ -8,7 +8,7 @@ export default StyleSheet.create({
         paddingHorizontal: 16,
         paddingBottom: 8,
         borderRadius: 16,
-        backgroundColor: colors.surface,        
+        backgroundColor: Colors.surface,        
     },
     header: {
         marginBottom: 16        
@@ -27,7 +27,7 @@ export default StyleSheet.create({
         position: 'absolute',
         top: 0,
         right: 0,
-        backgroundColor: colors.secondarySurface,
+        backgroundColor: Colors.secondarySurface,
         borderBottomLeftRadius: 16,
         borderBottomRightRadius: 0,
         borderTopRightRadius: 16,

@@ -1,5 +1,5 @@
-import colors from "@/common/constants/colors";
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import { Colors } from '@/common/constants';
 
 export default StyleSheet.create({
     lineMiddle: {
@@ -17,11 +17,11 @@ export default StyleSheet.create({
         width: 2,
         bottom: 0,
         left: 16,
-        backgroundColor: colors.primary,
+        backgroundColor: Colors.primary,
     },
     card: {
         borderRadius: 16,
-        backgroundColor: colors.surface,
+        backgroundColor: Colors.surface,
         padding: 16,
         gap: 8,
         flexShrink: 1        
@@ -43,7 +43,7 @@ export default StyleSheet.create({
         width: 32,
         height: 32,
         borderRadius: 16,
-        backgroundColor: colors.primary,
+        backgroundColor: Colors.primary,
         justifyContent: 'center',
         alignItems: 'center'        
     },
@@ -52,9 +52,9 @@ export default StyleSheet.create({
         width: 32,
         height: 32,
         borderRadius: 16,
-        backgroundColor: colors.background,
+        backgroundColor: Colors.background,
         borderWidth: 2,
-        borderColor: colors.primary,
+        borderColor: Colors.primary,
         justifyContent: 'center',
         alignItems: 'center'
     }

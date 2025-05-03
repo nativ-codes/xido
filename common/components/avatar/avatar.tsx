@@ -2,7 +2,7 @@ import { StyleSheet, Image, View } from 'react-native';
 
 import Text from '@/common/components/text/text';
 import styles from './avatar.styles'
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 
 type AvatarPropTypes = {
     url?: string;
@@ -23,7 +23,7 @@ function Avatar({
             source={{ uri: url }}
             style={sizeStyle}
         />) : (<View style={StyleSheet.compose(styles.emptyAvatar, sizeStyle)}>
-            <Text variant={textVariant} isBold color={colors.secondaryText}>{placeholder}</Text>
+            <Text variant={textVariant} isBold color={Colors.secondaryText}>{placeholder}</Text>
         </View>)
 }
 

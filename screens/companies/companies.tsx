@@ -8,7 +8,7 @@ import { Button, CompanyCard } from '@/common/components';
 import { SortByPropTypes } from '@/types/components';
 import Store from '@/config/store/slices/user-data';
 import { ScreenLayout } from '@/common/layouts';
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 
 import SortByBottomSheet from './components/sort-by-bottom-sheet/sort-by-bottom-sheet';
 import styles from './companies.styles';
@@ -82,7 +82,7 @@ function Companies() {
 						<TouchableOpacity
 							activeOpacity={0.7}
 							onPress={handleOnCompanyPress(item.summary.symbol)}
-							style={StyleSheet.compose(styles.card, { borderWidth: 1, borderRadius: 16, borderColor: colors.border })}>
+							style={StyleSheet.compose(styles.card, { borderWidth: 1, borderRadius: 16, borderColor: Colors.border })}>
 							<CompanyCard {...item.summary} />
 						</TouchableOpacity>
 					</MotiView>
@@ -95,14 +95,14 @@ function Companies() {
 			<View style={styles.wrapper}>
 				<View style={styles.search}>
 					<View style={styles.icon}>
-						<Ionicons name='magnify' size={24} color={colors.secondaryText} />
+						<Ionicons name='magnify' size={24} color={Colors.secondaryText} />
 					</View>
 					<TextInput
 						style={styles.textinput}
 						placeholder='Company name or ticker...'
 						onChangeText={handleOnChangeText}
 					/>
-					<Button.Icon onPress={showModal} name='sort-variant' size='medium' color={colors.secondaryText} />
+					<Button.Icon onPress={showModal} name='sort-variant' size='medium' color={Colors.secondaryText} />
 				</View>
 
 				<FlashList

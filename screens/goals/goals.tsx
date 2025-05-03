@@ -4,13 +4,12 @@ import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { ScreenLayout } from '@/common/layouts';
 import { Text } from '@/common/components';
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 import { formatPercentValue, parseGoals, sortByNumbers } from '@/common/utils';
 import Store from '@/config/store/slices/user-data';
 import { MotiView } from 'moti';
 
 import styles from './goals.styles';
-import { GeneralStyles } from '@/common/general-styles';
 
 function Goals() {
 	const goals = Store.useGoals();
@@ -23,7 +22,7 @@ function Goals() {
 
 	const renderChecked = (
 		<View style={styles.checked}>
-			<Ionicons name='check' size={24} color={colors.background} />
+			<Ionicons name='check' size={24} color={Colors.background} />
 		</View>
 	);
 
@@ -58,9 +57,9 @@ function Goals() {
 							animate={{ opacity: 1, translateX: 0 }}
 							transition={{ type: 'timing', duration: 500 }}
 							delay={250 * key}
-							style={StyleSheet.compose(styles.card, { borderWidth: 1, borderColor: colors.secondarySurface })}>
+							style={StyleSheet.compose(styles.card, { borderWidth: 1, borderColor: Colors.secondarySurface })}>
 							<View style={styles.header}>
-								<Text variant='h5' color={colors.secondaryText}>
+								<Text variant='h5' color={Colors.secondaryText}>
 									{`${goal.isGoalAchieved ? '100%' : formatPercentValue(goal.progress)} progress`}
 								</Text>
 								<Text isBold>${goal.amount} / month</Text>

@@ -6,7 +6,7 @@ import { Text } from '@/common/components';
 import { ScreenLayout } from '@/common/layouts';
 import { Legal as LegalConstant } from '@/common/constants';
 import { LegalTypes } from '@/types';
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 
 import styles from './legal.styles';
 
@@ -17,7 +17,7 @@ function Legal() {
 	return (
 		<ScreenLayout canGoBack title={data.title}>
 			<View style={styles.wrapper}>
-				<Text variant="h5" color={colors.secondaryText}>
+				<Text variant="h5" color={Colors.secondaryText}>
 					{data.lastUpdated}
 				</Text>
 				{data.sections.map(({ title, content, sections }, index) => (

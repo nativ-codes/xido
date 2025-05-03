@@ -1,5 +1,5 @@
-import colors from "@/common/constants/colors";
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import { Colors } from '@/common/constants';
 
 export default StyleSheet.create({
     wrapper: {
@@ -12,7 +12,7 @@ export default StyleSheet.create({
         width: 32,
         height: 32,
         borderRadius: 16,
-        backgroundColor: colors.secondarySurface,
+        backgroundColor: Colors.secondarySurface,
         alignItems: 'center',
         justifyContent: 'center',
     }

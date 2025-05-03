@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import colors from "@/common/constants/colors";
+import { Colors } from '@/common/constants';
 
 export default StyleSheet.create({
   itemWrapper: {
@@ -7,14 +7,14 @@ export default StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     borderRadius: 16,
-    backgroundColor: colors.surface,
+    backgroundColor: Colors.surface,
     alignItems: 'center',
   },
   selected: {
     height: 12,
     width: 12,
     borderRadius: 6,
-    backgroundColor: colors.primary    
+    backgroundColor: Colors.primary    
   },
   circle: {
     height: 18,

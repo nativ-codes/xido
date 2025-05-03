@@ -15,7 +15,7 @@ import {
 import { mockedCompanies, mockedSymbols } from '@/__mocks__';
 import { ScreenLayout } from '@/common/layouts';
 import { getCompaniesInBatches } from '@/services/companies';
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 import { defaultGoals } from '@/common/constants';
 import styles from './fetch-companies.styles';
 import { Analytics } from '@/config/analytics';
@@ -72,7 +72,7 @@ function FetchCompanies() {
 	return (
 		<ScreenLayout canGoBack center={<Progress previousValue={75} value={80} />}>
 			<View style={StyleSheet.compose(StyleSheet.absoluteFill, styles.loading)}>
-				<ActivityIndicator size='large' color={colors.primary} />
+				<ActivityIndicator size='large' color={Colors.primary} />
 			</View>
 		</ScreenLayout>
 	);

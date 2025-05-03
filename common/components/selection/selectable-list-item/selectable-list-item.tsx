@@ -1,4 +1,4 @@
-import colors from "@/common/constants/colors";
+import { Colors } from '@/common/constants';
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import Text from '@/common/components/text/text';
@@ -11,7 +11,7 @@ type SelectableListItemPropTypes = {
 }
 
 function SelectableListItem({label, isSelected, onPress}: SelectableListItemPropTypes) {
-  const borderColor = isSelected ? colors.primary : colors.secondaryText;
+  const borderColor = isSelected ? Colors.primary : Colors.secondaryText;
 
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={styles.itemWrapper}>

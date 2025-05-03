@@ -1,4 +1,4 @@
-const colors = {
+export const Colors = {
 	primary: '#12d18e',
 	error: '#FE5F55',
 	background: '#F7F7F7',
@@ -12,5 +12,3 @@ const colors = {
 	secondarySurface: '#F7F7F7',
 	border: '#F0F0F0'
 };
-
-export default colors;

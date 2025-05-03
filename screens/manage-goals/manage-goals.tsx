@@ -4,7 +4,7 @@ import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 import { Button, Text } from '@/common/components';
 import Store from '@/config/store/slices/user-data';
 import { ScreenLayout } from '@/common/layouts';
@@ -50,7 +50,7 @@ function ManageGoals() {
 									<Text>{goal.title}</Text>
 								</View>
 								<View>
-									<Ionicons name='chevron-right' size={24} color={colors.primaryText} />
+									<Ionicons name='chevron-right' size={24} color={Colors.primaryText} />
 								</View>
 							</TouchableOpacity>
 						</MotiView>

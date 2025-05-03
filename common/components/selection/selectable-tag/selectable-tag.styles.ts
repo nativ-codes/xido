@@ -1,17 +1,17 @@
-import colors from '@/common/constants/colors';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Colors } from '@/common/constants';
 
 export default StyleSheet.create({
     container: {
-        backgroundColor: colors.surface,
+        backgroundColor: Colors.surface,
         borderRadius: 16,
         alignSelf: 'flex-start',
         borderWidth: 2,
-        borderColor: colors.background,
+        borderColor: Colors.background,
     },
     selected: {
         borderWidth: 2,
-        borderColor: colors.primary,
+        borderColor: Colors.primary,
     },
     smallContainer: {
         padding: 8

@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 
 export default StyleSheet.create({
     content: {
@@ -12,9 +12,9 @@ export default StyleSheet.create({
     },
     uploadBox: {
         marginVertical: 16,
-        backgroundColor: colors.secondarySurface,
+        backgroundColor: Colors.secondarySurface,
         borderWidth: 3,
-        borderColor: colors.primary,
+        borderColor: Colors.primary,
         height: 200,
         borderRadius: 16,
         justifyContent: 'center',
@@ -30,6 +30,6 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     errorBox: {
-        borderColor: colors.error,
+        borderColor: Colors.error,
     }
 });

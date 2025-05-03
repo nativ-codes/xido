@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Text from '@/common/components/text/text';
 import Row from '@/common/layouts/row/row';
 
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 import styles from './list-item.styles';
 import { ListItemVariants } from '@/types/components';
 
@@ -17,10 +17,10 @@ function ListItem({
     return (
         <Row
             style={styles.row}
-            left={<Text variant="h4" color={colors.primaryText}>{leftText}</Text>}
+            left={<Text variant="h4" color={Colors.primaryText}>{leftText}</Text>}
             right={Boolean(rightText) ? 
                 <Text isBold variant="h4" color={colorMapper[variant]}>{rightText}</Text> : 
-                <MaterialCommunityIcons name={rightIcon} size={24} color={colors.primaryText} />}
+                <MaterialCommunityIcons name={rightIcon} size={24} color={Colors.primaryText} />}
         />
     )
 }
@@ -33,9 +33,9 @@ type ListItemPropTypes = {
 }
 
 const colorMapper = {
-    [ListItemVariants.PROFIT]: colors.primary,
-    [ListItemVariants.LOSS]: colors.error,
-    [ListItemVariants.DEFAULT]: colors.secondaryText,
+    [ListItemVariants.PROFIT]: Colors.primary,
+    [ListItemVariants.LOSS]: Colors.error,
+    [ListItemVariants.DEFAULT]: Colors.secondaryText,
 }
 
 ListItem.variants = ListItemVariants;

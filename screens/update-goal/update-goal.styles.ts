@@ -1,5 +1,5 @@
-import colors from "@/common/constants/colors";
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import { Colors } from '@/common/constants';
 
 export default StyleSheet.create({
     textInput: {
@@ -9,7 +9,7 @@ export default StyleSheet.create({
         paddingRight: 16,
         fontFamily: 'Urbanist',
         paddingVertical: 8,
-        backgroundColor: colors.surface,
+        backgroundColor: Colors.surface,
         flex: 1
     },
     section: {

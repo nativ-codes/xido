@@ -1,5 +1,5 @@
-import colors from '@/common/constants/colors';
 import { StyleSheet } from 'react-native';
+import { Colors } from '@/common/constants';
 
 const avatarSmallSize = 40;
 const avatarLargeSize = 80;
@@ -16,9 +16,9 @@ export default StyleSheet.create({
         borderRadius: 16
     },
     emptyAvatar: {
-        backgroundColor: colors.secondarySurface,
+        backgroundColor: Colors.secondarySurface,
         borderWidth: 1,
-        borderColor: colors.secondaryText,
+        borderColor: Colors.secondaryText,
         borderStyle: 'dashed',
         justifyContent: 'center',
         alignItems: 'center'

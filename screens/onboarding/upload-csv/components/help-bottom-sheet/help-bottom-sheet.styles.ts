@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 
 export default StyleSheet.create({
     content: {
-        backgroundColor: colors.surface,
+        backgroundColor: Colors.surface,
         padding: 16,
         marginHorizontal: 16,
         borderRadius: 16,

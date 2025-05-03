@@ -1,15 +1,15 @@
-import colors from '@/common/constants/colors';
 import { StyleSheet } from 'react-native';
+import { Colors } from '@/common/constants';
 
 export default StyleSheet.create({
 	wrapper: {
-		backgroundColor: colors.secondarySurface,
+		backgroundColor: Colors.secondarySurface,
 		height: 24,
 		borderRadius: 12,
 		width: '100%'
 	},
 	progress: {
-		backgroundColor: colors.primary,
+		backgroundColor: Colors.primary,
 		height: '100%',
 		borderRadius: 12
 	}

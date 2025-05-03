@@ -3,7 +3,7 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Text from '@/common/components/text/text';
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 import styles from './button.styles'
 import { noop } from '@/common/utils';
 
@@ -39,16 +39,16 @@ enum ButtonVariants {
 
 const variants = {
     primary: {
-        backgroundColor: colors.primary,
-        color: colors.background,
+        backgroundColor: Colors.primary,
+        color: Colors.background,
     },
     secondary: {
         backgroundColor: 'transparent',
-        color: colors.primary
+        color: Colors.primary
     },
     danger: {
-        backgroundColor: colors.error,
-        color: colors.background
+        backgroundColor: Colors.error,
+        color: Colors.background
     }    
 }
 

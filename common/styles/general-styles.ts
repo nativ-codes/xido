@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-import {colors} from '@/common/constants';
+import { Colors } from '@/common/constants';
 
 export const GeneralStyles = StyleSheet.create({
 	shadow: {
-		shadowColor: colors.black,
+		shadowColor: Colors.black,
 		shadowOffset: {
 			width: 0,
 			height: 2

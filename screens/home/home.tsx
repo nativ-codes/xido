@@ -5,12 +5,11 @@ import { Text, Card, ListItem, Progress, Divider } from '@/common/components';
 import { formatPercentValue, formatValue, getOverall, parseGoals, sortByNumbers } from '@/common/utils';
 import { ScreenLayout } from '@/common/layouts';
 import Store from '@/config/store/slices/user-data';
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 
 import HomeInfoBottomSheet from './components/home-info-bottom-sheet/home-info-bottom-sheet';
 import styles from './home.styles';
 import { HomeInfoSections } from '@/types';
-import { GeneralStyles } from '@/common/general-styles';
 
 function Home() {
 	const userData = Store.useUserData();
@@ -59,13 +58,13 @@ function Home() {
 					<ListItem leftText='Next goal' rightText={`${formatValue(nextGoal, currency)} / month`} />
 					<View style={styles.goalProgressWrapper}>
 						<View style={styles.goalHeader}>
-							<Text color={colors.secondaryText} variant='h6'>
+							<Text color={Colors.secondaryText} variant='h6'>
 								{formatValue(lastAchievedGoal, currency)}
 							</Text>
-							<Text color={colors.primaryText} variant='h5' isBold>
+							<Text color={Colors.primaryText} variant='h5' isBold>
 								{formatPercentValue(nextGoalProgress)}
 							</Text>
-							<Text color={colors.secondaryText} variant='h6'>
+							<Text color={Colors.secondaryText} variant='h6'>
 								{formatValue(nextGoal, currency)}
 							</Text>
 						</View>

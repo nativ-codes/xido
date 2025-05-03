@@ -2,7 +2,7 @@ import {View, StyleSheet} from 'react-native';
 
 import styles from './tag.styles'
 import Text from '@/common/components/text/text'
-import colors from '@/common/constants/colors'
+import { Colors } from '@/common/constants';
 
 type TagPropTypes = {
     value: string,
@@ -19,7 +19,7 @@ function Tag({
         <View style={StyleSheet.compose(styles.wrapper, {
             backgroundColor
         })}>
-            <Text isBold variant="h5" color={colors.secondaryText}>{value.toUpperCase()}</Text>
+            <Text isBold variant="h5" color={Colors.secondaryText}>{value.toUpperCase()}</Text>
         </View>
     )
 }
@@ -30,8 +30,8 @@ enum TagVariants {
 }
 
 const variants = {
-    primary: colors.primarySurface,
-    secondary: colors.secondarySurface
+    primary: Colors.primarySurface,
+    secondary: Colors.secondarySurface
 }
 
 export default Tag;

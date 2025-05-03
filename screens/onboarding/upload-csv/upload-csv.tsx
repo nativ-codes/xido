@@ -8,7 +8,7 @@ import { Text, Button, Progress } from '@/common/components';
 import { TransactionType } from '@/types';
 import { ScreenLayout } from '@/common/layouts';
 import Store from '@/config/store/slices/user-data';
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 
 import HelpBottomSheet from './components/help-bottom-sheet/help-bottom-sheet';
 import styles from './upload-csv.styles';
@@ -18,7 +18,7 @@ function UploadCsv() {
 	const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
 	const [isError, setIsError] = useState(false);
 
-	const boxContentColor = isError ? colors.error : colors.primary;
+	const boxContentColor = isError ? Colors.error : Colors.primary;
 	const isButtonDisabled = !Boolean(uploadedTransactions) || isError;
 
 	const showHelpModal = () => setIsHelpModalVisible(true);
@@ -64,7 +64,7 @@ function UploadCsv() {
 					onPress={showHelpModal}
 					name='help-circle-outline'
 					size="medium"
-					color={colors.secondaryText}
+					color={Colors.secondaryText}
 				/>
 			}>
 			<View style={styles.content}>
@@ -89,8 +89,8 @@ function UploadCsv() {
 						</View>
 					) : (
 						<View style={styles.boxContent}>
-							<Ionicons name='file-document-outline' size={24} color={colors.disable} />
-							<Text textAlign='center' color={colors.disable}>
+							<Ionicons name='file-document-outline' size={24} color={Colors.disable} />
+							<Text textAlign='center' color={Colors.disable}>
 								Select file
 							</Text>
 						</View>

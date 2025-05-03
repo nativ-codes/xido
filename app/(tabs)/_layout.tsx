@@ -2,13 +2,13 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
-import { GeneralStyles } from '@/common/general-styles';
+import { GeneralStyles } from '@/common/styles/general-styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const screenOptions = {
-	tabBarActiveTintColor: colors.secondaryText,
+	tabBarActiveTintColor: Colors.secondaryText,
 	headerShown: false
 };
 
@@ -71,7 +71,7 @@ function TabBar({ state, navigation, insets }) {
 						onPress={handleOnPress}
 						activeOpacity={0.7}
 						style={StyleSheet.compose(styles.tabBarItem, isFocused && styles.tabBarItemFocused)}>
-						<Ionicons name={iconName} size={24} color={colors.secondaryText} />
+						<Ionicons name={iconName} size={24} color={Colors.secondaryText} />
 					</TouchableOpacity>
 				);
 			})}
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
 		height: 68,
 		borderRadius: 68,
 		borderWidth: 1,
-		borderColor: colors.secondarySurface,
-		backgroundColor: colors.surface,
+		borderColor: Colors.secondarySurface,
+		backgroundColor: Colors.surface,
 		flexDirection: 'row',
 		padding: 4
 	},
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
 		gap: 4
 	},
 	tabBarItemFocused: {
-		backgroundColor: colors.secondarySurface
+		backgroundColor: Colors.secondarySurface
 	}
 });
 

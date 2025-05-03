@@ -1,9 +1,9 @@
-import colors from '@/common/constants/colors';
 import { StyleSheet } from 'react-native';
+import { Colors } from '@/common/constants';
 
 export default StyleSheet.create({
 	loading: {
-		backgroundColor: colors.overlay,
+		backgroundColor: Colors.overlay,
 		flex: 1,
 		justifyContent: 'center'
 	},

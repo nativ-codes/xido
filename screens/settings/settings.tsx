@@ -7,7 +7,7 @@ import { Text, Card, ListItem } from '@/common/components';
 import Store from '@/config/store/slices/user-data';
 import { ScreenLayout } from '@/common/layouts';
 import { LegalTypes } from '@/types';
-import colors from '@/common/constants/colors';
+import { Colors } from '@/common/constants';
 
 import styles from './settings.styles';
 import { Analytics } from '@/config/analytics';
@@ -94,7 +94,7 @@ function Settings() {
 					</TouchableOpacity>
 				</Card>
 				<View style={styles.footer}>
-					<Text color={colors.secondaryText} variant='h5'>
+					<Text color={Colors.secondaryText} variant='h5'>
 						Xido v{Application.nativeApplicationVersion}
 					</Text>
 				</View>
