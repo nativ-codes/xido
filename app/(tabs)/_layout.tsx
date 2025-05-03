@@ -2,7 +2,7 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import { GeneralStyles } from '@/common/general-styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

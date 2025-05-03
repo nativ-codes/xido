@@ -8,7 +8,7 @@ import { Button, CompanyCard } from '@/common/components';
 import { SortByPropTypes } from '@/types/components';
 import Store from '@/config/store/slices/user-data';
 import { ScreenLayout } from '@/common/layouts';
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 
 import SortByBottomSheet from './components/sort-by-bottom-sheet/sort-by-bottom-sheet';
 import styles from './companies.styles';

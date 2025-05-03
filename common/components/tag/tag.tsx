@@ -2,7 +2,7 @@ import {View, StyleSheet} from 'react-native';
 
 import styles from './tag.styles'
 import Text from '@/common/components/text/text'
-import colors from '@/common/colors'
+import colors from '@/common/constants/colors'
 
 type TagPropTypes = {
     value: string,

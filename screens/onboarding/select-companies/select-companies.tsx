@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { router } from 'expo-router';
 
-import { maxCompaniesAllowed } from '@/constants';
+import { maxCompaniesAllowed } from '@/common/constants';
 import Store from '@/config/store/slices/user-data';
 import { Selection, Text, Button, Progress } from '@/common/components';
 import { ScreenLayout } from '@/common/layouts';

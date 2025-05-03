@@ -1,4 +1,4 @@
-import { columnTitles } from '@/constants';
+import { columnTitles } from '@/common/constants';
 import { OperationType } from '@/types';
 
 const validateColumnTitles = (titles: string[]): boolean => titles.every((title) => columnTitles.includes(title));

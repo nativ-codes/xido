@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 
 import Button from '@/common/components/button/button';
 import Text from '@/common/components/text/text';
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 import styles from './header.styles';
 
 export type HeaderPropTypes = {

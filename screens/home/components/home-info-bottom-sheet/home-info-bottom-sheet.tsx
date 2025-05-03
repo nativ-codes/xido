@@ -2,7 +2,7 @@ import { View } from 'react-native';
 
 import { HomeInfoSections } from '@/types/components';
 import { Text, BottomSheet } from '@/common/components';
-import { HomeInfo } from '@/constants';
+import { HomeInfo } from '@/common/constants';
 
 import styles from './home-info-bottom-sheet.styles';
 

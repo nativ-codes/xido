@@ -1,5 +1,5 @@
 import { chunkList } from "@/common/utils";
-import { maxCompaniesPerBatch } from "@/constants";
+import { maxCompaniesPerBatch } from "@/common/constants";
 import { CompanyData } from "@/types/companies";
 
 type EnvType = {

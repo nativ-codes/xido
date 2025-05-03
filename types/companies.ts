@@ -1,4 +1,4 @@
-import { currencies } from "@/constants";
+import { currencies } from "@/common/constants";
 import { TransactionsToDisplayPropTypes } from "./transactions";
 
 export interface Company {

@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { SortByPropTypes } from '@/types/components';
 import { Button, Selection, BottomSheet } from '@/common/components';
-import { sortBy } from '@/constants';
+import { sortBy } from '@/common/constants';
 
 import styles from './sort-by-bottom-sheet.styles'
 

@@ -1,4 +1,4 @@
-import { currencies } from "@/constants";
+import { currencies } from "@/common/constants";
 
 export const mockedCompanies = [
   {

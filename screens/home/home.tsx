@@ -5,7 +5,7 @@ import { Text, Card, ListItem, Progress, Divider } from '@/common/components';
 import { formatPercentValue, formatValue, getOverall, parseGoals, sortByNumbers } from '@/common/utils';
 import { ScreenLayout } from '@/common/layouts';
 import Store from '@/config/store/slices/user-data';
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 
 import HomeInfoBottomSheet from './components/home-info-bottom-sheet/home-info-bottom-sheet';
 import styles from './home.styles';

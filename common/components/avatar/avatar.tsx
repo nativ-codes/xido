@@ -2,7 +2,7 @@ import { StyleSheet, Image, View } from 'react-native';
 
 import Text from '@/common/components/text/text';
 import styles from './avatar.styles'
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 
 type AvatarPropTypes = {
     url?: string;

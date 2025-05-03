@@ -3,7 +3,7 @@ import { TouchableOpacity, View } from 'react-native';
 
 import Text from '@/common/components/text/text';
 import Button from '@/common/components/button/button';
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 
 import styles from './card.styles';
 

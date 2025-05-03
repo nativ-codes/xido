@@ -15,8 +15,8 @@ import {
 import { mockedCompanies, mockedSymbols } from '@/__mocks__';
 import { ScreenLayout } from '@/common/layouts';
 import { getCompaniesInBatches } from '@/services/companies';
-import colors from '@/common/colors';
-import { defaultGoals } from '@/constants';
+import colors from '@/common/constants/colors';
+import { defaultGoals } from '@/common/constants';
 import styles from './fetch-companies.styles';
 import { Analytics } from '@/config/analytics';
 

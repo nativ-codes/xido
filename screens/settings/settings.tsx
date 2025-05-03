@@ -7,7 +7,7 @@ import { Text, Card, ListItem } from '@/common/components';
 import Store from '@/config/store/slices/user-data';
 import { ScreenLayout } from '@/common/layouts';
 import { LegalTypes } from '@/types';
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 
 import styles from './settings.styles';
 import { Analytics } from '@/config/analytics';

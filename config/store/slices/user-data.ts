@@ -1,7 +1,7 @@
 import { useMMKVString } from 'react-native-mmkv';
 import { store } from '@/config/store';
 import { useMemo } from 'react';
-import { currencies } from '@/constants';
+import { currencies } from '@/common/constants';
 import {
 	ParsedTransactionsType,
 	ParseTransactionsForCalendarReturnType,

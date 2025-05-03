@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 
 import { Text, BottomSheet } from '@/common/components';
-import { CalendarInfo } from '@/constants';
+import { CalendarInfo } from '@/common/constants';
 
 import styles from './calendar-info-bottom-sheet.styles';
 

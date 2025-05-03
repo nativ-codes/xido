@@ -3,7 +3,7 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Text from '@/common/components/text/text';
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 import styles from './button.styles'
 import { noop } from '@/common/utils';
 

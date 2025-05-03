@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import colors from './colors';
+import {colors} from '@/common/constants';
 
 export const GeneralStyles = StyleSheet.create({
 	shadow: {

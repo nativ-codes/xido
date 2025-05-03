@@ -1,4 +1,4 @@
-import { months, oneYearInMilliseconds } from '@/constants';
+import { months, oneYearInMilliseconds } from '@/common/constants';
 
 const getMonthByIndex = (month: number): string => months[month - 1];
 

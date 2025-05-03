@@ -4,9 +4,9 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { Text } from '@/common/components';
 import { ScreenLayout } from '@/common/layouts';
-import { Legal as LegalConstant } from '@/constants';
+import { Legal as LegalConstant } from '@/common/constants';
 import { LegalTypes } from '@/types';
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 
 import styles from './legal.styles';
 

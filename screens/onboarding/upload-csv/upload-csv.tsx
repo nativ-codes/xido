@@ -8,7 +8,7 @@ import { Text, Button, Progress } from '@/common/components';
 import { TransactionType } from '@/types';
 import { ScreenLayout } from '@/common/layouts';
 import Store from '@/config/store/slices/user-data';
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 
 import HelpBottomSheet from './components/help-bottom-sheet/help-bottom-sheet';
 import styles from './upload-csv.styles';

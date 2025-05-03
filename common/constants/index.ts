@@ -5,3 +5,6 @@ export * from './default-states';
 export * from './info';
 export * from './legal';
 export * from './providers';
+export * from './animations';
+export * from './units';
+export * from './colors';

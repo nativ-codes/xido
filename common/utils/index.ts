@@ -4,3 +4,4 @@ export * from './device';
 export * from './validators';
 export * from './dates';
 export * from './misc';
+export * from './hooks';

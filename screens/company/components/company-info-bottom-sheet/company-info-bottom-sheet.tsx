@@ -2,7 +2,7 @@ import { View } from 'react-native';
 
 import { CompanyInfoSections } from '@/types/components';
 import { Text, BottomSheet } from '@/common/components';
-import { CompanyInfo } from '@/constants';
+import { CompanyInfo } from '@/common/constants';
 
 import styles from './company-info-bottom-sheet.styles';
 

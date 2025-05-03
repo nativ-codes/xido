@@ -5,7 +5,7 @@ import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import Text from '@/common/components/text/text';
 import Button from '@/common/components/button/button';
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 
 import styles from './empty-placeholder.styles';
 import { Analytics } from '@/config/analytics';

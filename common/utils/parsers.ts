@@ -1,4 +1,4 @@
-import { companiesStatsDefault, dividendStatsDefault, oneYearInMilliseconds, shareStatsDefault } from '@/constants';
+import { companiesStatsDefault, dividendStatsDefault, oneYearInMilliseconds, shareStatsDefault } from '@/common/constants';
 import {
 	OperationType,
 	SummaryType,

@@ -1,4 +1,4 @@
-import { months, providers } from '@/constants';
+import { months, providers } from '@/common/constants';
 import { TransactionFields, TransactionProvider, TransactionType } from '@/types';
 
 const noop = () => {};

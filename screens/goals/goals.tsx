@@ -4,7 +4,7 @@ import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { ScreenLayout } from '@/common/layouts';
 import { Text } from '@/common/components';
-import colors from '@/common/colors';
+import colors from '@/common/constants/colors';
 import { formatPercentValue, parseGoals, sortByNumbers } from '@/common/utils';
 import Store from '@/config/store/slices/user-data';
 import { MotiView } from 'moti';
