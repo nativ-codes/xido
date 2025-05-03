@@ -25,7 +25,7 @@ function ScreenLayout({
 		<View style={styles.wrapper}>
 			<ScrollView contentContainerStyle={StyleSheet.compose(styles.contentContainer, {
 				paddingTop: insets.top,
-				paddingBottom: insets.bottom
+				paddingBottom: insets.bottom + 68 + 32
 			})}>
 				{Boolean(headerProps) && <Header {...headerProps} />}
 				{isEmpty ? emptyPlaceholder : children}

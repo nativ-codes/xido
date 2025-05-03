@@ -1,4 +1,4 @@
-package com.xido
+package com.nativcodes.xido
 
 import android.os.Build
 import android.os.Bundle

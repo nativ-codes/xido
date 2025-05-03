@@ -109,9 +109,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.xido'
+    namespace 'com.nativcodes.xido'
     defaultConfig {
-        applicationId 'com.xido'
+        applicationId 'com.nativcodes.xido'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

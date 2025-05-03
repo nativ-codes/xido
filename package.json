@@ -31,6 +31,7 @@
     "expo-system-ui": "~3.0.7",
     "expo-web-browser": "~13.0.3",
     "mixpanel-react-native": "^3.0.8",
+    "moti": "^0.30.0",
     "papaparse": "^5.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",

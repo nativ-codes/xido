@@ -17,7 +17,7 @@ export default StyleSheet.create({
         width: 2,
         bottom: 0,
         left: 16,
-        backgroundColor: colors.primary
+        backgroundColor: colors.primary,
     },
     card: {
         borderRadius: 16,
@@ -39,6 +39,7 @@ export default StyleSheet.create({
         gap: 16
     },
     checked: {
+        zIndex: 1,
         width: 32,
         height: 32,
         borderRadius: 16,
@@ -47,6 +48,7 @@ export default StyleSheet.create({
         alignItems: 'center'        
     },
     notChecked: {
+        zIndex: 1,
         width: 32,
         height: 32,
         borderRadius: 16,

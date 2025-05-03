@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import { Text, Card, ListItem, Progress, Divider } from '@/common/components';
 import { formatPercentValue, formatValue, getOverall, parseGoals, sortByNumbers } from '@/common/utils';
@@ -10,6 +10,7 @@ import colors from '@/common/colors';
 import HomeInfoBottomSheet from './components/home-info-bottom-sheet/home-info-bottom-sheet';
 import styles from './home.styles';
 import { HomeInfoSections } from '@/types';
+import { GeneralStyles } from '@/common/general-styles';
 
 function Home() {
 	const userData = Store.useUserData();
@@ -58,17 +59,17 @@ function Home() {
 					<ListItem leftText='Next goal' rightText={`${formatValue(nextGoal, currency)} / month`} />
 					<View style={styles.goalProgressWrapper}>
 						<View style={styles.goalHeader}>
-							<Text color={colors.secondaryText} variant="h6">
+							<Text color={colors.secondaryText} variant='h6'>
 								{formatValue(lastAchievedGoal, currency)}
 							</Text>
-							<Text color={colors.primaryText} variant="h5" isBold>
+							<Text color={colors.primaryText} variant='h5' isBold>
 								{formatPercentValue(nextGoalProgress)}
 							</Text>
-							<Text color={colors.secondaryText} variant="h6">
+							<Text color={colors.secondaryText} variant='h6'>
 								{formatValue(nextGoal, currency)}
 							</Text>
 						</View>
-						<Progress value={nextGoalProgress} />
+						<Progress value={nextGoalProgress} previousValue={0} />
 					</View>
 				</Card>
 			</View>

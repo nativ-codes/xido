@@ -10,6 +10,7 @@ import Store from '@/config/store/slices/user-data';
 import { MotiView } from 'moti';
 
 import styles from './goals.styles';
+import { GeneralStyles } from '@/common/general-styles';
 
 function Goals() {
 	const goals = Store.useGoals();
@@ -52,7 +53,12 @@ function Goals() {
 							delay={250 * key}>
 							{goal.isGoalAchieved ? renderChecked : renderNotChecked}
 						</MotiView>
-						<View style={styles.card}>
+						<MotiView
+							from={{ opacity: 0, translateX: 20 }}
+							animate={{ opacity: 1, translateX: 0 }}
+							transition={{ type: 'timing', duration: 500 }}
+							delay={250 * key}
+							style={StyleSheet.compose(styles.card, { borderWidth: 1, borderColor: colors.secondarySurface })}>
 							<View style={styles.header}>
 								<Text variant='h5' color={colors.secondaryText}>
 									{`${goal.isGoalAchieved ? '100%' : formatPercentValue(goal.progress)} progress`}
@@ -60,7 +66,7 @@ function Goals() {
 								<Text isBold>${goal.amount} / month</Text>
 							</View>
 							<Text>{goal.title}</Text>
-						</View>
+						</MotiView>
 					</View>
 				))}
 			</View>

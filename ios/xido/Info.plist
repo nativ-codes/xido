@@ -28,7 +28,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>myapp</string>
-          <string>com.xido</string>
+          <string>com.nativcodes.xido</string>
         </array>
       </dict>
     </array>

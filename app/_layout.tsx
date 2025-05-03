@@ -6,6 +6,7 @@ import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import '@/config/analytics';
 import { useFetchCompaniesOnceADay } from '@/common/hooks';
+// import 'react-native-gesture-handler';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

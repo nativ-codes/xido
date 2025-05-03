@@ -14,14 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.xido"
+      "bundleIdentifier": "com.nativcodes.xido"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.xido"
+      "package": "com.nativcodes.xido"
     },
     "web": {
       "bundler": "metro",
@@ -30,6 +30,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-document-picker",
       "expo-build-properties"
     ],
     "experiments": {

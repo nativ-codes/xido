@@ -13,7 +13,7 @@ function ErrorFetching() {
     }
 
     return (
-        <ScreenLayout center={<Progress value={100} />}>
+        <ScreenLayout center={<Progress previousValue={80} value={100} />}>
             <View style={styles.content}>
                 <Text variant="h1" isBold>You're all set</Text>
                 <View style={styles.section}>

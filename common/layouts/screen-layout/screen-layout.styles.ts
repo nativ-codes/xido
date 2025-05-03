@@ -4,7 +4,7 @@ import colors from "@/common/colors";
 export default StyleSheet.create({
     wrapper: {
         flex: 1,
-        backgroundColor: colors.background
+        backgroundColor: 'white'
     },
     contentContainer: {
         flexGrow: 1,

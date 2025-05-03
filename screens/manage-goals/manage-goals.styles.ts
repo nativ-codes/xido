@@ -9,6 +9,8 @@ export default StyleSheet.create({
         padding: 16,
         flexDirection: 'row',
         alignItems: 'center',
+        borderWidth: 1,
+        borderColor: colors.border
     },
     leftCard: {
         flex: 1,
