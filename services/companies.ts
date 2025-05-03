@@ -1,4 +1,4 @@
-import { chunkList } from "@/common/utils";
+import { chunkList } from "@/common/utils/formatters";
 import { maxCompaniesPerBatch } from "@/common/constants";
 import { CompanyData } from "@/types/companies";
 

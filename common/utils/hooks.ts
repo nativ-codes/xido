@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import Store from '@/config/store/slices/user-data';
 import { oneDayInMilliseconds } from '@/common/constants';
 import { getCompaniesInBatches } from '@/services/companies';
-import { parseUserData, safelyPrintError } from '.';
+import { parseUserData } from './parsers';
+import { safelyPrintError } from './misc';
 import { Analytics } from '@/config/analytics';
 
 export const useFetchCompaniesOnceADay = () => {
