@@ -5,5 +5,16 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
+	},
+	goalHeaderText: {
+		fontWeight: 'bold',
+		fontSize: 14,
+		fontFamily: 'Urbanist'
+	},
+	monthlyDividendText: {
+		fontWeight: 'bold',
+		fontSize: 26,
+		fontFamily: 'Urbanist-Bold',
+		textAlign: 'center'
 	}
 });

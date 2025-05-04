@@ -2,13 +2,14 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { Text, Card, ListItem, Progress } from '@/common/components';
-import { formatPercentValue, formatValue, parseGoals, sortByNumbers } from '@/common/utils';
+import { formatValue, parseGoals, sortByNumbers } from '@/common/utils';
 import Store from '@/config/store/slices/user-data';
-import { Colors } from '@/common/constants';
+import { Colors, currencies } from '@/common/constants';
 
 import styles from './goal-achievement-section.styles';
 import Spacer from '@/common/layouts/spacer/spacer';
 import { GoalAchievementSectionPropsType } from './goal-achievement-section.types';
+import AnimatedCounter from '@/common/components/animated-counter/animated-counter';
 
 function GoalAchievementSection({ onInfoPress }: GoalAchievementSectionPropsType) {
 	const goals = Store.useGoals();
@@ -32,9 +33,11 @@ function GoalAchievementSection({ onInfoPress }: GoalAchievementSectionPropsType
 				<Text variant='h5' letterSpacing={1} textTransform='uppercase' textAlign='center'>
 					Monthly dividend
 				</Text>
-				<Text variant='h1' isBold textAlign='center'>
-					{formatValue(last12MonthsDividend / 12, currency)}
-				</Text>
+				<AnimatedCounter
+					to={last12MonthsDividend / 12}
+					valueFormatter={(value) => `${currencies[currency]}${value.toFixed(2)}`}
+					style={styles.monthlyDividendText}
+				/>
 				<Text variant='h4' textAlign='center'>
 					{nextGoalLabel}
 				</Text>
@@ -55,9 +58,11 @@ function GoalAchievementSection({ onInfoPress }: GoalAchievementSectionPropsType
 						<Text color={Colors.secondaryText} variant='h6'>
 							{formatValue(0, currency)}
 						</Text>
-						<Text color={Colors.primaryText} variant='h5' isBold>
-							{formatPercentValue(nextGoalProgress)}
-						</Text>
+						<AnimatedCounter
+							to={nextGoalProgress}
+							valueFormatter={(value) => `${value.toFixed(2)}%`}
+							style={styles.goalHeaderText}
+						/>
 						<Text color={Colors.secondaryText} variant='h6'>
 							{formatValue(nextGoalAmount, currency)}
 						</Text>
