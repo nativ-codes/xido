@@ -3,6 +3,7 @@ import { Colors } from '@/common/constants';
 
 export default StyleSheet.create({
 	container: {
+		flex: 1,
 		padding: 16,
 		backgroundColor: Colors.surface,
 		borderRadius: 16,

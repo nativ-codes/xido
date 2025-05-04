@@ -12,5 +12,8 @@ export const GeneralStyles = StyleSheet.create({
 		shadowOpacity: 0.1,
 		shadowRadius: 3.62,
 		elevation: 4
+	},
+	directionRow: {
+		flexDirection: 'row'
 	}
 });

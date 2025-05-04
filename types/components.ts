@@ -29,6 +29,11 @@ export enum HomeInfoSections {
   GOALS = 'GOALS'
 };
 
+export type InfoSectionType = {
+  title: string;
+  description: string;
+};
+
 export type GoalsPropTypes = {
   id: string;
   title: string;

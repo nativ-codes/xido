@@ -558,7 +558,7 @@ const filterRawTransactions = (transactions: TransactionType[], symbols: string[
 		return Boolean(companySymbol) && symbols.includes(companySymbol);
 	});
 
-type GetOverallReturnType = {
+export type GetOverallReturnType = {
 	boughtValue: number;
 	marketValue: number;
 	dividendYields: number;

@@ -7,7 +7,9 @@ type TextPropTypes = {
     color?: string,
     isBold?: boolean,
     numberOfLines?: number,
-    textAlign?: 'center' | 'left' | 'right'
+    textAlign?: 'center' | 'left' | 'right',
+    textTransform?: 'uppercase' | 'lowercase' | 'capitalize',
+    letterSpacing?: number
 }
 
 function Text({
@@ -16,13 +18,17 @@ function Text({
     color,
     isBold,
     textAlign,
-    numberOfLines
+    numberOfLines,
+    textTransform,
+    letterSpacing
 }: TextPropTypes) {
     return (
         <RNText numberOfLines={numberOfLines} style={StyleSheet.compose(variants[variant], {
             color,
             textAlign,
-            fontFamily: isBold ? 'UrbanistBold' : 'Urbanist'
+            fontFamily: isBold ? 'UrbanistBold' : 'Urbanist',
+            textTransform,
+            letterSpacing
         })}>{children}</RNText>
     )
 }
