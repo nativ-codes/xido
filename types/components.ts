@@ -25,8 +25,8 @@ export enum LegalTypes {
 };
 
 export enum HomeInfoSections {
-  OVERALL = 'OVERALL',
-  GOALS = 'GOALS'
+  DIVIDENDS = 'DIVIDENDS',
+  PORTFOLIO = 'PORTFOLIO'
 };
 
 export type InfoSectionType = {

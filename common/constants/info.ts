@@ -109,7 +109,7 @@ const CalendarInfo = [
 ];
 
 const HomeInfo = {
-	[HomeInfoSections.OVERALL]: [
+	[HomeInfoSections.PORTFOLIO]: [
 		{
 			title: 'Invested',
 			description: 'Total capital invested in the portfolio.'
@@ -121,24 +121,15 @@ const HomeInfo = {
 		{
 			title: 'Profit/Loss',
 			description: 'Financial gain or loss based on the difference between invested capital and market price.'
-		},
+		}],
+	[HomeInfoSections.DIVIDENDS]: [
 		{
 			title: 'Dividends last 12 months',
 			description: 'Total dividends received in the last 12 months.'
-		}
-	],
-	[HomeInfoSections.GOALS]: [
-		{
-			title: 'Latest goal achieved',
-			description: 'The most recent financial goal that has been reached.'
 		},
 		{
-			title: 'Next goal',
-			description: 'The next financial goal to be achieved.'
-		},
-		{
-			title: 'Progress',
-			description: 'The progress towards the next financial goal.'
+			title: 'Average dividend yield',
+			description: 'Average dividend yield received from all companies in the portfolio.'
 		}
 	]
 };

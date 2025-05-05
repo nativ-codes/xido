@@ -8,10 +8,9 @@ import { Colors, currencies } from '@/common/constants';
 
 import styles from './goal-achievement-section.styles';
 import Spacer from '@/common/layouts/spacer/spacer';
-import { GoalAchievementSectionPropsType } from './goal-achievement-section.types';
 import AnimatedCounter from '@/common/components/animated-counter/animated-counter';
 
-function GoalAchievementSection({ onInfoPress }: GoalAchievementSectionPropsType) {
+function GoalAchievementSection() {
 	const goals = Store.useGoals();
 	const currency = Store.useCurrency();
 	const last12MonthsDividend = Store.useLast12MonthsDividend();
@@ -43,7 +42,6 @@ function GoalAchievementSection({ onInfoPress }: GoalAchievementSectionPropsType
 				</Text>
 			</Spacer>
 			<Spacer gap='s16'>
-				{false && <Card.Title title='Goals' onPress={onInfoPress} />}
 				<View>
 					{Boolean(lastAchievedGoal) && (
 						<ListItem
