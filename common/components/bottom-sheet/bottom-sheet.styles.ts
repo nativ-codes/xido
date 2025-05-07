@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '@/common/constants';
+import { Colors, Units } from '@/common/constants';
 
 export default StyleSheet.create({
     wrapper: {
@@ -9,25 +9,25 @@ export default StyleSheet.create({
     content: {
         maxHeight: '60%',
         backgroundColor: Colors.background,
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16
+        borderTopLeftRadius: Units.s16,
+        borderTopRightRadius: Units.s16
     },
     close: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
+        width: Units.s32,
+        height: Units.s32,
+        borderRadius: Units.s16,
         backgroundColor: Colors.secondarySurface,
         alignItems: 'center',
         justifyContent: 'center',
     },
     header: {
-        padding: 16,
+        padding: Units.s16,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',        
     },
     noTitle: {
-        padding: 16,
+        padding: Units.s16,
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',

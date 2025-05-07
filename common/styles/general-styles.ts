@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors } from '@/common/constants';
+import { Colors, Units } from '@/common/constants';
 
 export const GeneralStyles = StyleSheet.create({
 	shadow: {
@@ -18,5 +18,13 @@ export const GeneralStyles = StyleSheet.create({
 	},
 	itemsCenter: {
 		alignItems: 'center'
+	},
+	shrink: {
+		flexShrink: 1
+	},
+	cardBorder: {
+		borderWidth: 1,
+		borderRadius: Units.s16,
+		borderColor: Colors.border
 	}
 });

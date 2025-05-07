@@ -2,15 +2,16 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 
-import { ScreenLayout } from '@/common/layouts';
-import { Text } from '@/common/components';
-import { Colors } from '@/common/constants';
+import { Card, Text } from '@/common/components';
+import { Colors, scaleInAnimation, scaleInYAnimation, SHORT_ANIMATION_DURATION, smallSlideInXAnimation } from '@/common/constants';
 import { formatPercentValue, parseGoals, sortByNumbers } from '@/common/utils';
 import Store from '@/config/store/slices/user-data';
 import { MotiView } from 'moti';
 
 import styles from './goals.styles';
 import TabScreenLayout from '@/common/layouts/tab-screen-layout/tab-screen-layout';
+import { GeneralStyles } from '@/common/styles/general-styles';
+import { Spacer } from '@/common/layouts';
 
 function Goals() {
 	const goals = Store.useGoals();
@@ -31,45 +32,40 @@ function Goals() {
 
 	return (
 		<TabScreenLayout title='Goals' isEmpty={!Boolean(goals.length)}>
-			<View style={styles.wrapper}>
+			<Spacer direction='horizontal' size='s16' gap='s16'>
 				{parsedGoals.map((goal, key) => (
-					<View key={`${goal.title}-${goal.amount}`} style={styles.cardWrapper}>
+					<Spacer gap='s16' key={`${goal.title}-${goal.amount}`} style={styles.cardWrapper}>
 						{parsedGoals.length > 1 && (
 							<MotiView
-								from={{ opacity: 0, scaleY: 0 }}
-								animate={{ opacity: 1, scaleY: 1 }}
-								transition={{ type: 'timing', duration: 500 }}
-								delay={250 * key}
+								{...scaleInYAnimation}
+								delay={SHORT_ANIMATION_DURATION * key}
 								style={StyleSheet.compose(
 									styles.line,
 									key === 0 ? styles.lineStart : key === goals.length - 1 ? styles.lineEnd : styles.lineMiddle
 								)}
 							/>
 						)}
-						<MotiView
-							from={{ opacity: 0, scale: 0.8 }}
-							animate={{ opacity: 1, scale: 1 }}
-							transition={{ type: 'timing', duration: 500 }}
-							delay={250 * key}>
+						<MotiView {...scaleInAnimation} delay={SHORT_ANIMATION_DURATION * key}>
 							{goal.isGoalAchieved ? renderChecked : renderNotChecked}
 						</MotiView>
 						<MotiView
-							from={{ opacity: 0, translateX: 20 }}
-							animate={{ opacity: 1, translateX: 0 }}
-							transition={{ type: 'timing', duration: 500 }}
-							delay={250 * key}
-							style={StyleSheet.compose(styles.card, { borderWidth: 1, borderColor: Colors.secondarySurface })}>
-							<View style={styles.header}>
-								<Text variant='h5' color={Colors.secondaryText}>
-									{`${goal.isGoalAchieved ? '100%' : formatPercentValue(goal.progress)} progress`}
-								</Text>
-								<Text isBold>${goal.amount} / month</Text>
-							</View>
-							<Text>{goal.title}</Text>
+							{...smallSlideInXAnimation}
+							delay={SHORT_ANIMATION_DURATION * key}
+							style={GeneralStyles.shrink}
+							>
+								<Card gap='s8'>
+									<Spacer gap='s4'>
+										<Text variant='h5' color={Colors.secondaryText}>
+											{`${goal.isGoalAchieved ? '100%' : formatPercentValue(goal.progress)} progress`}
+										</Text>
+										<Text isBold>${goal.amount} / month</Text>
+									</Spacer>
+									<Text>{goal.title}</Text>
+								</Card>
 						</MotiView>
-					</View>
+					</Spacer>
 				))}
-			</View>
+			</Spacer>
 		</TabScreenLayout>
 	);
 }

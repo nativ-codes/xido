@@ -6,11 +6,12 @@ import { Divider, Avatar, Text, Tag, ListItem, Card } from '@/common/components'
 import Store from '@/config/store/slices/user-data';
 import { formatValue, formatPercentValue } from '@/common/utils';
 import { CompanyInfoSections, TransactionsToDisplayPropTypes } from '@/types';
-import { ScreenLayout } from '@/common/layouts';
+import { ScreenLayout, Spacer } from '@/common/layouts';
 
 import CompanyInfoBottomSheet from './components/company-info-bottom-sheet/company-info-bottom-sheet';
 import styles from './company.styles';
 import { MotiView } from 'moti';
+import { bottomSlideInYLongAnimation, smallSlideInYAnimation, smallSlideInYLongAnimation, topSlideInYLongAnimation } from '@/common/constants';
 
 function Company() {
 	const userData = Store.useUserData();
@@ -147,30 +148,23 @@ function Company() {
 
 	return (
 		<ScreenLayout canGoBack>
-			<View style={styles.wrapper}>
+			<Spacer direction='horizontal' size='s16'>
 				<View style={styles.headerContainer}>
-					<MotiView
-						from={{ opacity: 0, translateY: -20 }}
-						animate={{ opacity: 1, translateY: 0 }}
-						transition={{ type: 'timing', duration: 600 }}>
+					<MotiView {...topSlideInYLongAnimation}>
 						<Avatar size='large' placeholder={symbol} url={companyLogo} />
 					</MotiView>
-					<MotiView
-						from={{ opacity: 0, translateY: 20 }}
-						animate={{ opacity: 1, translateY: 0 }}
-						transition={{ type: 'timing', duration: 600 }}
-						style={styles.headerContainer}>
+					<MotiView {...bottomSlideInYLongAnimation} style={styles.headerContainer}>
 						<Text variant='h1'>{companyName}</Text>
 						<View>
 							<Tag value={symbol} variant='primary' />
 						</View>
 					</MotiView>
 				</View>
-				<MotiView
-					style={styles.content}
-					from={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ type: 'timing', duration: 1000 }}>
+				<Spacer
+					direction='top'
+					size='s32'
+					gap='s16'
+					>
 					<Card>
 						{overallSection}
 						{sharesSection}
@@ -178,8 +172,8 @@ function Company() {
 						{expectedDividendsSection}
 						{latestTransactionsSection}
 					</Card>
-				</MotiView>
-			</View>
+				</Spacer>
+			</Spacer>
 			<CompanyInfoBottomSheet infoSection={infoSection} hideModal={hideModal} />
 		</ScreenLayout>
 	);

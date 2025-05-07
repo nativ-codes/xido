@@ -1,21 +1,20 @@
-import { useMemo, useEffect, useState } from 'react';
-import { TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
+import { useEffect, useState } from 'react';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { Button, CompanyCard } from '@/common/components';
 import { SortByPropTypes } from '@/types/components';
 import Store from '@/config/store/slices/user-data';
-import { ScreenLayout } from '@/common/layouts';
-import { Colors } from '@/common/constants';
+import { Spacer } from '@/common/layouts';
+import { Colors, SHORT_ANIMATION_DURATION, smallSlideInYAnimation } from '@/common/constants';
 
 import SortByBottomSheet from './components/sort-by-bottom-sheet/sort-by-bottom-sheet';
 import styles from './companies.styles';
 import { ParseUserDataCompanyType } from '@/common/utils';
 import { MotiView } from 'moti';
-import { GeneralStyles } from '@/common/general-styles';
 import TabScreenLayout from '@/common/layouts/tab-screen-layout/tab-screen-layout';
+import { GeneralStyles } from '@/common/styles';
 
 function Companies() {
 	const router = useRouter();
@@ -72,29 +71,10 @@ function Companies() {
 		router.push(`/company?symbol=${symbol}`);
 	};
 
-	const renderItem = useMemo(
-		() =>
-			({ item, index }: { item: ParseUserDataCompanyType; index: number }) =>
-				(
-					<MotiView
-						from={{ opacity: 0, translateY: -20 }}
-						animate={{ opacity: 1, translateY: 0 }}
-						transition={{ type: 'timing', duration: 500, delay: 100 * index }}>
-						<TouchableOpacity
-							activeOpacity={0.7}
-							onPress={handleOnCompanyPress(item.summary.symbol)}
-							style={StyleSheet.compose(styles.card, { borderWidth: 1, borderRadius: 16, borderColor: Colors.border })}>
-							<CompanyCard {...item.summary} />
-						</TouchableOpacity>
-					</MotiView>
-				),
-		[userData]
-	);
-
 	return (
 		<TabScreenLayout title='Companies' isEmpty={!Boolean(userData.length)}>
-			<View style={styles.wrapper}>
-				<View style={styles.search}>
+			<Spacer gap='s16' direction='horizontal' size='s16'>
+				<Spacer gap='s8' style={GeneralStyles.directionRow}>
 					<View style={styles.icon}>
 						<Ionicons name='magnify' size={24} color={Colors.secondaryText} />
 					</View>
@@ -104,15 +84,19 @@ function Companies() {
 						onChangeText={handleOnChangeText}
 					/>
 					<Button.Icon onPress={showModal} name='sort-variant' size='medium' color={Colors.secondaryText} />
-				</View>
+				</Spacer>
 
-				<FlashList
-					contentContainerStyle={styles.contentContainer}
-					data={filteredUserData}
-					renderItem={renderItem}
-					estimatedItemSize={200}
-				/>
-			</View>
+				{filteredUserData.map((item, index) => (
+					<MotiView key={item.summary.symbol} {...smallSlideInYAnimation} delay={SHORT_ANIMATION_DURATION * index}>
+						<TouchableOpacity
+							activeOpacity={0.7}
+							onPress={handleOnCompanyPress(item.summary.symbol)}
+							style={GeneralStyles.cardBorder}>
+							<CompanyCard {...item.summary} />
+						</TouchableOpacity>
+					</MotiView>
+				))}
+			</Spacer>
 			<SortByBottomSheet
 				onReset={handleOnReset}
 				onApply={handleOnApply}

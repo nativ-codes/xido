@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '@/common/constants';
+import { Colors, Units } from '@/common/constants';
 
 export default StyleSheet.create({
     lineMiddle: {
@@ -10,50 +10,35 @@ export default StyleSheet.create({
     },
     lineEnd: {
         height: '50%',
-        top: -16
+        top: -Units.s16
     },
     line: {
         position: 'absolute',
-        width: 2,
+        width: Units.s2,
         bottom: 0,
-        left: 16,
+        left: Units.s16,
         backgroundColor: Colors.primary,
-    },
-    card: {
-        borderRadius: 16,
-        backgroundColor: Colors.surface,
-        padding: 16,
-        gap: 8,
-        flexShrink: 1        
-    },
-    header: {
-        gap: 4
     },
     cardWrapper: {
         flexDirection: 'row',
-        alignItems: 'center',
-        gap: 16
-    },
-    wrapper: {
-        marginHorizontal: 16,
-        gap: 16
+        alignItems: 'center'
     },
     checked: {
         zIndex: 1,
-        width: 32,
-        height: 32,
-        borderRadius: 16,
+        width: Units.s32,
+        height: Units.s32,
+        borderRadius: Units.s16,
         backgroundColor: Colors.primary,
         justifyContent: 'center',
         alignItems: 'center'        
     },
     notChecked: {
         zIndex: 1,
-        width: 32,
-        height: 32,
-        borderRadius: 16,
+        width: Units.s32,
+        height: Units.s32,
+        borderRadius: Units.s16,
         backgroundColor: Colors.background,
-        borderWidth: 2,
+        borderWidth: Units.s2,
         borderColor: Colors.primary,
         justifyContent: 'center',
         alignItems: 'center'

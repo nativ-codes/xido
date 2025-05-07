@@ -1,6 +1,6 @@
-export const LONG_ANIMATION_DURATION = 900;
-export const MEDIUM_ANIMATION_DURATION = 600;
-export const SHORT_ANIMATION_DURATION = 300;
+export const LONG_ANIMATION_DURATION = 750;
+export const MEDIUM_ANIMATION_DURATION = 500;
+export const SHORT_ANIMATION_DURATION = 250;
 
 export const fadeIn = {
 	from: { opacity: 0 },
@@ -12,14 +12,38 @@ export const fadeOut = {
 	to: { opacity: 0 }
 };
 
-export const smallSlideInAnimation = {
-	from: { opacity: 0, translateY: -10 },
+export const smallSlideInYAnimation = {
+	from: { opacity: 0, translateY: -20 },
 	animate: { opacity: 1, translateY: 0 },
 	transition: { type: 'timing' as const, duration: SHORT_ANIMATION_DURATION }
 };
 
-export const mediumSlideInAnimation = {
-	from: { opacity: 0, translateY: 50 },
+export const topSlideInYLongAnimation = {
+	from: { opacity: 0, translateY: -20 },
 	animate: { opacity: 1, translateY: 0 },
+	transition: { type: 'timing' as const, duration: LONG_ANIMATION_DURATION }
+};
+
+export const bottomSlideInYLongAnimation = {
+	from: { opacity: 0, translateY: 20 },
+	animate: { opacity: 1, translateY: 0 },
+	transition: { type: 'timing' as const, duration: LONG_ANIMATION_DURATION }
+};
+
+export const smallSlideInXAnimation = {
+	from: { opacity: 0, translateX: 20 },
+	animate: { opacity: 1, translateX: 0 },
+	transition: { type: 'timing' as const, duration: SHORT_ANIMATION_DURATION }
+};
+
+export const scaleInAnimation = {
+	from: { opacity: 0, scale: 0.8 },
+	animate: { opacity: 1, scale: 1 },
+	transition: { type: 'timing' as const, duration: SHORT_ANIMATION_DURATION }
+};
+
+export const scaleInYAnimation = {
+	from: { opacity: 0, scaleY: 0 },
+	animate: { opacity: 1, scaleY: 1 },
 	transition: { type: 'timing' as const, duration: SHORT_ANIMATION_DURATION }
 };

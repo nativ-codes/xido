@@ -5,7 +5,7 @@ import { SortByPropTypes } from '@/types/components';
 import { Button, Selection, BottomSheet } from '@/common/components';
 import { sortBy } from '@/common/constants';
 
-import styles from './sort-by-bottom-sheet.styles'
+import { Spacer } from '@/common/layouts';
 
 const keyExtractor = (item: SortByPropTypes) => item?.label;
 
@@ -28,7 +28,7 @@ function SortByBottomSheet({
 }: SortByBottomSheetPropTypes) {
   return (
     <BottomSheet title="Sort by" isVisible={isModalVisible} onBackdropPress={hideModal}>
-      <View style={styles.options}>
+      <Spacer gap='s8' direction='horizontal' size='s16'>
         <Selection
           options={sortBy}
           onPress={setSortByValue}
@@ -37,8 +37,8 @@ function SortByBottomSheet({
           keyExtractor={keyExtractor}
           labelExtractor={keyExtractor}
         />
-      </View>
-      <View style={styles.buttons}>
+      </Spacer>
+      <Spacer gap='s8' direction={['horizontal', 'top']} size='s16'>
         <Button
           label="Reset"
           onPress={onReset}
@@ -49,7 +49,7 @@ function SortByBottomSheet({
           onPress={onApply}
           variant="primary"
         />
-      </View>
+      </Spacer>
     </BottomSheet>
   );
 }

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { runOnJS, useAnimatedReaction, useSharedValue, withTiming } from 'react-native-reanimated';
 import { AnimatedCounterPropsType } from './animated-counter.types';
-import { LONG_ANIMATION_DURATION, smallSlideInAnimation } from '@/common/constants';
+import { LONG_ANIMATION_DURATION, smallSlideInYAnimation } from '@/common/constants';
 
 function AnimatedCounter({
 	style,
@@ -30,7 +30,7 @@ function AnimatedCounter({
 	);
 
 	return (
-		<MotiText {...smallSlideInAnimation} style={style}>
+		<MotiText {...smallSlideInYAnimation} style={style}>
 			{valueFormatter(count)}
 		</MotiText>
 	);

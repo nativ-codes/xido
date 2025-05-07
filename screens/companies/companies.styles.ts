@@ -1,39 +1,27 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '@/common/constants';
+import { Colors, Units } from '@/common/constants';
 
 export default StyleSheet.create({
-	wrapper: {
-		flex: 1,
-		gap: 8
-	},
-	search: {
-		paddingHorizontal: 16,
-		gap: 8,
-		flexDirection: 'row'
-	},
 	icon: {
 		position: 'absolute',
-		width: 40,
-		height: 40,
-		left: 16,
+		width: Units.s40,
+		height: Units.s40,
+		left: Units.s16,
 		justifyContent: 'center',
 		alignItems: 'center',
 		zIndex: 1
 	},
 	textinput: {
 		fontSize: 18,
-		borderRadius: 24,
-		paddingLeft: 40,
-		paddingRight: 16,
+		borderRadius: Units.s24,
+		paddingLeft: Units.s40,
+		paddingRight: Units.s16,
 		fontFamily: 'Urbanist',
-		paddingVertical: 8,
+		paddingVertical: Units.s8,
 		backgroundColor: Colors.secondarySurface,
 		flex: 1,
 	},
-	card: {
-		marginBottom: 16
-	},
 	contentContainer: {
-		padding: 16
+		padding: Units.s16
 	}
 });
