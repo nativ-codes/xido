@@ -14,6 +14,7 @@ import {
 
 import styles from './calendar.styles';
 import CalendarInfoBottomSheet from './components/calendar-info-bottom-sheet/calendar-info-bottom-sheet';
+import TabScreenLayout from '@/common/layouts/tab-screen-layout/tab-screen-layout';
 
 type SortKeyExtractorPropTypes = [
 	symbol: string,
@@ -59,7 +60,7 @@ function Calendar() {
 	);
 
 	return (
-		<ScreenLayout
+		<TabScreenLayout
 			emptyPlaceholder={
 				Boolean(currency) ? (
 					<EmptyPlaceholder shouldHideButton title='No dividend records found in the uploaded portfolio.' />
@@ -156,7 +157,7 @@ function Calendar() {
 				</View>
 			</View>
 			<CalendarInfoBottomSheet isVisible={isInfoVisible} hideModal={hideModal} />
-		</ScreenLayout>
+		</TabScreenLayout>
 	);
 }
 

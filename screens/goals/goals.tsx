@@ -10,6 +10,7 @@ import Store from '@/config/store/slices/user-data';
 import { MotiView } from 'moti';
 
 import styles from './goals.styles';
+import TabScreenLayout from '@/common/layouts/tab-screen-layout/tab-screen-layout';
 
 function Goals() {
 	const goals = Store.useGoals();
@@ -29,7 +30,7 @@ function Goals() {
 	const renderNotChecked = <View style={styles.notChecked} />;
 
 	return (
-		<ScreenLayout title='Goals' isEmpty={!Boolean(goals.length)}>
+		<TabScreenLayout title='Goals' isEmpty={!Boolean(goals.length)}>
 			<View style={styles.wrapper}>
 				{parsedGoals.map((goal, key) => (
 					<View key={`${goal.title}-${goal.amount}`} style={styles.cardWrapper}>
@@ -69,7 +70,7 @@ function Goals() {
 					</View>
 				))}
 			</View>
-		</ScreenLayout>
+		</TabScreenLayout>
 	);
 }
 

@@ -15,5 +15,8 @@ export const GeneralStyles = StyleSheet.create({
 	},
 	directionRow: {
 		flexDirection: 'row'
+	},
+	itemsCenter: {
+		alignItems: 'center'
 	}
 });

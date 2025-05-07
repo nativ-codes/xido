@@ -15,6 +15,7 @@ import styles from './companies.styles';
 import { ParseUserDataCompanyType } from '@/common/utils';
 import { MotiView } from 'moti';
 import { GeneralStyles } from '@/common/general-styles';
+import TabScreenLayout from '@/common/layouts/tab-screen-layout/tab-screen-layout';
 
 function Companies() {
 	const router = useRouter();
@@ -91,7 +92,7 @@ function Companies() {
 	);
 
 	return (
-		<ScreenLayout title='Companies' isEmpty={!Boolean(userData.length)}>
+		<TabScreenLayout title='Companies' isEmpty={!Boolean(userData.length)}>
 			<View style={styles.wrapper}>
 				<View style={styles.search}>
 					<View style={styles.icon}>
@@ -120,7 +121,7 @@ function Companies() {
 				isModalVisible={isModalVisible}
 				hideModal={hideModal}
 			/>
-		</ScreenLayout>
+		</TabScreenLayout>
 	);
 }
 
