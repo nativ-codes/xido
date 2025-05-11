@@ -2,13 +2,14 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { router } from 'expo-router';
 
-import { maxCompaniesAllowed } from '@/common/constants';
+import { bottomSlideInYLongAnimation, maxCompaniesAllowed, SHORT_ANIMATION_DURATION } from '@/common/constants';
 import Store from '@/config/store/slices/user-data';
 import { Selection, Text, Button, Progress } from '@/common/components';
 import { ScreenLayout } from '@/common/layouts';
 
 import styles from './select-companies.styles';
 import { Analytics } from '@/config/analytics';
+import { MotiView } from 'moti';
 
 const keyExtractor = (item: string) => item;
 
@@ -45,12 +46,14 @@ function SelectCompanies() {
 	};
 
 	return (
-		<ScreenLayout canGoBack center={<Progress previousValue={50} value={75} />}>
+		<ScreenLayout canGoBack center={<Progress previousValue={40} value={60} />}>
 			<View style={styles.content}>
-				<Text variant='h1' isBold>
-					Select up to {maxCompaniesAllowed} companies you want to track
-				</Text>
-				<View style={styles.section}>
+				<MotiView {...bottomSlideInYLongAnimation}>
+					<Text variant='h1' isBold>
+						Select up to {maxCompaniesAllowed} companies you want to track
+					</Text>
+				</MotiView>
+				<MotiView {...bottomSlideInYLongAnimation} delay={SHORT_ANIMATION_DURATION} style={styles.section}>
 					<Selection
 						isMultiple
 						options={uploadedCompanies}
@@ -60,7 +63,7 @@ function SelectCompanies() {
 						keyExtractor={keyExtractor}
 						labelExtractor={keyExtractor}
 					/>
-				</View>
+				</MotiView>
 			</View>
 			<View style={styles.buttons}>
 				<Button label={selectAllText} onPress={handleOnSelectAll} variant='secondary' />

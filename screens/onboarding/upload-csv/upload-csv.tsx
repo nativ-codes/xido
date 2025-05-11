@@ -8,10 +8,11 @@ import { Text, Button, Progress } from '@/common/components';
 import { TransactionType } from '@/types';
 import { ScreenLayout } from '@/common/layouts';
 import Store from '@/config/store/slices/user-data';
-import { Colors } from '@/common/constants';
+import { bottomSlideInYLongAnimation, Colors, MEDIUM_ANIMATION_DURATION, SHORT_ANIMATION_DURATION } from '@/common/constants';
 
 import HelpBottomSheet from './components/help-bottom-sheet/help-bottom-sheet';
 import styles from './upload-csv.styles';
+import { MotiView } from 'moti';
 
 function UploadCsv() {
 	const [uploadedTransactions, setUploadedTransactions] = useState('');
@@ -58,52 +59,46 @@ function UploadCsv() {
 	return (
 		<ScreenLayout
 			canGoBack
-			center={<Progress previousValue={25} value={50} />}
+			center={<Progress previousValue={20} value={40} />}
 			right={
-				<Button.Icon
-					onPress={showHelpModal}
-					name='help-circle-outline'
-					size="medium"
-					color={Colors.secondaryText}
-				/>
+				<Button.Icon onPress={showHelpModal} name='help-circle-outline' size='medium' color={Colors.secondaryText} />
 			}>
 			<View style={styles.content}>
-				<Text variant="h1" isBold>
-					Upload the exported CSV file
-				</Text>
-				<View style={styles.section}>
+				<MotiView {...bottomSlideInYLongAnimation}>
+					<Text variant='h1' isBold>
+						Upload the exported CSV file
+					</Text>
+				</MotiView>
+				<MotiView {...bottomSlideInYLongAnimation} delay={SHORT_ANIMATION_DURATION}>
 					<Text>
 						Go to the XTB platform, export your transaction history as a CSV file, and then upload the CSV file here.
 					</Text>
-				</View>
-				<TouchableOpacity
-					onPress={handleOnUpload}
-					activeOpacity={0.7}
-					style={StyleSheet.compose(styles.uploadBox, isError && styles.errorBox)}>
-					{Boolean(uploadedTransactions) ? (
-						<View style={styles.boxContent}>
-							<Ionicons name={isError ? 'close' : 'check'} size={24} color={boxContentColor} />
-							<Text textAlign='center' color={boxContentColor}>
-								{uploadedTransactions}
-							</Text>
-						</View>
-					) : (
-						<View style={styles.boxContent}>
-							<Ionicons name='file-document-outline' size={24} color={Colors.disable} />
-							<Text textAlign='center' color={Colors.disable}>
-								Select file
-							</Text>
-						</View>
-					)}
-				</TouchableOpacity>
+				</MotiView>
+				<MotiView {...bottomSlideInYLongAnimation} delay={MEDIUM_ANIMATION_DURATION}>
+					<TouchableOpacity
+						onPress={handleOnUpload}
+						activeOpacity={0.7}
+						style={StyleSheet.compose(styles.uploadBox, isError && styles.errorBox)}>
+						{Boolean(uploadedTransactions) ? (
+							<View style={styles.boxContent}>
+								<Ionicons name={isError ? 'close' : 'check'} size={24} color={boxContentColor} />
+								<Text textAlign='center' color={boxContentColor}>
+									{uploadedTransactions}
+								</Text>
+							</View>
+						) : (
+							<View style={styles.boxContent}>
+								<Ionicons name='file-document-outline' size={24} color={Colors.disable} />
+								<Text textAlign='center' color={Colors.disable}>
+									Select file
+								</Text>
+							</View>
+						)}
+					</TouchableOpacity>
+				</MotiView>
 			</View>
 			<View style={styles.button}>
-				<Button
-					isDisabled={isButtonDisabled}
-					label='Continue'
-					onPress={handleOnContinue}
-					variant="primary"
-				/>
+				<Button isDisabled={isButtonDisabled} label='Continue' onPress={handleOnContinue} variant='primary' />
 			</View>
 			<HelpBottomSheet isVisible={isHelpModalVisible} hideModal={hideHelpModal} />
 		</ScreenLayout>

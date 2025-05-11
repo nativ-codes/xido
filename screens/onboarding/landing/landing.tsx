@@ -7,6 +7,7 @@ import { Text, Button, Progress } from '@/common/components';
 import { ScreenLayout } from '@/common/layouts';
 
 import styles from './landing.styles';
+import { bottomSlideInYLongAnimation, SHORT_ANIMATION_DURATION } from '@/common/constants';
 
 const ANIMATION_FROM = { opacity: 0, translateY: 50 };
 const ANIMATION_TO = { opacity: 1, translateY: 0 };
@@ -17,21 +18,14 @@ function Landing() {
 	};
 
 	return (
-		<ScreenLayout canGoBack center={<Progress previousValue={0} value={25} />}>
+		<ScreenLayout canGoBack center={<Progress previousValue={0} value={20} />}>
 			<View style={styles.content}>
-				<MotiView
-					from={ANIMATION_FROM}
-					animate={ANIMATION_TO}
-					transition={{ type: 'timing', duration: 600 }}>
+				<MotiView {...bottomSlideInYLongAnimation}>
 					<Text variant='h1' isBold>
 						Track your DGI portfolio
 					</Text>
 				</MotiView>
-				<MotiView
-					from={ANIMATION_FROM}
-					animate={ANIMATION_TO}
-					transition={{ type: 'timing', duration: 600, delay: 300 }}
-					style={styles.section}>
+				<MotiView {...bottomSlideInYLongAnimation} delay={SHORT_ANIMATION_DURATION} style={styles.section}>
 					<Text>
 						It's easy to track your DGI portfolio and monitor your progress. Get clear stats and charts that show you
 						exactly how close you are to reaching your goals.

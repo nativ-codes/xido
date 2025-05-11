@@ -9,5 +9,13 @@ export default StyleSheet.create({
 	},
 	error: {
 		marginHorizontal: 16
+	},
+	errorWrapper: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	errorContent: {
+		alignItems: 'center'
 	}
 });

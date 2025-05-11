@@ -1,66 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, ActivityIndicator, View } from 'react-native';
 import { router } from 'expo-router';
 import Store from '@/config/store/slices/user-data';
-import { Progress } from '@/common/components';
-import {
-	filterRawTransactions,
-	getLast12MonthsDividend,
-	parseTransactions,
-	parseTransactionsForCalendar,
-	parseTransactionsForLast12MonthsDividend,
-	parseUserData,
-	safelyPrintError
-} from '@/common/utils';
-import { mockedCompanies, mockedSymbols } from '@/__mocks__';
-import { ScreenLayout } from '@/common/layouts';
-import { getCompaniesInBatches } from '@/services/companies';
+import { Progress, Text, Button } from '@/common/components';
+import { safelyPrintError } from '@/common/utils';
+import { mockedSymbols } from '@/__mocks__';
+import { ScreenLayout, Spacer } from '@/common/layouts';
 import { Colors } from '@/common/constants';
-import { defaultGoals } from '@/common/constants';
 import styles from './fetch-companies.styles';
 import { Analytics } from '@/config/analytics';
-
-const shouldUseMockedData = false;
+import { fetchCompanies, shouldUseMockedData } from './fetch-companies.service';
+import { FetchCompaniesErrorEnum } from './fetch-companies.types';
+import { CompanyData } from '@/types';
+import { setDataByCompanyData, getErrorMessage } from './fetch-companies.utils';
+import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 
 function FetchCompanies() {
+	const [error, setError] = useState<string>('');
+	const [companiesData, setCompaniesData] = useState<CompanyData[]>([]);
+	const storedSymbols = shouldUseMockedData ? mockedSymbols : Store.getSymbols();
+
 	useEffect(() => {
 		(async () => {
 			try {
-				const storedSymbols = shouldUseMockedData ? mockedSymbols : Store.getSymbols();
-				const storedRawTransactions = Store.getRawTransactions();
-				const filteredRawTransactions = filterRawTransactions(storedRawTransactions, storedSymbols);
+				const { companies, error } = await fetchCompanies({ storedSymbols });
 
-				if (storedSymbols.length) {
-					const parsedTransactions = parseTransactions(filteredRawTransactions);
-					const companies = shouldUseMockedData ? mockedCompanies : await getCompaniesInBatches(storedSymbols);
-
-					if (companies.length === storedSymbols.length) {
-						const dividend = parseTransactionsForLast12MonthsDividend(filteredRawTransactions);
-						const parsedTransactionsForLast12MonthsDividend = getLast12MonthsDividend(dividend);
-						const parsedTransactionsForCalendar = parseTransactionsForCalendar(filteredRawTransactions);
-						const parsedUserData = parseUserData({
-							transactions: parsedTransactions,
-							companies
-						});
-						console.log('parsedUserData', JSON.stringify(parsedUserData));
-
-						const goals = Store.getGoals();
-						Store.setGoals(goals.length ? goals : defaultGoals);
-
-						Store.setCurrency(companies[0].currency);
-						Store.setUserData(parsedUserData);
-						Store.setTransactions(parsedTransactions);
-						Store.setRawTransactions(filteredRawTransactions);
-						Store.setCalendar(parsedTransactionsForCalendar);
-						Store.setTimestamp(Date.now());
-						Store.setLast12MonthsDividend(parsedTransactionsForLast12MonthsDividend);
+				if (error) {
+					if (error.type === FetchCompaniesErrorEnum.MISSING_COMPANIES) {
+						setCompaniesData(companies as CompanyData[]);
+						setError(getErrorMessage(error.data));
 					} else {
-						console.log('lengths not matching', companies.length, storedSymbols.length);
+						router.navigate('/error-fetching');
 					}
 				} else {
-					console.log('no symbols found');
+					setDataByCompanyData({ companies: companies as CompanyData[], storedSymbols });
 				}
-				router.navigate('/all-set');
+
+				//router.navigate('/all-set');
 			} catch (error) {
 				console.error('FetchCompanies', error);
 				Analytics.sendEvent(Analytics.events.error_fetch, safelyPrintError(error));
@@ -69,11 +45,29 @@ function FetchCompanies() {
 		})();
 	}, []);
 
+	const handleOnPress = () => {
+		setDataByCompanyData({ companies: companiesData as CompanyData[], storedSymbols });
+		setError('');
+		router.navigate('/all-set');
+	}
+
 	return (
-		<ScreenLayout canGoBack center={<Progress previousValue={75} value={80} />}>
-			<View style={StyleSheet.compose(StyleSheet.absoluteFill, styles.loading)}>
-				<ActivityIndicator size='large' color={Colors.primary} />
-			</View>
+		<ScreenLayout canGoBack center={<Progress previousValue={60} value={80} />}>
+			{error ? (
+				<Spacer direction="full" size="s64" gap="s8" style={styles.errorWrapper}>
+					<Ionicons name='magnify' size={72} color={Colors.disable} />
+					<Spacer gap="s32" style={styles.errorContent}>
+						<Text textAlign='center' variant='h3' color={Colors.disable}>
+							{error}
+						</Text>
+						<Button variant='primary' label='Proceed' onPress={handleOnPress} />
+					</Spacer>
+				</Spacer>
+			) : (
+				<View style={StyleSheet.compose(StyleSheet.absoluteFill, styles.loading)}>
+					<ActivityIndicator size='large' color={Colors.primary} />
+				</View>
+			)}
 		</ScreenLayout>
 	);
 }
