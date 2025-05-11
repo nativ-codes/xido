@@ -6,7 +6,6 @@ export default StyleSheet.create({
 		position: 'absolute',
 		width: Units.s40,
 		height: Units.s40,
-		left: Units.s16,
 		justifyContent: 'center',
 		alignItems: 'center',
 		zIndex: 1

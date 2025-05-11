@@ -19,7 +19,7 @@ function Tag({
         <View style={StyleSheet.compose(styles.wrapper, {
             backgroundColor
         })}>
-            <Text isBold variant="h5" color={Colors.secondaryText}>{value.toUpperCase()}</Text>
+            <Text textAlign="center" isBold variant="h5" color={Colors.secondaryText}>{value.toUpperCase()}</Text>
         </View>
     )
 }

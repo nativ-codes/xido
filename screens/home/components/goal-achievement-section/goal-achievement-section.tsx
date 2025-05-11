@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { Text, Card, ListItem, Progress } from '@/common/components';
+import { Text, Card, ListItem, Progress, Tag } from '@/common/components';
 import { formatValue, parseGoals, sortByNumbers } from '@/common/utils';
 import Store from '@/config/store/slices/user-data';
 import { Colors, currencies } from '@/common/constants';
@@ -37,9 +37,9 @@ function GoalAchievementSection() {
 					valueFormatter={(value) => `${currencies[currency]}${value.toFixed(2)}`}
 					style={styles.monthlyDividendText}
 				/>
-				<Text variant='h4' textAlign='center'>
-					{nextGoalLabel}
-				</Text>
+				<Spacer direction='top' size='s8' style={styles.goalTag}>
+					<Tag value={nextGoalLabel} variant='primary' />
+				</Spacer>
 			</Spacer>
 			<Spacer gap='s16'>
 				<View>

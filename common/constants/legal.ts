@@ -64,7 +64,7 @@ const TermsAndConditions = {
 
 const PrivacyPolicy = {
 	title: 'Privacy Policy',
-	lastUpdated: 'Last Updated: 28 October 2024',
+	lastUpdated: 'Last Updated: 11 May 2025',
 	sections: [
 		{
 			title: 'Introduction',

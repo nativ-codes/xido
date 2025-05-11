@@ -17,5 +17,10 @@ export default StyleSheet.create({
 		fontSize: 26,
 		fontFamily: 'Urbanist-Bold',
 		textAlign: 'center'
+	},
+	goalTag: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'row'
 	}
 });

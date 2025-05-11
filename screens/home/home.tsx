@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { getOverall } from '@/common/utils';
-import { ScreenLayout } from '@/common/layouts';
+import { ScreenLayout, TabScreenLayout } from '@/common/layouts';
 import Store from '@/config/store/slices/user-data';
 
 import HomeInfoBottomSheet from './components/home-info-bottom-sheet/home-info-bottom-sheet';
@@ -21,7 +21,7 @@ function Home() {
 	const showModal = (section: HomeInfoSections) => () => setInfoSection(section);
 
 	return (
-		<ScreenLayout title='Home' isEmpty={!Boolean(Object.values(userData).length)}>
+		<TabScreenLayout title='Home' isEmpty={!Boolean(Object.values(userData).length)}>
 			<Spacer direction='horizontal' size='s16' gap='s16'>
 				<GoalAchievementSection />
 				<PortfolioInvestmentCard
@@ -37,7 +37,7 @@ function Home() {
 			</Spacer>
 
 			<HomeInfoBottomSheet infoSection={infoSection} hideModal={hideModal} />
-		</ScreenLayout>
+		</TabScreenLayout>
 	);
 }
 
