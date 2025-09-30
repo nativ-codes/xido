@@ -42,4 +42,6 @@ const sortBy = [
 	}
 ];
 
-export { months, sortBy, currencies, maxCompaniesAllowed, maxCompaniesPerBatch };
+const CASH_OPERATION = 'CASH_OPERATION';
+
+export { months, sortBy, currencies, maxCompaniesAllowed, maxCompaniesPerBatch, CASH_OPERATION };

@@ -45,8 +45,8 @@ export enum XTBTransactionFields {
 	ID = 0,
 	TYPE = 1,
 	TIME = 2,
-	SYMBOL = 3,
-	COMMENT = 4,
+	COMMENT = 3,
+	SYMBOL = 4,
 	AMOUNT = 5
 }
 

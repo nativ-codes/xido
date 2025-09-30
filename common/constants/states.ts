@@ -11,7 +11,7 @@ const defaultCompaniesState = {
   }
 }
 
-const columnTitles = ['ID', 'Type', 'Time', 'Symbol', 'Comment', 'Amount'];
+const columnTitles = ['ID', 'Type', 'Time', 'Comment', 'Symbol', 'Amount', ""];
 
 export {
     columnTitles,

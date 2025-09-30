@@ -9,6 +9,7 @@ import { Colors } from '@/common/constants';
 
 import styles from './empty-placeholder.styles';
 import { Analytics } from '@/config/analytics';
+import { uploadCsv } from '@/common/utils';
 
 type EmptyPlaceholderPropsType = {
 	title?: string;
