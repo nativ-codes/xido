@@ -37,7 +37,6 @@ function Company() {
 		expectedDividends,
 		latestTransactions
 	} = summary || {};
-	console.log('json', JSON.stringify(summary));
 
 	const avgShare = boughtValue / shares;
 	const marketVsAvgShare = bid - avgShare;

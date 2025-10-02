@@ -1,13 +1,13 @@
 export enum OperationType {
-	Deposit = 'Deposit',
-	Dividend = 'Dividend',
-	SpinOff = 'Spin off',
-	WithholdingTax = 'Withholding tax',
-	StocksEtfSale = 'Stocks/ETF sale',
-	StocksEtfPurchase = 'Stocks/ETF purchase',
-	FreeFundsInterests = 'Free funds interests',
-	FreeFundsInterestsTax = 'Free funds interests tax',
-	Other = 'Other'
+  Deposit = "Deposit",
+  Dividend = "Dividend",
+  SpinOff = "Spin off",
+  WithholdingTax = "Withholding tax",
+  StocksEtfSale = "Stocks/ETF sale",
+  StockPurchase = "Stock purchase",
+  FreeFundsInterests = "Free funds interests",
+  FreeFundsInterestsTax = "Free funds interests tax",
+  Other = "Other",
 }
 
 export type SummaryType = {

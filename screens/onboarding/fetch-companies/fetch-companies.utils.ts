@@ -21,13 +21,14 @@ export const setDataByCompanyData = ({ companies, storedSymbols }: SetDataByComp
 
 	const parsedTransactions = parseTransactions(filteredRawTransactions);
 	const dividend = parseTransactionsForLast12MonthsDividend(filteredRawTransactions);
+	// console.log("dividend", JSON.stringify(filteredRawTransactions));
 	const parsedTransactionsForLast12MonthsDividend = getLast12MonthsDividend(dividend);
 	const parsedTransactionsForCalendar = parseTransactionsForCalendar(filteredRawTransactions);
 	const parsedUserData = parseUserData({
 		transactions: parsedTransactions,
 		companies
 	});
-	console.log('parsedUserData', JSON.stringify(parsedUserData));
+	// console.log('parsedUserData', JSON.stringify(parsedUserData));
 
 	const goals = Store.getGoals();
 	Store.setGoals(goals.length ? goals : defaultGoals);

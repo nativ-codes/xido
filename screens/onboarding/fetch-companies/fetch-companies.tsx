@@ -36,7 +36,7 @@ function FetchCompanies() {
 					setDataByCompanyData({ companies: companies as CompanyData[], storedSymbols });
 				}
 
-				//router.navigate('/all-set');
+				router.navigate('/all-set');
 			} catch (error) {
 				console.error('FetchCompanies', error);
 				Analytics.sendEvent(Analytics.events.error_fetch, safelyPrintError(error));

@@ -12,12 +12,25 @@ export type ParseTransactionDateReturnType = {
     monthByIndex: string;
 }
 
-const parseTransactionDate = (_date: string): ParseTransactionDateReturnType => {
-    // 29.12.2023 13:00
-    const [date, time] = _date.split(' ');
-    // 29.12.2023
-    const [day, month, year] = date.split('.').map(Number);
-    const dateObject = new Date(year, month - 1, day);
+const parseTransactionDate = (excelDate: string | number): ParseTransactionDateReturnType => {
+    // Convert Excel date to JavaScript Date
+    // Excel date epoch is January 1, 1900, but Excel incorrectly treats 1900 as a leap year
+    // So we need to adjust by subtracting 2 days
+    const excelEpoch = new Date(1900, 0, 1);
+    const excelDateNumber = typeof excelDate === 'string' ? parseFloat(excelDate) : excelDate;
+    
+    // Excel dates are 1-indexed and have a leap year bug for 1900
+    const millisecondsPerDay = 24 * 60 * 60 * 1000;
+    const adjustedDays = excelDateNumber - 2; // Adjust for Excel's 1900 leap year bug
+    const dateObject = new Date(excelEpoch.getTime() + adjustedDays * millisecondsPerDay);
+    
+    const day = dateObject.getDate();
+    const month = dateObject.getMonth() + 1; // JavaScript months are 0-indexed
+    const year = dateObject.getFullYear();
+    const time = dateObject.toTimeString().split(' ')[0]; // Get HH:MM:SS format
+    
+    // Format display date as DD.MM.YYYY
+    const displayDate = `${day.toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${year}`;
 
     return {
         day,
@@ -25,21 +38,20 @@ const parseTransactionDate = (_date: string): ParseTransactionDateReturnType => 
         year,
         time,
         date: dateObject,
-        displayDate: date,
+        displayDate,
         monthByIndex: getMonthByIndex(month)
     };
 }
 
-const getIsOlderThanOneYear = (dateString: string): boolean => {
-    const { day, month, year } = parseTransactionDate(dateString);
-    const inputDate = new Date(year, month - 1, day);
+const getIsOlderThanOneYear = (excelDate: string | number): boolean => {
+    const { date: inputDate } = parseTransactionDate(excelDate);
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
     return inputDate < oneYearAgo;
 }
 
-const compareDates = (date1: string, date2: string): {
+const compareDates = (date1: string | number, date2: string | number): {
     isOlderThanOneYear: boolean;
 } => {
     const date1Timestamp = parseTransactionDate(date1).date.getTime();

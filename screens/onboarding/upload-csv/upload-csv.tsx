@@ -28,7 +28,6 @@ function UploadCsv() {
 	const handleOnUpload = async () => {
 		try {
 			const response = (await uploadCsv()) as { data: TransactionType[] };
-			console.log('response', response);
 
 			if (response.data.length) {
 				if (validateColumnTitles(response.data[0])) {
