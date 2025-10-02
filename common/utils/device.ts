@@ -11,11 +11,13 @@ const extractDataFromXlsx = async (result: DocumentPicker.DocumentPickerResult) 
 	const workbook = XLSX.read(arrayBuffer, { type: 'array' });
 	const allData: any[] = [];
 
+
 	workbook.SheetNames.forEach((sheetName) => {
 		if (!sheetName.includes(CASH_OPERATION)) return;
 
 		const worksheet = workbook.Sheets[sheetName];
 		const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+		console.log('sheetData', sheetData);
 
 		allData.push(...sheetData);
 	});
@@ -42,7 +44,9 @@ const uploadCsv = async () =>
 
 			if (result?.assets) {
 				const allData = await extractDataFromXlsx(result);
+				console.log('allData', allData);
 				const normalizedData = await normalizeExtractedData(allData);
+				console.log('normalizedData', normalizedData);
 				resolve({ data: normalizedData });
 			} else {
 				console.log('No file selected');
