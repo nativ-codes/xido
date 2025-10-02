@@ -11,45 +11,52 @@ export enum OperationType {
 }
 
 export type SummaryType = {
-	dividends: number;
-	withholdingTax: number;
-	shares: number;
-	spinOffs: number;
-	freeFundsInterest: number;
-	freeFundsInterestTax: number;
-	boughtValue: number;
+  dividends: number;
+  withholdingTax: number;
+  shares: number;
+  spinOffs: number;
+  freeFundsInterest: number;
+  freeFundsInterestTax: number;
+  boughtValue: number;
 };
 
-export type TransactionType = [string, OperationType, string, string, string, string];
+export type TransactionType = [
+  string,
+  OperationType,
+  string,
+  string,
+  string,
+  string
+];
 
 export type TransactionsToDisplayMapperPropTypes = {
-	[key: string]: TransactionsToDisplayPropTypes;
+  [key: string]: TransactionsToDisplayPropTypes;
 };
 
 export type TransactionsToDisplayPropTypes = {
-	date: string;
-	type: OperationType;
-	amount: number;
+  date: string;
+  type: OperationType;
+  amount: number;
 };
 
 export enum TransactionFields {
-	ID = 'ID',
-	TYPE = 'TYPE',
-	TIME = 'TIME',
-	SYMBOL = 'SYMBOL',
-	COMMENT = 'COMMENT',
-	AMOUNT = 'AMOUNT'
+  ID = "ID",
+  TYPE = "TYPE",
+  TIME = "TIME",
+  SYMBOL = "SYMBOL",
+  COMMENT = "COMMENT",
+  AMOUNT = "AMOUNT",
 }
 
 export enum XTBTransactionFields {
-	ID = 0,
-	TYPE = 1,
-	TIME = 2,
-	COMMENT = 3,
-	SYMBOL = 4,
-	AMOUNT = 5
+  ID = 0,
+  TYPE = 1,
+  TIME = 2,
+  COMMENT = 3,
+  SYMBOL = 4,
+  AMOUNT = 5,
 }
 
 export enum TransactionProvider {
-	XTB = 'XTB'
+  XTB = "XTB",
 }

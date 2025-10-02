@@ -1,3 +1,3 @@
 export const screenOptions = {
-	headerShown: false
+  headerShown: false,
 };

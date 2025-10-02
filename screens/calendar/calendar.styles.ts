@@ -1,22 +1,23 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
+import { Units } from "@/common/constants";
 
 export default StyleSheet.create({
-    wrapper: {
-        flex: 1,
-    },
-    tabs: {
-        paddingHorizontal: 16,
-        gap: 8,
-    },
-    tabWrapper: {
-        marginBottom: 8
-    },
-    header: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 24,
-    },
-    content: {
-        paddingHorizontal: 16
-    }
-})
+  wrapper: {
+    flex: 1,
+  },
+  tabs: {
+    paddingHorizontal: Units.s16,
+    gap: Units.s8,
+  },
+  tabWrapper: {
+    marginBottom: Units.s8,
+  },
+  header: {
+    justifyContent: "center",
+    alignItems: "center",
+    margin: Units.s24,
+  },
+  content: {
+    paddingHorizontal: Units.s16,
+  },
+});

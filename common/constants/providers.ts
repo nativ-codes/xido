@@ -1,7 +1,7 @@
-import { TransactionProvider, XTBTransactionFields } from '@/types';
+import { TransactionProvider, XTBTransactionFields } from "@/types";
 
 const providers = {
-	[TransactionProvider.XTB]: XTBTransactionFields
+  [TransactionProvider.XTB]: XTBTransactionFields,
 };
 
 export { providers };

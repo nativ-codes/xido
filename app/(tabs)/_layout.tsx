@@ -1,11 +1,10 @@
 import { Tabs } from "expo-router";
-import React from "react";
 
 import { screenOptions } from "@/common/constants";
 
 import TabBar from "@/common/containers/tab-bar/tab-bar";
 
-export default function TabLayout() {
+function TabLayout() {
   return (
     <Tabs
       screenOptions={screenOptions}
@@ -19,3 +18,5 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+export default TabLayout;

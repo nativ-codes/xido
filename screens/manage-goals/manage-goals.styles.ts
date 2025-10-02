@@ -1,29 +1,29 @@
 import { StyleSheet } from "react-native";
 
-import { Colors } from "@/common/constants";
+import { Colors, Units } from "@/common/constants";
 
 export default StyleSheet.create({
-    cardWrapper: {
-        backgroundColor: Colors.surface,
-        borderRadius: 16,
-        padding: 16,
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: Colors.border
-    },
-    leftCard: {
-        flex: 1,
-        gap: 4
-    },
-    wrapper: {
-        marginHorizontal: 16,
-        gap: 8,
-        paddingBottom: 90
-    },
-    floatingButton: {
-        position: 'absolute',
-        left: 16,
-        right: 16,
-    }
+  cardWrapper: {
+    backgroundColor: Colors.surface,
+    borderRadius: Units.s16,
+    padding: Units.s16,
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: Units.s1,
+    borderColor: Colors.border,
+  },
+  leftCard: {
+    flex: 1,
+    gap: Units.s4,
+  },
+  wrapper: {
+    marginHorizontal: Units.s16,
+    gap: Units.s8,
+    paddingBottom: 90,
+  },
+  floatingButton: {
+    position: "absolute",
+    left: Units.s16,
+    right: Units.s16,
+  },
 });

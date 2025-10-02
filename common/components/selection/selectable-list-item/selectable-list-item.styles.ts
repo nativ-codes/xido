@@ -1,27 +1,27 @@
-import { StyleSheet } from 'react-native';
-import { Colors } from '@/common/constants';
+import { StyleSheet } from "react-native";
+import { Colors, Units } from "@/common/constants";
 
 export default StyleSheet.create({
   itemWrapper: {
-    padding: 16,
-    flexDirection: 'row',
-    gap: 8,
-    borderRadius: 16,
+    padding: Units.s16,
+    flexDirection: "row",
+    gap: Units.s8,
+    borderRadius: Units.s16,
     backgroundColor: Colors.surface,
-    alignItems: 'center',
+    alignItems: "center",
   },
   selected: {
-    height: 12,
-    width: 12,
-    borderRadius: 6,
-    backgroundColor: Colors.primary    
+    height: Units.s12,
+    width: Units.s12,
+    borderRadius: Units.s6,
+    backgroundColor: Colors.primary,
   },
   circle: {
-    height: 18,
-    width: 18,
-    borderRadius: 9,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',    
-  }
+    height: Units.s18,
+    width: Units.s18,
+    borderRadius: Units.s18 / 2,
+    borderWidth: Units.s1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

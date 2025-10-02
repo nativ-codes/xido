@@ -1,20 +1,21 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
+import { Units } from "@/common/constants";
 
 export default StyleSheet.create({
-    content: {
-        flex: 1,
-        padding: 16
-    },
-    section: {
-        marginTop: 16,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        gap: 8        
-    },
-    buttons: {
-        paddingHorizontal: 16,
-        paddingBottom: 16,
-        gap: 8
-    }
+  content: {
+    flex: 1,
+    padding: Units.s16,
+  },
+  section: {
+    marginTop: Units.s16,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: Units.s8,
+  },
+  buttons: {
+    paddingHorizontal: Units.s16,
+    paddingBottom: Units.s16,
+    gap: Units.s8,
+  },
 });

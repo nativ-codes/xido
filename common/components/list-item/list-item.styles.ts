@@ -1,7 +1,8 @@
-import {StyleSheet} from 'react-native';
+import { Units } from "@/common/constants";
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-    row: {
-        marginVertical: 8
-    }
+  row: {
+    marginVertical: Units.s8,
+  },
 });

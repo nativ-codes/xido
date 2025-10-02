@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { getOverall } from "@/common/utils";
-import { ScreenLayout, TabScreenLayout } from "@/common/layouts";
+import { TabScreenLayout } from "@/common/layouts";
 import Store from "@/config/store/slices/user-data";
 
 import HomeInfoBottomSheet from "./components/home-info-bottom-sheet/home-info-bottom-sheet";

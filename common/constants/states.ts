@@ -8,12 +8,9 @@ const defaultCompaniesState = {
     boughtValue: 0,
     freeFundsInterest: 0,
     freeFundsInterestTax: 0,
-  }
-}
-
-const columnTitles = ['ID', 'Type', 'Time', 'Comment', 'Symbol', 'Amount', ""];
-
-export {
-    columnTitles,
-    defaultCompaniesState
+  },
 };
+
+const columnTitles = ["ID", "Type", "Time", "Comment", "Symbol", "Amount", ""];
+
+export { columnTitles, defaultCompaniesState };
