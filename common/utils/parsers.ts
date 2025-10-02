@@ -480,7 +480,10 @@ const parseTransactionsForCalendar = (
     (acc, transaction) => {
       const getValue = getTransactionValue({ transaction });
 
-      if (getValue(TransactionFields.TYPE) === OperationType.Dividend) {
+      if (
+        getOperationType(getValue(TransactionFields.TYPE)) ===
+        OperationType.Dividend
+      ) {
         const companySymbol = getValue(TransactionFields.SYMBOL)?.split(
           "."
         )?.[0];
