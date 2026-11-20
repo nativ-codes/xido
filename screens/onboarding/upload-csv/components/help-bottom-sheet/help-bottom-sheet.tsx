@@ -38,7 +38,7 @@ function HelpBottomSheet({ isVisible, hideModal }: HelpBottomSheetPropTypes) {
 						3. Export report
 					</Text>
 					<Text variant="h4">
-						Select CASH OPERATIONS as REPORT TYPE and CSV as FILE FORMAT, and then click on EXPORT REPORT button.
+						Select CASH OPERATIONS as REPORT TYPE and XLSX as FILE FORMAT, and then click on EXPORT REPORT button.
 					</Text>
 					<Image source={ExportReport} resizeMode='contain' style={styles.image} />
 				</View>

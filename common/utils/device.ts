@@ -1,36 +1,58 @@
 import * as DocumentPicker from 'expo-document-picker';
 import * as XLSX from 'xlsx';
-import { CASH_OPERATION } from '../constants';
+import { CASH_OPERATION, OPEN_POSITIONS } from '../constants';
+import { XTBTransactionFields } from '@/types';
+import { validateColumnTitles } from './validators';
 
-const extractDataFromXlsx = async (result: DocumentPicker.DocumentPickerResult) => {
-	if (!result?.assets) return;
+export type OpenPositionsType = Record<string, number>;
 
-	const response = await fetch(result.assets?.[0]?.uri);
-	const arrayBuffer = await response.arrayBuffer();
+// shortcut: xlsx 0.18.5 reads XTB's ZIP64 data descriptors as 4-byte sizes and console.errors a harmless
+// "Bad uncompressed size: N != 0" per zip entry (data still decodes fine); drop this if a newer xlsx stops logging it
+const readWorkbook = (data: ArrayBuffer) => {
+	const consoleError = console.error;
+	console.error = (...args: unknown[]) => {
+		if (!String(args[0]).startsWith('Bad uncompressed size')) consoleError(...args);
+	};
 
-	const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-	const allData: any[] = [];
-
-	workbook.SheetNames.forEach((sheetName) => {
-		if (!sheetName.includes(CASH_OPERATION)) return;
-
-		const worksheet = workbook.Sheets[sheetName];
-		const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-		allData.push(...sheetData);
-	});
-
-	return allData;
+	try {
+		return XLSX.read(data, { type: 'array' });
+	} finally {
+		console.error = consoleError;
+	}
 };
 
-const normalizeExtractedData = (rows: any[]) => {
-	return rows.reduce((acc, row) => {
-		const isRowEmpty = !row.length;
-		const isNonRecordRow = row[0] && row[0] !== 'undefined' && row[1] && row[1] !== 'undefined';
-		if (isRowEmpty || !isNonRecordRow) return acc;
+const extractDataFromXlsx = async (uri: string) => {
+	const response = await fetch(uri);
+	const workbook = readWorkbook(await response.arrayBuffer());
+	const getSheetRows = (sheetName: string): string[][] => {
+		const worksheet = workbook.Sheets[sheetName];
+		return worksheet ? XLSX.utils.sheet_to_json(worksheet, { header: 1, raw: false, defval: '' }) : [];
+	};
 
-		return [...acc, row];
-	}, []);
+	return {
+		data: normalizeExtractedData(getSheetRows(CASH_OPERATION)),
+		openPositions: parseOpenPositions(getSheetRows(OPEN_POSITIONS))
+	};
+};
+
+// Shares held per symbol. Cash operations can't give this: e.g. spin-off shares are credited with no cash row.
+// Each instrument has one summary row (Category set) above its individual positions (Category empty).
+const parseOpenPositions = (rows: string[][]): OpenPositionsType => {
+	const headerIndex = rows.findIndex((row) => row[2] === 'Ticker' && row[5] === 'Volume');
+	if (headerIndex === -1) return {};
+
+	return rows
+		.slice(headerIndex + 1)
+		.filter((row) => row[3])
+		.reduce((acc, row) => ({ ...acc, [row[2].split('.')[0]]: parseFloat(row[5]) }), {});
+};
+
+// Keeps the header row first, then only records: skips the account/date-range rows above it and the trailing "Total" row
+const normalizeExtractedData = (rows: string[][]) => {
+	const headerIndex = rows.findIndex(validateColumnTitles);
+	if (headerIndex === -1) return [];
+
+	return rows.slice(headerIndex).filter((row) => row[XTBTransactionFields.ID]);
 };
 
 const uploadCsv = async () =>
@@ -41,9 +63,7 @@ const uploadCsv = async () =>
 			});
 
 			if (result?.assets) {
-				const allData = await extractDataFromXlsx(result);
-				const normalizedData = await normalizeExtractedData(allData);
-				resolve({ data: normalizedData });
+				resolve(await extractDataFromXlsx(result.assets[0].uri));
 			} else {
 				console.log('No file selected');
 				reject('No file selected');
@@ -54,4 +74,4 @@ const uploadCsv = async () =>
 		}
 	});
 
-export { uploadCsv };
+export { uploadCsv, normalizeExtractedData, parseOpenPositions };

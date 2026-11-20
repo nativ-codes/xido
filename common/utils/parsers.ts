@@ -340,7 +340,9 @@ const parseTransactionsForExpectedDividends = (
 	);
 
 	if (lastDividendReceived) {
-		const lastDividendValueReceived = parseMessageForDividends(lastDividendReceived[4]);
+		const lastDividendValueReceived = parseMessageForDividends(
+			getTransactionValue({ transaction: lastDividendReceived })(TransactionFields.COMMENT)
+		);
 		const months = groupTransactionsByMonths(transactions, lastTransactionDate);
 
 		const parsedMonths = Object.entries(months).reduce<{ next: string[]; previous: string[] }>(

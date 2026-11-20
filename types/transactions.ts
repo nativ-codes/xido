@@ -20,7 +20,8 @@ export type SummaryType = {
 	boughtValue: number;
 };
 
-export type TransactionType = [string, OperationType, string, string, string, string];
+// One "Cash Operations" row: Type, Instrument, Ticker, Category, Time, Amount, ID, Comment, Product, Position ID
+export type TransactionType = [string, string, string, string, string, string, string, string, string, string];
 
 export type TransactionsToDisplayMapperPropTypes = {
 	[key: string]: TransactionsToDisplayPropTypes;
@@ -41,13 +42,14 @@ export enum TransactionFields {
 	AMOUNT = 'AMOUNT'
 }
 
+// Column indexes of the XTB xlsx "Cash Operations" sheet
 export enum XTBTransactionFields {
-	ID = 0,
-	TYPE = 1,
-	TIME = 2,
-	COMMENT = 3,
-	SYMBOL = 4,
-	AMOUNT = 5
+	TYPE = 0,
+	SYMBOL = 2,
+	TIME = 4,
+	AMOUNT = 5,
+	ID = 6,
+	COMMENT = 7
 }
 
 export enum TransactionProvider {

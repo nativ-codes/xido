@@ -11,7 +11,7 @@ const defaultCompaniesState = {
   }
 }
 
-const columnTitles = ['ID', 'Type', 'Time', 'Comment', 'Symbol', 'Amount', ""];
+const columnTitles = ['Type', 'Instrument', 'Ticker', 'Category', 'Time', 'Amount', 'ID', 'Comment', 'Product', 'Position ID'];
 
 export {
     columnTitles,

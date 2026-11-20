@@ -3,6 +3,7 @@ import { store } from '@/config/store';
 import { useMemo } from 'react';
 import { currencies } from '@/common/constants';
 import {
+	OpenPositionsType,
 	ParsedTransactionsType,
 	ParseTransactionsForCalendarReturnType,
 	ParseUserDataReturnType
@@ -164,6 +165,26 @@ const setRawTransactions = (rawTransactions: TransactionType[]) => {
 	}
 };
 
+const getOpenPositions = (): OpenPositionsType => {
+	try {
+		const openPositions = store.getString('openPositions');
+
+		return openPositions ? JSON.parse(openPositions) : {};
+	} catch (error) {
+		console.error('getOpenPositions', error);
+
+		return {};
+	}
+};
+
+const setOpenPositions = (openPositions: OpenPositionsType) => {
+	try {
+		store.set('openPositions', JSON.stringify(openPositions));
+	} catch (error) {
+		console.error('setOpenPositions', error);
+	}
+};
+
 const setTransactions = (transactions: ParsedTransactionsType) => {
 	try {
 		store.set('transactions', JSON.stringify(transactions));
@@ -250,6 +271,8 @@ export default {
 	useLast12MonthsDividend,
 	getRawTransactions,
 	setRawTransactions,
+	getOpenPositions,
+	setOpenPositions,
     getTransactions,
 	setTransactions,
 	getCurrency,

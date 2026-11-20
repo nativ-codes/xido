@@ -3,7 +3,7 @@ import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
 
-import { parseTransactionsForTotalCompanies, uploadCsv, validateColumnTitles } from '@/common/utils';
+import { OpenPositionsType, parseTransactionsForTotalCompanies, uploadCsv, validateColumnTitles } from '@/common/utils';
 import { Text, Button, Progress } from '@/common/components';
 import { TransactionType } from '@/types';
 import { ScreenLayout } from '@/common/layouts';
@@ -27,7 +27,7 @@ function UploadCsv() {
 
 	const handleOnUpload = async () => {
 		try {
-			const response = (await uploadCsv()) as { data: TransactionType[] };
+			const response = (await uploadCsv()) as { data: TransactionType[]; openPositions: OpenPositionsType };
 
 			if (response.data.length) {
 				if (validateColumnTitles(response.data[0])) {
@@ -35,6 +35,7 @@ function UploadCsv() {
 
 					Store.setSymbols(parsedTransactionsForTotalCompanies);
 					Store.setRawTransactions(response.data);
+					Store.setOpenPositions(response.openPositions);
 
 					setUploadedTransactions(`${parsedTransactionsForTotalCompanies?.length} companies found.`);
 					setIsError(false);
@@ -66,12 +67,12 @@ function UploadCsv() {
 			<View style={styles.content}>
 				<MotiView {...bottomSlideInYLongAnimation}>
 					<Text variant='h1' isBold>
-						Upload the exported CSV file
+						Upload the exported XLSX file
 					</Text>
 				</MotiView>
 				<MotiView {...bottomSlideInYLongAnimation} delay={SHORT_ANIMATION_DURATION}>
 					<Text>
-						Go to the XTB platform, export your transaction history as a CSV file, and then upload the CSV file here.
+						Go to the XTB platform, export your transaction history as an XLSX file, and then upload it here.
 					</Text>
 				</MotiView>
 				<MotiView {...bottomSlideInYLongAnimation} delay={MEDIUM_ANIMATION_DURATION}>

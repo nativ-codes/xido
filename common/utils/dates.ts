@@ -13,10 +13,11 @@ export type ParseTransactionDateReturnType = {
 }
 
 const parseTransactionDate = (_date: string): ParseTransactionDateReturnType => {
-    // 29.12.2023 13:00
-    const [date, time] = _date.split(' ');
-    // 29.12.2023
-    const [day, month, year] = date.split('.').map(Number);
+    // 2023-12-29 13:00:00
+    const [isoDate, time] = _date.split(' ');
+    const [year, month, day] = isoDate.split('-').map(Number);
+    // 29.12.2023, the format the UI displays
+    const date = isoDate.split('-').reverse().join('.');
     const dateObject = new Date(year, month - 1, day);
 
     return {

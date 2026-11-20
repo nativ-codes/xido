@@ -20,6 +20,13 @@ export const setDataByCompanyData = ({ companies, storedSymbols }: SetDataByComp
 	const filteredRawTransactions = filterRawTransactions(storedRawTransactions, storedSymbols);
 
 	const parsedTransactions = parseTransactions(filteredRawTransactions);
+	const openPositions = Store.getOpenPositions();
+	// Open Positions is XTB's own share count; without that sheet, keep the count summed from cash operations
+	if (Object.keys(openPositions).length) {
+		Object.entries(parsedTransactions.companies).forEach(([symbol, company]) => {
+			company.summary.shares = openPositions[symbol] ?? 0;
+		});
+	}
 	const dividend = parseTransactionsForLast12MonthsDividend(filteredRawTransactions);
 	const parsedTransactionsForLast12MonthsDividend = getLast12MonthsDividend(dividend);
 	const parsedTransactionsForCalendar = parseTransactionsForCalendar(filteredRawTransactions);
@@ -33,12 +40,14 @@ export const setDataByCompanyData = ({ companies, storedSymbols }: SetDataByComp
 	Store.setGoals(goals.length ? goals : defaultGoals);
 
 	Store.setCurrency(companies[0].currency);
-	Store.setUserData(parsedUserData);
 	Store.setTransactions(parsedTransactions);
 	Store.setRawTransactions(filteredRawTransactions);
 	Store.setCalendar(parsedTransactionsForCalendar);
 	Store.setTimestamp(Date.now());
 	Store.setLast12MonthsDividend(parsedTransactionsForLast12MonthsDividend);
+	// Must be written last: it flips Home from the empty placeholder to the cards, which mount synchronously and
+	// read the other keys before their MMKV listeners subscribe, so any key written after this would be missed
+	Store.setUserData(parsedUserData);
 };
 
 export const getErrorMessage = (missingSymbols: string[]) => {
