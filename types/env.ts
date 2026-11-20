@@ -6,3 +6,9 @@ export type EnvType = {
 	EXPO_PUBLIC_HEADER_HOST_VALUE: string;
 	EXPO_PUBLIC_MIXPANEL_PROJECT_KEY: string;
 };
+
+declare global {
+	namespace NodeJS {
+		interface ProcessEnv extends EnvType {}
+	}
+}

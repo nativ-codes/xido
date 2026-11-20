@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 import Text from '@/common/components/text/text';
 
@@ -13,14 +13,14 @@ type SelectableTagPropTypes = {
 }
 
 function SelectableTag({ isSelected, label, onPress, size = SelectableTagSizes.medium }: SelectableTagPropTypes) {
-	const containerStyles = StyleSheet.compose(styles.container, styles[`${size}Container`]);
+	const containerStyles = [styles.container, styles[`${size}Container`]];
 	const textSize = size === SelectableTagSizes.medium ? 'h3' : 'h5';
 
 	return (
 		<TouchableOpacity
 			activeOpacity={0.7}
 			onPress={onPress}
-			style={StyleSheet.compose(containerStyles, isSelected && styles.selected)}>
+			style={[containerStyles, isSelected && styles.selected]}>
 			<Text variant={textSize}>{label}</Text>
 		</TouchableOpacity>
 	);

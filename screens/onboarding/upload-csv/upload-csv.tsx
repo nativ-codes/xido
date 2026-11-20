@@ -12,7 +12,7 @@ import { bottomSlideInYLongAnimation, Colors, MEDIUM_ANIMATION_DURATION, SHORT_A
 
 import HelpBottomSheet from './components/help-bottom-sheet/help-bottom-sheet';
 import styles from './upload-csv.styles';
-import { MotiView } from 'moti';
+import Animated from 'react-native-reanimated';
 
 function UploadCsv() {
 	const [uploadedTransactions, setUploadedTransactions] = useState('');
@@ -65,17 +65,17 @@ function UploadCsv() {
 				<Button.Icon onPress={showHelpModal} name='help-circle-outline' size='medium' color={Colors.secondaryText} />
 			}>
 			<View style={styles.content}>
-				<MotiView {...bottomSlideInYLongAnimation}>
+				<Animated.View entering={bottomSlideInYLongAnimation()}>
 					<Text variant='h1' isBold>
 						Upload the exported XLSX file
 					</Text>
-				</MotiView>
-				<MotiView {...bottomSlideInYLongAnimation} delay={SHORT_ANIMATION_DURATION}>
+				</Animated.View>
+				<Animated.View entering={bottomSlideInYLongAnimation(SHORT_ANIMATION_DURATION)}>
 					<Text>
 						Go to the XTB platform, export your transaction history as an XLSX file, and then upload it here.
 					</Text>
-				</MotiView>
-				<MotiView {...bottomSlideInYLongAnimation} delay={MEDIUM_ANIMATION_DURATION}>
+				</Animated.View>
+				<Animated.View entering={bottomSlideInYLongAnimation(MEDIUM_ANIMATION_DURATION)}>
 					<TouchableOpacity
 						onPress={handleOnUpload}
 						activeOpacity={0.7}
@@ -96,7 +96,7 @@ function UploadCsv() {
 							</View>
 						)}
 					</TouchableOpacity>
-				</MotiView>
+				</Animated.View>
 			</View>
 			<View style={styles.button}>
 				<Button isDisabled={isButtonDisabled} label='Continue' onPress={handleOnContinue} variant='primary' />

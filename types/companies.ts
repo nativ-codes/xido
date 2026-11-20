@@ -166,6 +166,8 @@ export interface PageViews {
 export type CompanyData = {
 	symbol: string;
 	bid: number;
+	// Last traded price; XTB values positions with it (after hours `bid` can be a 1-share quote far off the price)
+	regularMarketPrice: number;
 	logoUrl?: string;
 	companyLogoUrl?: string;
 	shortName: string;

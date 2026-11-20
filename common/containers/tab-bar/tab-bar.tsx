@@ -1,6 +1,6 @@
 import React from 'react';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { BottomTabBarProps } from 'expo-router/tabs';
 
 import { Colors, Units } from '@/common/constants';
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
@@ -8,7 +8,7 @@ import { GeneralStyles } from '@/common/styles/general-styles';
 import { TAB_BAR_ITEMS } from './tab-bar.constants';
 import styles from './tab-bar.styles';
 
-function TabBar({ state, navigation, insets }: BottomTabBarProps) {
+function TabBar({ state, navigateToTab, insets }: BottomTabBarProps) {
 	return (
 		<View
 			style={StyleSheet.flatten([
@@ -21,7 +21,7 @@ function TabBar({ state, navigation, insets }: BottomTabBarProps) {
 			{TAB_BAR_ITEMS.map((tab, index) => {
 				const isFocused = state.index === index;
 				const iconName = isFocused ? tab.iconFocused : tab.iconUnfocused;
-				const handleOnPress = () => navigation.navigate(tab.name);
+				const handleOnPress = () => navigateToTab(state.routes[index].key);
 
 				return (
 					<TouchableOpacity

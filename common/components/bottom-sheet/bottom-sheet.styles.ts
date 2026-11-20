@@ -3,8 +3,10 @@ import { Colors, Units } from '@/common/constants';
 
 export default StyleSheet.create({
     wrapper: {
-        margin: 0,
-        justifyContent: 'flex-end'
+        flex: 1,
+        justifyContent: 'flex-end',
+        // react-native-modal's default backdrop
+        backgroundColor: 'rgba(0, 0, 0, 0.7)'
     },
     content: {
         maxHeight: '60%',

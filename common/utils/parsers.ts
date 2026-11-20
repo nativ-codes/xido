@@ -6,7 +6,6 @@ import {
 	TransactionsToDisplayPropTypes,
 	TransactionType,
 	CalculateMarketSummaryReturnType,
-	Company,
 	CompanyData,
 	ParseTransactionsForExpectedDividendsReturnType,
 	GoalsPropTypes,
@@ -110,9 +109,10 @@ const calculateMarketSummary = ({
 	transactions,
 	totalPortfolioValue
 }: CalculateMarketSummaryPropsType): CalculateMarketSummaryReturnType => {
-	const marketValue = company.bid * summary.shares;
+	const marketValue = company.regularMarketPrice * summary.shares;
 	const profitOrLoss = marketValue - Math.abs(summary.boughtValue);
-	const profitOrLossPercentage = (profitOrLoss / Math.abs(summary.boughtValue)) * 100;
+	// Spin-off shares are booked at 0.01, so the % over that cost is meaningless (~1,000,000%); XTB shows 0% too
+	const profitOrLossPercentage = Math.abs(summary.boughtValue) < 1 ? 0 : (profitOrLoss / Math.abs(summary.boughtValue)) * 100;
 
 	const latestTransactions = parseTransactionsForLatestTransactions(transactions);
 	const expectedDividends = parseTransactionsForExpectedDividends(transactions, transactions[0]);
@@ -120,7 +120,7 @@ const calculateMarketSummary = ({
 	const dividendStats = parseTransactionsForDividendStats(transactions);
 
 	return {
-		bid: company.bid,
+		bid: company.regularMarketPrice,
 		shares: summary.shares,
 		boughtValue: Math.abs(summary.boughtValue),
 		marketValue: marketValue,
@@ -189,7 +189,7 @@ export type ParsedTransactionsType = {
 };
 
 const parseTransactions = (transactions: TransactionType[]) =>
-	transactions.reduce((parsedTransactions: ParsedTransactionsType, transaction): ParsedTransactionsType => {
+	transactions.reduce<ParsedTransactionsType>((parsedTransactions: ParsedTransactionsType, transaction): ParsedTransactionsType => {
 		const getValue = getTransactionValue({ transaction });
 		const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
 		const type = getValue(TransactionFields.TYPE) as OperationType;
@@ -253,15 +253,6 @@ const parseTransactionsForLatestTransactions = (transactions: TransactionType[])
 	return Object.values(transactionsMapper);
 };
 
-const parseCompanies = (companies: Company[]): Omit<CompanyData, 'shortName' | 'longName'>[] =>
-	companies.map(({ symbol, bid, logoUrl, dividendYield, currency }) => ({
-		symbol,
-		bid,
-		logoUrl,
-		dividendYield,
-		currency
-	}));
-
 type ParseUserDataPropsType = {
 	transactions: ParsedTransactionsType;
 	companies: CompanyData[];
@@ -279,7 +270,7 @@ export type ParseUserDataReturnType = {
 const parseUserData = ({ transactions, companies }: ParseUserDataPropsType): ParseUserDataReturnType => {
 	const totalPortfolioValue = companies.reduce((acc, company) => {
 		const currentCompany = transactions.companies[company.symbol];
-		return acc + company.bid * currentCompany.summary.shares;
+		return acc + company.regularMarketPrice * currentCompany.summary.shares;
 	}, 0);
 
 	return companies.reduce((acc, company) => {
@@ -606,7 +597,6 @@ export {
 	parseTransactionsForTotalCompanies,
 	parseTransactionsForCalendar,
 	parseTransactions,
-	parseCompanies,
 	parseUserData,
 	parseGoals,
 	getOverall

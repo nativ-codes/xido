@@ -1,8 +1,8 @@
 import { normalizeExtractedData, parseOpenPositions } from '../device';
 import { parseTransactionDate } from '../dates';
-import { parseTransactions, parseTransactionsForTotalCompanies } from '../parsers';
+import { parseTransactions, parseTransactionsForTotalCompanies, parseUserData } from '../parsers';
 import { validateColumnTitles } from '../validators';
-import { TransactionType } from '@/types';
+import { CompanyData, TransactionType } from '@/types';
 
 // Shape of the XTB xlsx "Cash Operations" sheet, read with sheet_to_json({ header: 1, raw: false, defval: '' })
 const sheetRows = [
@@ -40,6 +40,15 @@ describe('XTB xlsx cash operations', () => {
 		// "11/16" is a partial fill: 11 of 16 shares
 		expect(companies.ALLY.summary.shares).toBe(11);
 		expect(summary.freeFundsInterest).toBe(1.86);
+	});
+
+	it('shows 0% profit for a near-zero cost (spin-off shares booked at 0.01), like XTB', () => {
+		const transactions = parseTransactions(rows.slice(1));
+		const company = { symbol: 'O', bid: 59, regularMarketPrice: 60 } as CompanyData;
+		expect(parseUserData({ transactions, companies: [company] }).O.summary.profitOrLossPercentage).toBeCloseTo(10.84);
+
+		transactions.companies.O.summary.boughtValue = -0.05;
+		expect(parseUserData({ transactions, companies: [company] }).O.summary).toMatchObject({ profitOrLoss: 2159.95, profitOrLossPercentage: 0 });
 	});
 
 	it('reads held shares from the Open Positions instrument rows', () => {

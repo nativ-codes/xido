@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { router } from 'expo-router';
-import { View as MotiView } from 'moti';
+import Animated from 'react-native-reanimated';
 
 import { Text, Button, Progress } from '@/common/components';
 import { ScreenLayout } from '@/common/layouts';
@@ -20,18 +20,18 @@ function Landing() {
 	return (
 		<ScreenLayout canGoBack center={<Progress previousValue={0} value={20} />}>
 			<View style={styles.content}>
-				<MotiView {...bottomSlideInYLongAnimation}>
+				<Animated.View entering={bottomSlideInYLongAnimation()}>
 					<Text variant='h1' isBold>
 						Track your DGI portfolio
 					</Text>
-				</MotiView>
-				<MotiView {...bottomSlideInYLongAnimation} delay={SHORT_ANIMATION_DURATION} style={styles.section}>
+				</Animated.View>
+				<Animated.View entering={bottomSlideInYLongAnimation(SHORT_ANIMATION_DURATION)} style={styles.section}>
 					<Text>
 						It's easy to track your DGI portfolio and monitor your progress. Get clear stats and charts that show you
 						exactly how close you are to reaching your goals.
 					</Text>
 					<Text>Let's get started!</Text>
-				</MotiView>
+				</Animated.View>
 			</View>
 			<View style={styles.button}>
 				<Button label='Begin' onPress={handleOnUpload} variant='primary' />

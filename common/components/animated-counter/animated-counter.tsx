@@ -1,7 +1,6 @@
-import { MotiText } from 'moti';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { runOnJS, useAnimatedReaction, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedReaction, useSharedValue, withTiming } from 'react-native-reanimated';
 import { AnimatedCounterPropsType } from './animated-counter.types';
 import { LONG_ANIMATION_DURATION, smallSlideInYAnimation } from '@/common/constants';
 
@@ -25,14 +24,13 @@ function AnimatedCounter({
 			if (value !== prev) {
 				runOnJS(setCount)(Number(value));
 			}
-		},
-		[]
+		}
 	);
 
 	return (
-		<MotiText {...smallSlideInYAnimation} style={style}>
+		<Animated.Text entering={smallSlideInYAnimation()} style={style}>
 			{valueFormatter(count)}
-		</MotiText>
+		</Animated.Text>
 	);
 }
 

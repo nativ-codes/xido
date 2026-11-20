@@ -12,7 +12,7 @@ import { Colors, SHORT_ANIMATION_DURATION, smallSlideInYAnimation } from '@/comm
 import SortByBottomSheet from './components/sort-by-bottom-sheet/sort-by-bottom-sheet';
 import styles from './companies.styles';
 import { ParseUserDataCompanyType } from '@/common/utils';
-import { MotiView } from 'moti';
+import Animated from 'react-native-reanimated';
 import TabScreenLayout from '@/common/layouts/tab-screen-layout/tab-screen-layout';
 import { GeneralStyles } from '@/common/styles';
 
@@ -87,14 +87,14 @@ function Companies() {
 				</Spacer>
 
 				{filteredUserData.map((item, index) => (
-					<MotiView key={item.summary.symbol} {...smallSlideInYAnimation} delay={SHORT_ANIMATION_DURATION * index}>
+					<Animated.View key={item.summary.symbol} entering={smallSlideInYAnimation(SHORT_ANIMATION_DURATION * index)}>
 						<TouchableOpacity
 							activeOpacity={0.7}
 							onPress={handleOnCompanyPress(item.summary.symbol)}
 							style={GeneralStyles.cardBorder}>
 							<CompanyCard {...item.summary} />
 						</TouchableOpacity>
-					</MotiView>
+					</Animated.View>
 				))}
 			</Spacer>
 			<SortByBottomSheet

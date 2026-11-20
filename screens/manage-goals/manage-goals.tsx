@@ -4,7 +4,7 @@ import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
-import { Colors } from '@/common/constants';
+import { Colors, MEDIUM_ANIMATION_DURATION } from '@/common/constants';
 import { Button, Text } from '@/common/components';
 import Store from '@/config/store/slices/user-data';
 import { ScreenLayout } from '@/common/layouts';
@@ -12,7 +12,7 @@ import { sortByNumbers } from '@/common/utils';
 import { GoalsPropTypes } from '@/types';
 
 import styles from './manage-goals.styles';
-import { MotiView } from 'moti';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 function ManageGoals() {
 	const insets = useSafeAreaInsets();
@@ -35,13 +35,8 @@ function ManageGoals() {
 						Manage goals
 					</Text>
 					{parsedGoals.map((goal, key) => (
-						<MotiView
-							from={{ opacity: 0, translateY: -20 }}
-							animate={{ opacity: 1, translateY: 0 }}
-							transition={{ type: 'timing', duration: 500 }}
-							delay={100 * key}>
+						<Animated.View key={goal.id} entering={FadeInDown.duration(MEDIUM_ANIMATION_DURATION).delay(100 * key)}>
 							<TouchableOpacity
-								key={goal.id}
 								onPress={handleOnPress(goal)}
 								activeOpacity={0.7}
 								style={styles.cardWrapper}>
@@ -53,7 +48,7 @@ function ManageGoals() {
 									<Ionicons name='chevron-right' size={24} color={Colors.primaryText} />
 								</View>
 							</TouchableOpacity>
-						</MotiView>
+						</Animated.View>
 					))}
 				</View>
 			</ScreenLayout>

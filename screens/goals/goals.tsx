@@ -6,7 +6,7 @@ import { Card, Text } from '@/common/components';
 import { Colors, scaleInAnimation, scaleInYAnimation, SHORT_ANIMATION_DURATION, smallSlideInXAnimation } from '@/common/constants';
 import { formatPercentValue, parseGoals, sortByNumbers } from '@/common/utils';
 import Store from '@/config/store/slices/user-data';
-import { MotiView } from 'moti';
+import Animated from 'react-native-reanimated';
 
 import styles from './goals.styles';
 import TabScreenLayout from '@/common/layouts/tab-screen-layout/tab-screen-layout';
@@ -36,21 +36,19 @@ function Goals() {
 				{parsedGoals.map((goal, key) => (
 					<Spacer gap='s16' key={`${goal.title}-${goal.amount}`} style={styles.cardWrapper}>
 						{parsedGoals.length > 1 && (
-							<MotiView
-								{...scaleInYAnimation}
-								delay={SHORT_ANIMATION_DURATION * key}
+							<Animated.View
+								entering={scaleInYAnimation(SHORT_ANIMATION_DURATION * key)}
 								style={StyleSheet.compose(
 									styles.line,
 									key === 0 ? styles.lineStart : key === goals.length - 1 ? styles.lineEnd : styles.lineMiddle
 								)}
 							/>
 						)}
-						<MotiView {...scaleInAnimation} delay={SHORT_ANIMATION_DURATION * key}>
+						<Animated.View entering={scaleInAnimation(SHORT_ANIMATION_DURATION * key)}>
 							{goal.isGoalAchieved ? renderChecked : renderNotChecked}
-						</MotiView>
-						<MotiView
-							{...smallSlideInXAnimation}
-							delay={SHORT_ANIMATION_DURATION * key}
+						</Animated.View>
+						<Animated.View
+							entering={smallSlideInXAnimation(SHORT_ANIMATION_DURATION * key)}
 							style={GeneralStyles.shrink}
 							>
 								<Card gap='s8'>
@@ -62,7 +60,7 @@ function Goals() {
 									</Spacer>
 									<Text>{goal.title}</Text>
 								</Card>
-						</MotiView>
+						</Animated.View>
 					</Spacer>
 				))}
 			</Spacer>

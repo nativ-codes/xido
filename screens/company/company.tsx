@@ -10,8 +10,8 @@ import { ScreenLayout, Spacer } from '@/common/layouts';
 
 import CompanyInfoBottomSheet from './components/company-info-bottom-sheet/company-info-bottom-sheet';
 import styles from './company.styles';
-import { MotiView } from 'moti';
-import { bottomSlideInYLongAnimation, smallSlideInYAnimation, smallSlideInYLongAnimation, topSlideInYLongAnimation } from '@/common/constants';
+import Animated from 'react-native-reanimated';
+import { bottomSlideInYLongAnimation, smallSlideInYAnimation, topSlideInYLongAnimation } from '@/common/constants';
 
 function Company() {
 	const userData = Store.useUserData();
@@ -150,15 +150,15 @@ function Company() {
 		<ScreenLayout canGoBack>
 			<Spacer direction='horizontal' size='s16'>
 				<View style={styles.headerContainer}>
-					<MotiView {...topSlideInYLongAnimation}>
+					<Animated.View entering={topSlideInYLongAnimation()}>
 						<Avatar size='large' placeholder={symbol} url={companyLogo} />
-					</MotiView>
-					<MotiView {...bottomSlideInYLongAnimation} style={styles.headerContainer}>
+					</Animated.View>
+					<Animated.View entering={bottomSlideInYLongAnimation()} style={styles.headerContainer}>
 						<Text variant='h1'>{companyName}</Text>
 						<View>
 							<Tag value={symbol} variant='primary' />
 						</View>
-					</MotiView>
+					</Animated.View>
 				</View>
 				<Spacer
 					direction='top'

@@ -9,7 +9,7 @@ import { ScreenLayout } from '@/common/layouts';
 
 import styles from './select-companies.styles';
 import { Analytics } from '@/config/analytics';
-import { MotiView } from 'moti';
+import Animated from 'react-native-reanimated';
 
 const keyExtractor = (item: string) => item;
 
@@ -48,12 +48,12 @@ function SelectCompanies() {
 	return (
 		<ScreenLayout canGoBack center={<Progress previousValue={40} value={60} />}>
 			<View style={styles.content}>
-				<MotiView {...bottomSlideInYLongAnimation}>
+				<Animated.View entering={bottomSlideInYLongAnimation()}>
 					<Text variant='h1' isBold>
 						Select up to {maxCompaniesAllowed} companies you want to track
 					</Text>
-				</MotiView>
-				<MotiView {...bottomSlideInYLongAnimation} delay={SHORT_ANIMATION_DURATION} style={styles.section}>
+				</Animated.View>
+				<Animated.View entering={bottomSlideInYLongAnimation(SHORT_ANIMATION_DURATION)} style={styles.section}>
 					<Selection
 						isMultiple
 						options={uploadedCompanies}
@@ -63,7 +63,7 @@ function SelectCompanies() {
 						keyExtractor={keyExtractor}
 						labelExtractor={keyExtractor}
 					/>
-				</MotiView>
+				</Animated.View>
 			</View>
 			<View style={styles.buttons}>
 				<Button label={selectAllText} onPress={handleOnSelectAll} variant='secondary' />
