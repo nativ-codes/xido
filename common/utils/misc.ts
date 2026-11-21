@@ -36,6 +36,13 @@ const getTransactionValue =
 		return transaction[field];
 	};
 
+// XTB tickers end with their market ("AAPL.US", "BRK.B.US"); the app and the quote API use "AAPL", "BRK-B".
+// Only US shares are supported: other markets ("VOD.UK") give '' so they are ignored like rows with no company.
+const getSymbol = (ticker = '') => {
+	const [, symbol, market] = ticker.trim().match(/^(.+)\.([A-Z]+)$/) ?? [];
+	return market === 'US' ? symbol.replace(/\./g, '-') : '';
+};
+
 export {
 	sortByNumbers,
 	safelyPrintError,
@@ -44,5 +51,6 @@ export {
 	defaultKeyExtractor,
 	sortByKey,
 	sortByMonthKeyExtractor,
-	getTransactionValue
+	getTransactionValue,
+	getSymbol
 };

@@ -17,7 +17,8 @@ export const useFetchCompaniesOnceADay = () => {
 					const transactions = Store.getTransactions();
 					const companies = await getCompaniesInBatches(storedSymbols);
 
-					if (companies.length === storedSymbols.length) {
+					// Unknown or delisted tickers return no quote; refresh the rest, as onboarding does
+					if (companies.length) {
 						const parsedUserData = parseUserData({
 							transactions,
 							companies
@@ -28,7 +29,7 @@ export const useFetchCompaniesOnceADay = () => {
 						Store.setUserData(parsedUserData);
 						Analytics.sendEvent(Analytics.events.fetch_companies, newTimestamp.toString());
 					} else {
-						throw new Error(`Lists have different sizes: ${companies.length} vs. ${storedSymbols.length}`);
+						throw new Error(`No quotes for ${storedSymbols.length} symbols`);
 					}
 				} catch (error) {
 					Analytics.sendEvent(Analytics.events.error_daily_fetch, safelyPrintError(error));

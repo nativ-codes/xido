@@ -51,17 +51,18 @@ describe('XTB xlsx cash operations', () => {
 		expect(parseUserData({ transactions, companies: [company] }).O.summary).toMatchObject({ profitOrLoss: 2159.95, profitOrLossPercentage: 0 });
 	});
 
-	it('reads held shares from the Open Positions instrument rows', () => {
+	it('reads held shares and their cost from the Open Positions instrument rows', () => {
+		// Real XTB rows (columns after Gross Profit trimmed)
+		const header = ['Product', 'Instrument/Position', 'Ticker', 'Category', 'Type', 'Volume', 'Value', 'Current price', 'Open price', 'Open time (UTC)', 'Stop Loss', 'Take Profit', 'Net Profit %', 'Net Profit', 'Gross Profit'];
 		const openPositionRows = [
 			['Product', 'Metric', 'Amount', 'Currency'],
 			['My Trades', 'Open position value', '51875.15', 'USD'],
-			['Product', 'Instrument/Position', 'Ticker', 'Category', 'Type', 'Volume', 'Value'],
-			['My Trades', 'Realty', 'O.US', 'STOCK', '', '113', '6433.09'],
-			['My Trades', '1101645631', 'O.US', '', 'BUY', '45', '2561.85'],
-			['My Trades', 'FedEx Freight Holding', 'FDXF.US', 'STOCK', '', '4.5', '566.24'],
-			['My Trades', '2633451462', 'FDXF.US', '', 'BUY', '4.5', '566.24']
+			header,
+			['My Trades', 'Realty', 'O.US', 'STOCK', '', '113', '6433.09', '', '55.22', '', '', '', '3.11', '193.76', '193.76'],
+			['My Trades', '1101645631', 'O.US', '', 'BUY', '45', '2561.85', '56.93', '50.53', '2023-10-06 18:41:15', '', '', '12.67', '288', '288'],
+			['My Trades', 'Berkshire Hathaway B', 'BRK.B.US', 'STOCK', '', '2', '992.4', '', '454.7', '', '', '', '9.13', '83', '83']
 		];
-		expect(parseOpenPositions(openPositionRows)).toEqual({ O: 113, FDXF: 4.5 });
+		expect(parseOpenPositions(openPositionRows)).toEqual({ O: { shares: 113, cost: 6239.33 }, 'BRK-B': { shares: 2, cost: 909.4 } });
 		expect(parseOpenPositions([])).toEqual({});
 	});
 });

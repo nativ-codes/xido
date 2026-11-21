@@ -5,7 +5,7 @@ import { getLast12MonthsDividend, parseTransactionsForCalendar } from '@/common/
 import { parseTransactionsForLast12MonthsDividend } from '@/common/utils';
 
 import { defaultGoals } from '@/common/constants';
-import { parseTransactions } from '@/common/utils';
+import { applyOpenPositions, parseTransactions } from '@/common/utils';
 import { filterRawTransactions } from '@/common/utils';
 import { CompanyData } from '@/types';
 import Store from '@/config/store/slices/user-data';
@@ -20,13 +20,7 @@ export const setDataByCompanyData = ({ companies, storedSymbols }: SetDataByComp
 	const filteredRawTransactions = filterRawTransactions(storedRawTransactions, storedSymbols);
 
 	const parsedTransactions = parseTransactions(filteredRawTransactions);
-	const openPositions = Store.getOpenPositions();
-	// Open Positions is XTB's own share count; without that sheet, keep the count summed from cash operations
-	if (Object.keys(openPositions).length) {
-		Object.entries(parsedTransactions.companies).forEach(([symbol, company]) => {
-			company.summary.shares = openPositions[symbol] ?? 0;
-		});
-	}
+	applyOpenPositions(parsedTransactions.companies, Store.getOpenPositions());
 	const dividend = parseTransactionsForLast12MonthsDividend(filteredRawTransactions);
 	const parsedTransactionsForLast12MonthsDividend = getLast12MonthsDividend(dividend);
 	const parsedTransactionsForCalendar = parseTransactionsForCalendar(filteredRawTransactions);

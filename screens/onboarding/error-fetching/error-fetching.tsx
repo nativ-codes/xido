@@ -9,7 +9,7 @@ import styles from './error-fetching.styles';
 
 function ErrorFetching() {
     const handleOnUpload = () => {
-        router.navigate('/');
+        router.dismissTo('/'); // pop back to the existing (tabs) instead of stacking a new one
     }
 
     return (

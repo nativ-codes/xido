@@ -3,8 +3,9 @@ import * as XLSX from 'xlsx';
 import { CASH_OPERATION, OPEN_POSITIONS } from '../constants';
 import { XTBTransactionFields } from '@/types';
 import { validateColumnTitles } from './validators';
+import { getSymbol } from './misc';
 
-export type OpenPositionsType = Record<string, number>;
+export type OpenPositionsType = Record<string, { shares: number; cost: number }>;
 
 // shortcut: xlsx 0.18.5 reads XTB's ZIP64 data descriptors as 4-byte sizes and console.errors a harmless
 // "Bad uncompressed size: N != 0" per zip entry (data still decodes fine); drop this if a newer xlsx stops logging it
@@ -35,16 +36,24 @@ const extractDataFromXlsx = async (uri: string) => {
 	};
 };
 
-// Shares held per symbol. Cash operations can't give this: e.g. spin-off shares are credited with no cash row.
-// Each instrument has one summary row (Category set) above its individual positions (Category empty).
+// Shares held and their cost per symbol, as XTB computes them. Cash operations can't give this: spin-off and split
+// shares have no cash row, and sales close specific lots. Each instrument has one summary row (Category set)
+// above its individual positions (Category empty).
 const parseOpenPositions = (rows: string[][]): OpenPositionsType => {
-	const headerIndex = rows.findIndex((row) => row[2] === 'Ticker' && row[5] === 'Volume');
-	if (headerIndex === -1) return {};
+	const header = rows.find((row) => row[2] === 'Ticker' && row[5] === 'Volume');
+	if (!header) return {};
+	const cell = (row: string[], name: string) => parseFloat(row[header.indexOf(name)]) || 0;
 
 	return rows
-		.slice(headerIndex + 1)
-		.filter((row) => row[3])
-		.reduce((acc, row) => ({ ...acc, [row[2].split('.')[0]]: parseFloat(row[5]) }), {});
+		.slice(rows.indexOf(header) + 1)
+		.filter((row) => row[3] && getSymbol(row[2]))
+		.reduce(
+			(acc, row) => ({
+				...acc,
+				[getSymbol(row[2])]: { shares: cell(row, 'Volume'), cost: Math.round((cell(row, 'Value') - cell(row, 'Gross Profit')) * 100) / 100 }
+			}),
+			{}
+		);
 };
 
 // Keeps the header row first, then only records: skips the account/date-range rows above it and the trailing "Total" row

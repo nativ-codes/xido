@@ -3,7 +3,7 @@ import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
 
-import { OpenPositionsType, parseTransactionsForTotalCompanies, uploadCsv, validateColumnTitles } from '@/common/utils';
+import { OpenPositionsType, parseTransactionsForTotalCompanies, parseUnsupportedTickers, uploadCsv, validateColumnTitles } from '@/common/utils';
 import { Text, Button, Progress } from '@/common/components';
 import { TransactionType } from '@/types';
 import { ScreenLayout } from '@/common/layouts';
@@ -31,13 +31,28 @@ function UploadCsv() {
 
 			if (response.data.length) {
 				if (validateColumnTitles(response.data[0])) {
-					const parsedTransactionsForTotalCompanies = parseTransactionsForTotalCompanies(response.data);
+					const { openPositions } = response;
+					// Fully sold companies are no longer held, so there is nothing to value or track
+					const parsedTransactionsForTotalCompanies = parseTransactionsForTotalCompanies(response.data).filter(
+						(symbol) => !Object.keys(openPositions).length || openPositions[symbol]
+					);
+
+					const unsupportedTickers = parseUnsupportedTickers(response.data);
+					const skipped = unsupportedTickers.length
+						? `\nSkipped ${unsupportedTickers.join(', ')}: only US shares are supported.`
+						: '';
+
+					if (!parsedTransactionsForTotalCompanies.length) {
+						setIsError(true);
+						setUploadedTransactions(`No US shares currently held were found.${skipped}`);
+						return;
+					}
 
 					Store.setSymbols(parsedTransactionsForTotalCompanies);
 					Store.setRawTransactions(response.data);
 					Store.setOpenPositions(response.openPositions);
 
-					setUploadedTransactions(`${parsedTransactionsForTotalCompanies?.length} companies found.`);
+					setUploadedTransactions(`${parsedTransactionsForTotalCompanies.length} companies found.${skipped}`);
 					setIsError(false);
 				} else {
 					setIsError(true);

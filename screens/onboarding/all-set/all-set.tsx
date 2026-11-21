@@ -11,7 +11,7 @@ import { bottomSlideInYLongAnimation, SHORT_ANIMATION_DURATION } from '@/common/
 
 function ErrorFetching() {
 	const handleOnUpload = () => {
-		router.navigate('/');
+		router.dismissTo('/'); // pop back to the existing (tabs) instead of stacking a new one
 	};
 
 	return (

@@ -21,7 +21,7 @@ describe('demo XTB portfolio', () => {
 	});
 
 	it('has the same shares in Cash Operations and Open Positions', () => {
-		tickers.forEach((ticker) => expect([ticker, companies[ticker].summary.shares]).toEqual([ticker, openPositions[ticker]]));
+		tickers.forEach((ticker) => expect([ticker, companies[ticker].summary.shares]).toEqual([ticker, openPositions[ticker].shares]));
 	});
 
 	it('has the same cost in Cash Operations and Open Positions', () => {

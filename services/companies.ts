@@ -40,8 +40,9 @@ const getCompaniesInBatches = async (tickers: string[]): Promise<CompanyData[]> 
     const batchesResponse = await Promise.all(batchesPromises);
 
     return batchesResponse.reduce((acc, batchResponse) => {
-        if(batchResponse.success && batchResponse.data?.length) {
-            return [...acc, ...batchResponse.data];
+        if(batchResponse?.success && batchResponse.data?.length) {
+            // Delisted tickers come back as a stub with no price (quoteType "NONE"); treat them as not found
+            return [...acc, ...batchResponse.data.filter((company: CompanyData) => typeof company.regularMarketPrice === 'number')];
         } else {
             console.error('Error fetching companies:', batchResponse);
             return acc;

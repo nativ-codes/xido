@@ -12,7 +12,8 @@ import {
 	TransactionFields
 } from '@/types';
 import { getIsOlderThanOneYear, getMonthByIndex, parseTransactionDate, ParseTransactionDateReturnType } from './dates';
-import { getTransactionValue } from './misc';
+import { getSymbol, getTransactionValue } from './misc';
+import type { OpenPositionsType } from './device';
 import { getOperationType } from './validators';
 
 type ParseTransactionsForShareStatsReturnType = {
@@ -191,7 +192,7 @@ export type ParsedTransactionsType = {
 const parseTransactions = (transactions: TransactionType[]) =>
 	transactions.reduce<ParsedTransactionsType>((parsedTransactions: ParsedTransactionsType, transaction): ParsedTransactionsType => {
 		const getValue = getTransactionValue({ transaction });
-		const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
+		const companySymbol = getSymbol(getValue(TransactionFields.SYMBOL));
 		const type = getValue(TransactionFields.TYPE) as OperationType;
 		const comment = getValue(TransactionFields.COMMENT);
 		const amount = getValue(TransactionFields.AMOUNT);
@@ -268,12 +269,14 @@ export type ParseUserDataReturnType = {
 };
 
 const parseUserData = ({ transactions, companies }: ParseUserDataPropsType): ParseUserDataReturnType => {
-	const totalPortfolioValue = companies.reduce((acc, company) => {
+	// A quote the API returns under a symbol we have no transactions for would have nothing to value
+	const heldCompanies = companies.filter((company) => transactions.companies[company.symbol]);
+	const totalPortfolioValue = heldCompanies.reduce((acc, company) => {
 		const currentCompany = transactions.companies[company.symbol];
 		return acc + company.regularMarketPrice * currentCompany.summary.shares;
 	}, 0);
 
-	return companies.reduce((acc, company) => {
+	return heldCompanies.reduce((acc, company) => {
 		const currentCompany = transactions.companies[company.symbol];
 
 		return {
@@ -399,7 +402,7 @@ const parseTransactionsForCalendar = (transactions: TransactionType[]): ParseTra
 		const getValue = getTransactionValue({ transaction });
 
 		if (getValue(TransactionFields.TYPE) === OperationType.Dividend) {
-			const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
+			const companySymbol = getSymbol(getValue(TransactionFields.SYMBOL));
 			const { monthByIndex, year } = parseTransactionDate(getValue(TransactionFields.TIME));
 			const month = acc[year]?.data?.[monthByIndex];
 			const amount = getValue(TransactionFields.AMOUNT);
@@ -531,7 +534,7 @@ const parseGoals = ({ goals, value }: { goals: GoalsPropTypes[]; value: number }
 const parseTransactionsForTotalCompanies = (transactions: TransactionType[]): string[] =>
 	transactions.reduce<string[]>((acc, transaction, key) => {
 		const getValue = getTransactionValue({ transaction });
-		const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
+		const companySymbol = getSymbol(getValue(TransactionFields.SYMBOL));
 
 		// Skip the first element, which is the header row
 		if (key === 0) return acc;
@@ -543,10 +546,20 @@ const parseTransactionsForTotalCompanies = (transactions: TransactionType[]): st
 		}
 	}, []);
 
+// Non-US tickers in the file ("VOD.UK"), which the app skips; shown on upload so they don't vanish silently
+const parseUnsupportedTickers = (transactions: TransactionType[]): string[] => [
+	...new Set(
+		transactions
+			.slice(1)
+			.map((transaction) => getTransactionValue({ transaction })(TransactionFields.SYMBOL))
+			.filter((ticker) => ticker && !getSymbol(ticker))
+	)
+];
+
 const filterRawTransactions = (transactions: TransactionType[], symbols: string[]): TransactionType[] =>
 	transactions.filter((transaction) => {
 		const getValue = getTransactionValue({ transaction });
-		const companySymbol = getValue(TransactionFields.SYMBOL)?.split('.')?.[0];
+		const companySymbol = getSymbol(getValue(TransactionFields.SYMBOL));
 
 		return Boolean(companySymbol) && symbols.includes(companySymbol);
 	});
@@ -590,11 +603,24 @@ const getOverall = (userData: ParseUserDataReturnType): GetOverallReturnType => 
 	};
 };
 
+// XTB's Open Positions is the source of truth for what is held: shares (incl. splits, spin-offs) and cost (sales close
+// specific lots, which cash operations can't tell). Without that sheet, keep the totals summed from cash operations.
+const applyOpenPositions = (companies: ParsedTransactionsType['companies'], openPositions: OpenPositionsType) => {
+	if (!Object.keys(openPositions).length) return;
+
+	Object.entries(companies).forEach(([symbol, { summary }]) => {
+		summary.shares = openPositions[symbol]?.shares ?? 0;
+		summary.boughtValue = -(openPositions[symbol]?.cost ?? 0);
+	});
+};
+
 export {
+	applyOpenPositions,
 	filterRawTransactions,
 	getLast12MonthsDividend,
 	parseTransactionsForLast12MonthsDividend,
 	parseTransactionsForTotalCompanies,
+	parseUnsupportedTickers,
 	parseTransactionsForCalendar,
 	parseTransactions,
 	parseUserData,
