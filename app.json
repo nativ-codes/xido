@@ -30,7 +30,9 @@
           "backgroundColor": "#ffffff",
           "imageWidth": 200
         }
-      ]
+      ],
+      "fastlane-kit",
+      "fastlane-kit/optional-portrait"
     ],
     "experiments": {
       "typedRoutes": true

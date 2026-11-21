@@ -26,4 +26,7 @@ android/
 ios/
 *.zip
 *.ipa
-fastlane/
+fastlane/.env.*
+fastlane/keys/
+fastlane/report.xml
+fastlane/README.md
