@@ -1,0 +1,14 @@
+{
+	"name": "xido-api",
+	"main": "src/index.js",
+	"compatibility_date": "2026-06-01",
+	"vars": {
+		"API_URL": "https://yahoo-finance-api-data.p.rapidapi.com/symbol/composite",
+		"RAPIDAPI_HOST": "yahoo-finance-api-data.p.rapidapi.com"
+	},
+	// RAPIDAPI_KEY is a secret: `wrangler secret put RAPIDAPI_KEY` (prod), worker/.dev.vars (local)
+	"observability": { "enabled": true },
+	"ratelimits": [
+		{ "name": "RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 60, "period": 60 } }
+	]
+}

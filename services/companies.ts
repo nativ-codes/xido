@@ -2,31 +2,9 @@ import { chunkList } from "@/common/utils/formatters";
 import { maxCompaniesPerBatch } from "@/common/constants";
 import { CompanyData } from "@/types/companies";
 
-type EnvType = {
-    EXPO_PUBLIC_API_URL: string;
-    EXPO_PUBLIC_HEADER_KEY_KEY: string;
-    EXPO_PUBLIC_HEADER_KEY_VALUE: string;
-    EXPO_PUBLIC_HEADER_HOST_KEY: string;
-    EXPO_PUBLIC_HEADER_HOST_VALUE: string;
-}
-
 const getCompanies = async (symbols: string) => {
-    const {
-        EXPO_PUBLIC_API_URL,
-        EXPO_PUBLIC_HEADER_KEY_KEY,
-        EXPO_PUBLIC_HEADER_KEY_VALUE,
-        EXPO_PUBLIC_HEADER_HOST_KEY,
-        EXPO_PUBLIC_HEADER_HOST_VALUE
-    } = process.env as EnvType;
-
   try {
-    const response = await fetch(`${EXPO_PUBLIC_API_URL}?symbol=${symbols}`, {
-        method: 'GET',
-        headers: {
-            [EXPO_PUBLIC_HEADER_KEY_KEY]: EXPO_PUBLIC_HEADER_KEY_VALUE,
-            [EXPO_PUBLIC_HEADER_HOST_KEY]: EXPO_PUBLIC_HEADER_HOST_VALUE
-        }
-    });
+    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/companies?symbol=${symbols}`);
 
     return await response.json();
   } catch (error) {
