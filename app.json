@@ -9,7 +9,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nativcodes.xido",
-      "buildNumber": "2"
+      "buildNumber": "3"
     },
     "android": {
       "adaptiveIcon": {
@@ -22,14 +22,13 @@
       "expo-router",
       "expo-document-picker",
       "expo-font",
-      "expo-splash-screen",
       [
         "expo-splash-screen",
         {
           "image": "./assets/images/splash.png",
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
-          "imageWidth": 200
+          "backgroundColor": "#12d18e",
+          "imageWidth": 120
         }
       ],
       "fastlane-kit",
