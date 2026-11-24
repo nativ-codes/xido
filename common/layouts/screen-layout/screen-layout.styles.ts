@@ -8,5 +8,10 @@ export default StyleSheet.create({
 	},
 	contentContainer: {
 		flexGrow: 1
+	},
+	footer: {
+		paddingHorizontal: 16,
+		paddingTop: 16,
+		gap: 8
 	}
 });

@@ -12,6 +12,7 @@ function ScreenLayout({
 	children,
 	isEmpty,
 	emptyPlaceholder = <EmptyPlaceholderComponent />,
+	footer,
 	...headerProps
 }: ScreenLayoutPropTypes) {
 	const insets = useSafeAreaInsets();
@@ -21,11 +22,12 @@ function ScreenLayout({
 			<ScrollView
 				contentContainerStyle={StyleSheet.compose(styles.contentContainer, {
 					paddingTop: insets.top,
-					paddingBottom: insets.bottom + BOTTOM_SCREEN_OFFSET
+					paddingBottom: footer ? 0 : insets.bottom + BOTTOM_SCREEN_OFFSET
 				})}>
 				{Boolean(headerProps) && <Header {...headerProps} />}
 				{isEmpty ? emptyPlaceholder : children}
 			</ScrollView>
+			{Boolean(footer) && <View style={StyleSheet.compose(styles.footer, { paddingBottom: insets.bottom })}>{footer}</View>}
 		</View>
 	);
 }
