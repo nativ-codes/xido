@@ -46,7 +46,15 @@ function SelectCompanies() {
 	};
 
 	return (
-		<ScreenLayout canGoBack center={<Progress previousValue={40} value={60} />}>
+		<ScreenLayout
+			canGoBack
+			center={<Progress previousValue={40} value={60} />}
+			footer={
+				<>
+					<Button label={selectAllText} onPress={handleOnSelectAll} variant='secondary' />
+					<Button isDisabled={isContinueDisabled} label='Continue' onPress={handleOnContinue} variant='primary' />
+				</>
+			}>
 			<View style={styles.content}>
 				<Animated.View entering={bottomSlideInYLongAnimation()}>
 					<Text variant='h1' isBold>
@@ -64,10 +72,6 @@ function SelectCompanies() {
 						labelExtractor={keyExtractor}
 					/>
 				</Animated.View>
-			</View>
-			<View style={styles.buttons}>
-				<Button label={selectAllText} onPress={handleOnSelectAll} variant='secondary' />
-				<Button isDisabled={isContinueDisabled} label='Continue' onPress={handleOnContinue} variant='primary' />
 			</View>
 		</ScreenLayout>
 	);

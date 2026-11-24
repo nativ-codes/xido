@@ -15,7 +15,9 @@ function ErrorFetching() {
 	};
 
 	return (
-		<ScreenLayout center={<Progress previousValue={80} value={100} />}>
+		<ScreenLayout
+			center={<Progress previousValue={80} value={100} />}
+			footer={<Button label='Finish' onPress={handleOnUpload} variant='primary' />}>
 			<View style={styles.content}>
 				<Animated.View entering={bottomSlideInYLongAnimation()}>
 					<Text variant='h1' isBold>
@@ -25,9 +27,6 @@ function ErrorFetching() {
 				<Animated.View entering={bottomSlideInYLongAnimation(SHORT_ANIMATION_DURATION)} style={styles.section}>
 					<Text>Your profile is now ready.</Text>
 				</Animated.View>
-			</View>
-			<View style={styles.button}>
-				<Button label='Finish' onPress={handleOnUpload} variant='primary' />
 			</View>
 		</ScreenLayout>
 	);

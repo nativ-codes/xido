@@ -76,6 +76,7 @@ function UploadCsv() {
 		<ScreenLayout
 			canGoBack
 			center={<Progress previousValue={20} value={40} />}
+			footer={<Button isDisabled={isButtonDisabled} label='Continue' onPress={handleOnContinue} variant='primary' />}
 			right={
 				<Button.Icon onPress={showHelpModal} name='help-circle-outline' size='medium' color={Colors.secondaryText} />
 			}>
@@ -112,9 +113,6 @@ function UploadCsv() {
 						)}
 					</TouchableOpacity>
 				</Animated.View>
-			</View>
-			<View style={styles.button}>
-				<Button isDisabled={isButtonDisabled} label='Continue' onPress={handleOnContinue} variant='primary' />
 			</View>
 			<HelpBottomSheet isVisible={isHelpModalVisible} hideModal={hideHelpModal} />
 		</ScreenLayout>

@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 import { Colors, MEDIUM_ANIMATION_DURATION } from '@/common/constants';
@@ -15,7 +14,6 @@ import styles from './manage-goals.styles';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 function ManageGoals() {
-	const insets = useSafeAreaInsets();
 	const goals = Store.useGoals();
 	const parsedGoals = sortByNumbers(goals, (item) => item.amount);
 
@@ -28,37 +26,31 @@ function ManageGoals() {
 	};
 
 	return (
-		<>
-			<ScreenLayout canGoBack>
-				<View style={styles.wrapper}>
-					<Text variant='h2' isBold>
-						Manage goals
-					</Text>
-					{parsedGoals.map((goal, key) => (
-						<Animated.View key={goal.id} entering={FadeInDown.duration(MEDIUM_ANIMATION_DURATION).delay(100 * key)}>
-							<TouchableOpacity
-								onPress={handleOnPress(goal)}
-								activeOpacity={0.7}
-								style={styles.cardWrapper}>
-								<View style={styles.leftCard}>
-									<Text isBold>${goal.amount} / month</Text>
-									<Text>{goal.title}</Text>
-								</View>
-								<View>
-									<Ionicons name='chevron-right' size={24} color={Colors.primaryText} />
-								</View>
-							</TouchableOpacity>
-						</Animated.View>
-					))}
-				</View>
-			</ScreenLayout>
-			<View
-				style={StyleSheet.compose(styles.floatingButton, {
-					bottom: insets.bottom
-				})}>
-				<Button label='Add new goal' onPress={handleOnAddGoal} isDisabled={false} variant='primary' />
+		<ScreenLayout
+			canGoBack
+			footer={<Button label='Add new goal' onPress={handleOnAddGoal} isDisabled={false} variant='primary' />}>
+			<View style={styles.wrapper}>
+				<Text variant='h2' isBold>
+					Manage goals
+				</Text>
+				{parsedGoals.map((goal, key) => (
+					<Animated.View key={goal.id} entering={FadeInDown.duration(MEDIUM_ANIMATION_DURATION).delay(100 * key)}>
+						<TouchableOpacity
+							onPress={handleOnPress(goal)}
+							activeOpacity={0.7}
+							style={styles.cardWrapper}>
+							<View style={styles.leftCard}>
+								<Text isBold>${goal.amount} / month</Text>
+								<Text>{goal.title}</Text>
+							</View>
+							<View>
+								<Ionicons name='chevron-right' size={24} color={Colors.primaryText} />
+							</View>
+						</TouchableOpacity>
+					</Animated.View>
+				))}
 			</View>
-		</>
+		</ScreenLayout>
 	);
 }
 

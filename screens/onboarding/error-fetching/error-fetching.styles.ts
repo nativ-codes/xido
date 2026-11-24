@@ -7,8 +7,5 @@ export default StyleSheet.create({
     },
     section: {
         marginTop: 16
-    },
-    button: {
-        padding: 16
     }
 });

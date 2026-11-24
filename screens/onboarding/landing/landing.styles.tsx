@@ -8,8 +8,5 @@ export default StyleSheet.create({
     section: {
         marginTop: 16,
         gap: 8
-    },
-    button: {
-        padding: 16
     }
 });

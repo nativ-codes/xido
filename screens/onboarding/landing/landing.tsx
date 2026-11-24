@@ -18,7 +18,10 @@ function Landing() {
 	};
 
 	return (
-		<ScreenLayout canGoBack center={<Progress previousValue={0} value={20} />}>
+		<ScreenLayout
+			canGoBack
+			center={<Progress previousValue={0} value={20} />}
+			footer={<Button label='Begin' onPress={handleOnUpload} variant='primary' />}>
 			<View style={styles.content}>
 				<Animated.View entering={bottomSlideInYLongAnimation()}>
 					<Text variant='h1' isBold>
@@ -32,9 +35,6 @@ function Landing() {
 					</Text>
 					<Text>Let's get started!</Text>
 				</Animated.View>
-			</View>
-			<View style={styles.button}>
-				<Button label='Begin' onPress={handleOnUpload} variant='primary' />
 			</View>
 		</ScreenLayout>
 	);

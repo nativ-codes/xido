@@ -20,9 +20,6 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         gap: 8,
-    }, 
-    button: {
-        padding: 16
     },
     boxContent: {
         gap: 8,

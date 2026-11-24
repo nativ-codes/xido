@@ -23,8 +23,5 @@ export default StyleSheet.create({
     content: {
         flexGrow: 1,
         gap: 16        
-    },
-    buttonsWrapper: {
-        gap: 8
-    }        
+    }
 });

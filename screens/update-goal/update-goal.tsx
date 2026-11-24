@@ -71,7 +71,20 @@ function UpdateGoal() {
 		]);
 
 	return (
-		<ScreenLayout canGoBack title={isAdd ? 'Add goal' : 'Update goal'}>
+		<ScreenLayout
+			canGoBack
+			title={isAdd ? 'Add goal' : 'Update goal'}
+			footer={
+				<>
+					{!isAdd && <Button label='Remove goal' onPress={handleOnRemove} variant='danger' />}
+					<Button
+						label={isAdd ? 'Add goal' : 'Save goal'}
+						onPress={handleOnUpdate}
+						isDisabled={isButtonDisabled}
+						variant='primary'
+					/>
+				</>
+			}>
 			<View style={styles.wrapper}>
 				<View style={styles.content}>
 					<View style={styles.section}>
@@ -82,15 +95,6 @@ function UpdateGoal() {
 						<Text isBold>Spend on</Text>
 						<TextInput value={title} style={styles.textInput} placeholder='A good book' onChangeText={setTitle} />
 					</View>
-				</View>
-				<View style={styles.buttonsWrapper}>
-					{!isAdd && <Button label='Remove goal' onPress={handleOnRemove} variant='danger' />}
-					<Button
-						label={isAdd ? 'Add goal' : 'Save goal'}
-						onPress={handleOnUpdate}
-						isDisabled={isButtonDisabled}
-						variant='primary'
-					/>
 				</View>
 			</View>
 		</ScreenLayout>

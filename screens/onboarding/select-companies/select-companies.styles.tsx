@@ -11,10 +11,5 @@ export default StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'center',
         gap: 8        
-    },
-    buttons: {
-        paddingHorizontal: 16,
-        paddingBottom: 16,
-        gap: 8
     }
 });

@@ -13,15 +13,15 @@ function ErrorFetching() {
     }
 
     return (
-        <ScreenLayout canGoBack center={<Progress previousValue={80} value={100} />}>
+        <ScreenLayout
+            canGoBack
+            center={<Progress previousValue={80} value={100} />}
+            footer={<Button label="Finish" onPress={handleOnUpload} variant="primary" />}>
             <View style={styles.content}>
                 <Text variant="h1" isBold>Oups...</Text>
                 <View style={styles.section}>
                     <Text>There was an error fetching the prices. Please try again later.</Text>
                 </View>
-            </View>
-            <View style={styles.button}>
-                <Button label="Finish" onPress={handleOnUpload} variant="primary" />
             </View>
         </ScreenLayout>
     )

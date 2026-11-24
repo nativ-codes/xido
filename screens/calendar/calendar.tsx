@@ -1,16 +1,16 @@
 import React, { useMemo, useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 
-import { Text, Selection, Card, ListItem, Divider, EmptyPlaceholder } from '@/common/components';
+import { Text, Card, ListItem, Divider, EmptyPlaceholder } from '@/common/components';
 import { ScreenLayout } from '@/common/layouts';
 import Store from '@/config/store/slices/user-data';
 import {
 	formatPercentValue,
 	formatValue,
-	defaultKeyExtractor,
-	sortByKey,
-	sortByMonthKeyExtractor
+	sortByKey
 } from '@/common/utils';
+import { months } from '@/common/constants/configs';
+import MonthGrid from './components/month-grid/month-grid';
 
 import styles from './calendar.styles';
 import CalendarInfoBottomSheet from './components/calendar-info-bottom-sheet/calendar-info-bottom-sheet';
@@ -29,35 +29,23 @@ function Calendar() {
 	const calendar = Store.useCalendar();
 	const currency = Store.useCurrency();
 
-	const years = useMemo(() => Object.keys(calendar).reverse(), [calendar]);
-	const [selectedYear, setSelectedYear] = useState(parseInt(years[0]));
-	const months = useMemo(
-		() =>
-			sortByKey(
-				Object.keys(calendar[selectedYear]?.data || {}),
-				sortByMonthKeyExtractor((item) => item)
-			),
-		[calendar, selectedYear]
+	// all years with data + the current year (so upcoming months are reachable), newest first
+	const years = useMemo(
+		() => [...new Set([...Object.keys(calendar).map(Number), new Date().getFullYear()])].sort((a, b) => b - a),
+		[calendar]
 	);
-	const [selectedMonth, setSelectedMonth] = useState<string>(months[0]);
+	const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+	const [selectedMonth, setSelectedMonth] = useState<string>(months[new Date().getMonth()]);
 	const currentMonth = calendar?.[selectedYear]?.data?.[selectedMonth];
 	const [isInfoVisible, setIsInfoVisible] = useState(false);
 
 	const showModal = () => setIsInfoVisible(true);
 	const hideModal = () => setIsInfoVisible(false);
 
-	const handleOnChangeYear = (year: number) => {
+	const handleOnSelect = (year: number, month: string) => {
 		setSelectedYear(year);
-
-		if (!calendar[year]?.data?.[selectedMonth]) {
-			setSelectedMonth(Object.keys(calendar[year].data)[0]);
-		}
+		setSelectedMonth(month);
 	};
-
-	const renderDateTabs = useMemo(
-		() => (props: any) => <Selection.SelectableTag {...props} size="small" />,
-		[]
-	);
 
 	return (
 		<TabScreenLayout
@@ -66,32 +54,16 @@ function Calendar() {
 					<EmptyPlaceholder shouldHideButton title='No dividend records found in the uploaded portfolio.' />
 				) : undefined
 			}
-			isEmpty={!Boolean(years.length)}
+			isEmpty={!Object.keys(calendar).length}
 			title='Dividend calendar'>
-			<View style={styles.tabWrapper}>
-				<ScrollView contentContainerStyle={styles.tabs} horizontal showsHorizontalScrollIndicator={false}>
-					<Selection
-						options={years}
-						onPress={handleOnChangeYear}
-						selected={selectedYear}
-						Element={renderDateTabs}
-						keyExtractor={defaultKeyExtractor}
-						labelExtractor={defaultKeyExtractor}
-					/>
-				</ScrollView>
-			</View>
-			<View style={styles.tabWrapper}>
-				<ScrollView contentContainerStyle={styles.tabs} horizontal showsHorizontalScrollIndicator={false}>
-					<Selection
-						options={months}
-						onPress={setSelectedMonth}
-						selected={selectedMonth}
-						Element={renderDateTabs}
-						keyExtractor={defaultKeyExtractor}
-						labelExtractor={defaultKeyExtractor}
-					/>
-				</ScrollView>
-			</View>
+			<MonthGrid
+				calendar={calendar}
+				currency={currency}
+				years={years}
+				selectedYear={selectedYear}
+				selectedMonth={selectedMonth}
+				onSelect={handleOnSelect}
+			/>
 			<View style={styles.wrapper}>
 				<View style={styles.header}>
 					<Text variant="h2">
@@ -128,13 +100,13 @@ function Calendar() {
 						) : (
 							<ListItem
 								leftText='Dividends this month'
-								rightText={formatValue(currentMonth?.stats?.totalDividends, currency)}
+								rightText={formatValue(currentMonth?.stats?.totalDividends || 0, currency)}
 							/>
 						)}
 						{!Boolean(currentMonth?.stats?.expectedDividends) && (
 							<ListItem
 								leftText='Dividends this year'
-								rightText={formatValue(calendar?.[selectedYear]?.stats?.totalDividends, currency)}
+								rightText={formatValue(calendar?.[selectedYear]?.stats?.totalDividends || 0, currency)}
 							/>
 						)}
 						{Boolean(calendar?.[selectedYear]?.stats?.expectedDividends) && (
@@ -146,12 +118,16 @@ function Calendar() {
 								)}
 							/>
 						)}
-						<Divider />
-						<Card.Title title='Companies' />
-						{sortByKey(Object.entries(currentMonth?.data || {}), sortKeyExtractor).map(
-							([symbol, { totalDividends }]: SortKeyExtractorPropTypes) => (
-								<ListItem key={symbol} leftText={symbol} rightText={formatValue(totalDividends, currency)} />
-							)
+						{Boolean(currentMonth?.data) && (
+							<>
+								<Divider />
+								<Card.Title title='Companies' />
+								{sortByKey(Object.entries(currentMonth.data), sortKeyExtractor).map(
+									([symbol, { totalDividends }]: SortKeyExtractorPropTypes) => (
+										<ListItem key={symbol} leftText={symbol} rightText={formatValue(totalDividends, currency)} />
+									)
+								)}
+							</>
 						)}
 					</Card>
 				</View>

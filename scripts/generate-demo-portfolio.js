@@ -1,6 +1,6 @@
 // Builds fictional XTB exports (Closed Positions / Cash Operations / Open Positions, same layout as a real XTB xlsx):
 // - demo/XTB_demo_portfolio.xlsx: a clean portfolio for App Store review
-// - demo/XTB_edge_cases.xlsx: sells, splits, closed positions, unknown/delisted/odd tickers, to catch import issues
+// - demo/XTB_edge_cases.xlsx: sells, splits, closed positions, unknown/delisted/odd tickers, months with no dividends, to catch import issues
 // Run: node scripts/generate-demo-portfolio.js
 const fs = require('fs');
 const path = require('path');
@@ -68,6 +68,9 @@ const PORTFOLIOS = [
 			company('FAKECO.US', 'Fake Company', 12.0, [0.1, QUARTERLY(1)], buys(['2024-05-20', 50, 10.0])),
 			company('ZZZQ.US', 'Unknown Instrument', 3.3, null, buys(['2025-02-03', 100, 4.1]))
 		],
+		// Months where no company paid (cut/suspended/skipped), so the calendar has empty months between paying ones:
+		// past-year months, December (so next December has nothing expected) and a past month of the current year
+		noDividendMonths: ['2025-04', '2025-08', '2025-12', '2026-02'],
 		// Rows XTB also puts in Cash Operations that carry no position
 		extraCash: [
 			['Commission', 'Apple', 'AAPL.US', '2025-03-03', -0.25, 'Commission for transaction'],
@@ -82,7 +85,7 @@ const toSerial = (date) => date.getTime() / 86400000 + 25569;
 const at = (isoDate, hour, minute = 0) => new Date(`${isoDate}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00Z`);
 const market = (ticker) => ticker.slice(ticker.lastIndexOf('.') + 1);
 
-const build = ({ account, reportDate, companies, extraCash = [] }) => {
+const build = ({ account, reportDate, companies, extraCash = [], noDividendMonths = [] }) => {
 	let nextId = 900000000;
 	let nextPositionId = 3100000000;
 	const cash = [];
@@ -97,7 +100,8 @@ const build = ({ account, reportDate, companies, extraCash = [] }) => {
 		if (dividend) {
 			const [perShare, months] = dividend;
 			for (let date = new Date(Date.UTC(2023, 0, 15, 10)); date < reportDate; date.setUTCMonth(date.getUTCMonth() + 1)) {
-				if (months.includes(date.getUTCMonth() + 1)) timeline.push({ date: new Date(date), event: ['dividend', perShare] });
+				const skipped = noDividendMonths.includes(date.toISOString().slice(0, 7));
+				if (months.includes(date.getUTCMonth() + 1) && !skipped) timeline.push({ date: new Date(date), event: ['dividend', perShare] });
 			}
 		}
 		timeline.sort((a, b) => a.date - b.date);

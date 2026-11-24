@@ -1,11 +1,18 @@
 import * as XLSX from 'xlsx';
 import { normalizeExtractedData, parseOpenPositions } from '../device';
 import { getSymbol } from '../misc';
-import { applyOpenPositions, parseTransactions, parseTransactionsForTotalCompanies, parseUnsupportedTickers, parseUserData } from '../parsers';
+import {
+	applyOpenPositions,
+	parseTransactions,
+	parseTransactionsForCalendar,
+	parseTransactionsForTotalCompanies,
+	parseUnsupportedTickers,
+	parseUserData
+} from '../parsers';
 import { CASH_OPERATION, OPEN_POSITIONS } from '@/common/constants';
 import { CompanyData, TransactionType } from '@/types';
 
-// demo/XTB_edge_cases.xlsx (scripts/generate-demo-portfolio.js): sells, a split, closed positions, odd and unknown tickers
+// demo/XTB_edge_cases.xlsx (scripts/generate-demo-portfolio.js): sells, a split, closed positions, odd and unknown tickers, months with no dividends
 const workbook = XLSX.readFile('demo/XTB_edge_cases.xlsx');
 const getSheetRows = (name: string): string[][] => XLSX.utils.sheet_to_json(workbook.Sheets[name], { header: 1, raw: false, defval: '' });
 
@@ -60,5 +67,14 @@ describe('XTB edge cases', () => {
 
 		expect(Object.keys(userData)).toEqual(['AAPL', 'KO']);
 		expect(userData.AAPL.summary).toMatchObject({ marketValue: 3900, weight: (3900 / (3900 + 1050)) * 100 });
+	});
+
+	it('leaves months with no dividends out of the calendar', () => {
+		const calendar = parseTransactionsForCalendar(rows.slice(1));
+
+		expect(calendar[2025].data.March).toBeDefined();
+		['April', 'August', 'December'].forEach((month) => expect(calendar[2025].data[month]).toBeUndefined());
+		// Nothing last December, so nothing expected this December either
+		expect(calendar[2026].data.December).toBeUndefined();
 	});
 });
