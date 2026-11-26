@@ -10,20 +10,15 @@ import { ScreenLayout } from '@/common/layouts';
 import Store from '@/config/store/slices/user-data';
 import { bottomSlideInYLongAnimation, Colors, MEDIUM_ANIMATION_DURATION, SHORT_ANIMATION_DURATION } from '@/common/constants';
 
-import HelpBottomSheet from './components/help-bottom-sheet/help-bottom-sheet';
 import styles from './upload-csv.styles';
 import Animated from 'react-native-reanimated';
 
 function UploadCsv() {
 	const [uploadedTransactions, setUploadedTransactions] = useState('');
-	const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
 	const [isError, setIsError] = useState(false);
 
 	const boxContentColor = isError ? Colors.error : Colors.primary;
 	const isButtonDisabled = !Boolean(uploadedTransactions) || isError;
-
-	const showHelpModal = () => setIsHelpModalVisible(true);
-	const hideHelpModal = () => setIsHelpModalVisible(false);
 
 	const handleOnUpload = async () => {
 		try {
@@ -76,10 +71,7 @@ function UploadCsv() {
 		<ScreenLayout
 			canGoBack
 			center={<Progress previousValue={20} value={40} />}
-			footer={<Button isDisabled={isButtonDisabled} label='Continue' onPress={handleOnContinue} variant='primary' />}
-			right={
-				<Button.Icon onPress={showHelpModal} name='help-circle-outline' size='medium' color={Colors.secondaryText} />
-			}>
+			footer={<Button isDisabled={isButtonDisabled} label='Continue' onPress={handleOnContinue} variant='primary' />}>
 			<View style={styles.content}>
 				<Animated.View entering={bottomSlideInYLongAnimation()}>
 					<Text variant='h1' isBold>
@@ -114,7 +106,6 @@ function UploadCsv() {
 					</TouchableOpacity>
 				</Animated.View>
 			</View>
-			<HelpBottomSheet isVisible={isHelpModalVisible} hideModal={hideHelpModal} />
 		</ScreenLayout>
 	);
 }
