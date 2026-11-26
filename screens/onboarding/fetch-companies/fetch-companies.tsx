@@ -26,7 +26,8 @@ function FetchCompanies() {
 				const { companies, error } = await fetchCompanies({ storedSymbols });
 
 				if (error) {
-					if (error.type === FetchCompaniesErrorEnum.MISSING_COMPANIES) {
+					// No companies at all means the API failed; proceeding would crash on companies[0]
+					if (error.type === FetchCompaniesErrorEnum.MISSING_COMPANIES && companies?.length) {
 						setCompaniesData(companies as CompanyData[]);
 						setError(getErrorMessage(error.data));
 					} else {
