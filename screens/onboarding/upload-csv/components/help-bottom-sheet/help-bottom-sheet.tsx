@@ -1,6 +1,7 @@
 import { View, Image } from 'react-native';
 
 import { Text, BottomSheet } from '@/common/components';
+import { Colors } from '@/common/constants';
 
 import styles from './help-bottom-sheet.styles';
 
@@ -42,6 +43,9 @@ function HelpBottomSheet({ isVisible, hideModal }: HelpBottomSheetPropTypes) {
 					</Text>
 					<Image source={ExportReport} resizeMode='contain' style={styles.image} />
 				</View>
+				<Text variant="h6" color={Colors.secondaryText}>
+					Xido is an independent app and is not affiliated with, endorsed by, or sponsored by XTB S.A. XTB is a trademark of its respective owner.
+				</Text>
 			</View>
 		</BottomSheet>
 	);

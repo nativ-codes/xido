@@ -94,7 +94,10 @@ function Settings() {
 						<ListItem leftText='Remove data' rightIcon='chevron-right' />
 					</TouchableOpacity>
 				</Card>
-				<Spacer direction='top' size='s16' style={GeneralStyles.itemsCenter}>
+				<Spacer direction='top' size='s16' gap='s8' style={GeneralStyles.itemsCenter}>
+					<Text color={Colors.secondaryText} variant='h6' textAlign='center'>
+						Xido is not investment advice. Market data may be delayed or inaccurate. Xido is not affiliated with XTB S.A.
+					</Text>
 					<Text color={Colors.secondaryText} variant='h5'>
 						Xido v{Application.nativeApplicationVersion}
 					</Text>
