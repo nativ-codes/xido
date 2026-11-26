@@ -99,7 +99,7 @@ function Settings() {
 						Xido is not investment advice. Market data may be delayed or inaccurate. Xido is not affiliated with XTB S.A.
 					</Text>
 					<Text color={Colors.secondaryText} variant='h5'>
-						Xido v{Application.nativeApplicationVersion}
+						Xido v{Application.nativeApplicationVersion} ({Application.nativeBuildVersion})
 					</Text>
 				</Spacer>
 			</Spacer>
