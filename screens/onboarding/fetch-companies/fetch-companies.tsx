@@ -4,12 +4,11 @@ import { router } from 'expo-router';
 import Store from '@/config/store/slices/user-data';
 import { Progress, Text, Button } from '@/common/components';
 import { safelyPrintError } from '@/common/utils';
-import { mockedSymbols } from '@/__mocks__';
 import { ScreenLayout, Spacer } from '@/common/layouts';
 import { Colors } from '@/common/constants';
 import styles from './fetch-companies.styles';
 import { Analytics } from '@/config/analytics';
-import { fetchCompanies, shouldUseMockedData } from './fetch-companies.service';
+import { fetchCompanies } from './fetch-companies.service';
 import { FetchCompaniesErrorEnum } from './fetch-companies.types';
 import { CompanyData } from '@/types';
 import { setDataByCompanyData, getErrorMessage } from './fetch-companies.utils';
@@ -18,7 +17,7 @@ import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 function FetchCompanies() {
 	const [error, setError] = useState<string>('');
 	const [companiesData, setCompaniesData] = useState<CompanyData[]>([]);
-	const storedSymbols = shouldUseMockedData ? mockedSymbols : Store.getSymbols();
+	const storedSymbols = Store.getSymbols();
 
 	useEffect(() => {
 		(async () => {

@@ -1,9 +1,6 @@
-import { mockedCompanies } from '@/__mocks__';
 import { getCompaniesInBatches } from '@/services/companies';
 import { FetchCompaniesErrorEnum } from './fetch-companies.types';
 import { CompanyData } from '@/types/companies';
-
-export const shouldUseMockedData = false;
 
 type FetchCompaniesReturnType = {
 	companies?: CompanyData[];
@@ -19,7 +16,7 @@ type FetchCompaniesType = {
 
 export const fetchCompanies = async ({ storedSymbols }: FetchCompaniesType): Promise<FetchCompaniesReturnType> => {
 	if (storedSymbols.length) {
-		const companies = shouldUseMockedData ? mockedCompanies : await getCompaniesInBatches(storedSymbols);
+		const companies = await getCompaniesInBatches(storedSymbols);
 
 		if (companies.length === storedSymbols.length) {
 			return {
