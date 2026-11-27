@@ -2,14 +2,14 @@
   "expo": {
     "name": "Xido",
     "slug": "xido",
-    "version": "999.99",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nativcodes.xido",
-      "buildNumber": "5",
+      "buildNumber": "3",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
